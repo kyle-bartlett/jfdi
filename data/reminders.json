@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "c21aa4d6-2967-4870-b56d-08959de99de9",
+    "text": "Buy groceries",
+    "due_date": "2025-12-24T09:00:00",
+    "completed": false,
+    "snoozed_until": null,
+    "created_at": "2025-12-23T16:58:16.504211"
+  },
+  {
+    "id": "dbc51456-ba00-4d89-a537-5ac4c911f692",
+    "text": "Buy groceries",
+    "due_date": "2025-12-24T09:00:00",
+    "completed": false,
+    "snoozed_until": null,
+    "created_at": "2025-12-23T16:58:42.140264"
+  },
+  {
+    "id": "d806eb11-28c6-4163-a0a6-56880c892eca",
+    "text": "Call mom",
+    "due_date": "2024-12-25T00:00:00",
+    "completed": false,
+    "snoozed_until": null,
+    "created_at": "2025-12-23T16:58:42.140661"
+  },
+  {
+    "id": "057772d5-7471-4d57-8135-654fb364c020",
+    "text": "Submit report",
+    "due_date": "2025-12-30T09:00:00",
+    "completed": false,
+    "snoozed_until": null,
+    "created_at": "2025-12-23T16:58:42.140848"
+  },
+  {
+    "id": "aade006f-e681-4284-8dfd-be2ffc924f5a",
+    "text": "Finish project",
+    "due_date": "2025-12-24T09:00:00",
+    "completed": false,
+    "snoozed_until": null,
+    "created_at": "2025-12-23T16:58:42.141136"
+  }
+]
