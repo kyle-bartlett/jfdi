@@ -18,12 +18,21 @@ interface Props {
   onComplete?: (id: string) => void;
 }
 
-export function PrioritiesWidget({ items, overdue, today, pending, onComplete }: Props) {
+export function PrioritiesWidget({
+  items,
+  overdue,
+  today,
+  pending,
+  onComplete,
+}: Props) {
   return (
     <div className="widget">
       <div className="flex items-center justify-between mb-3">
         <h2 className="widget-title mb-0">Priorities</h2>
-        <Link href="/reminders" className="text-xs text-primary hover:underline">
+        <Link
+          href="/reminders"
+          className="text-xs text-primary hover:underline"
+        >
           View all
         </Link>
       </div>
@@ -45,7 +54,12 @@ export function PrioritiesWidget({ items, overdue, today, pending, onComplete }:
                   r._urgency === "overdue" ? "bg-destructive" : "bg-warning"
                 }`}
               />
-              <span className="truncate flex-1">{r.title}</span>
+              <Link
+                href="/reminders"
+                className="truncate flex-1 hover:text-primary"
+              >
+                {r.title}
+              </Link>
               <span
                 className={`badge text-[10px] ${
                   r.priority === "high"
@@ -65,7 +79,8 @@ export function PrioritiesWidget({ items, overdue, today, pending, onComplete }:
       )}
       <div className="flex gap-4 mt-3 pt-3 border-t border-border">
         <div className="text-xs text-muted-foreground">
-          <span className="text-destructive font-medium">{overdue}</span> overdue
+          <span className="text-destructive font-medium">{overdue}</span>{" "}
+          overdue
         </div>
         <div className="text-xs text-muted-foreground">
           <span className="text-warning font-medium">{today}</span> due today

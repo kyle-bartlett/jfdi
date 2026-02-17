@@ -69,6 +69,7 @@ export async function getTodayEvents(email?: string) {
       name: a.displayName || a.email,
     })),
     hangoutLink: event.hangoutLink || null,
+    htmlLink: event.htmlLink || null,
     account: auth.email,
   }));
 }
@@ -82,7 +83,7 @@ export async function createEvent(
     description?: string;
     location?: string;
     attendees?: string[];
-  }
+  },
 ) {
   const auth = await getAuthenticatedClient(email);
   if (!auth) throw new Error("Not authenticated");

@@ -9,6 +9,7 @@ interface WeatherData {
   description: string;
   icon: string;
   wind_speed: number;
+  city?: string;
 }
 
 interface Props {
@@ -18,7 +19,10 @@ interface Props {
 export function WeatherWidget({ weather }: Props) {
   return (
     <div className="text-right">
-      <div className="text-2xl font-bold">{weather.temp}°C</div>
+      {weather.city && (
+        <div className="text-xs text-muted-foreground mb-0.5">{weather.city}</div>
+      )}
+      <div className="text-2xl font-bold">{weather.temp}°F</div>
       <div className="text-xs text-muted-foreground capitalize">
         {weather.description}
       </div>

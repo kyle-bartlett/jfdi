@@ -62,6 +62,7 @@ interface WeatherData {
   description: string;
   icon: string;
   wind_speed: number;
+  city?: string;
 }
 
 interface LarkMessages {
@@ -84,7 +85,17 @@ interface DashboardData {
     total: number;
     items: RelationshipItem[];
   };
-  meetings: { today: number; upcoming: number };
+  meetings: {
+    today: number;
+    upcoming: number;
+    items?: Array<{
+      id: string;
+      title: string;
+      date: string;
+      location?: string | null;
+      status: string;
+    }>;
+  };
   goals: { onTrack: number; total: number; items: GoalItem[] };
   calendar: Array<{
     id: string;
@@ -93,8 +104,15 @@ interface DashboardData {
     end: string;
     source?: "google" | "lark";
     account?: string;
+    htmlLink?: string | null;
+    hangoutLink?: string | null;
+    location?: string | null;
   }>;
-  emails: { unread: number; actionNeeded: number };
+  emails: {
+    unread: number;
+    actionNeeded: number;
+    accounts?: Array<{ email: string; unread: number; actionNeeded: number }>;
+  };
   weather: WeatherData | null;
   larkMessages?: LarkMessages | null;
 }
@@ -228,16 +246,16 @@ export default function Dashboard() {
           <EmailWidget
             unread={data?.emails?.unread ?? 0}
             actionNeeded={data?.emails?.actionNeeded ?? 0}
+            accounts={data?.emails?.accounts}
           />
 
           <MeetingsWidget
             today={data?.meetings.today ?? 0}
             upcoming={data?.meetings.upcoming ?? 0}
+            items={data?.meetings.items}
           />
 
-          {data?.larkMessages && (
-            <LarkWidget messages={data.larkMessages} />
-          )}
+          {data?.larkMessages && <LarkWidget messages={data.larkMessages} />}
         </div>
       )}
     </div>

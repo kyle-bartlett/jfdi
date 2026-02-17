@@ -1,11 +1,23 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { reminders, projects, tasks, relationships, meetings, goals } from "@/lib/schema";
+import {
+  reminders,
+  projects,
+  tasks,
+  relationships,
+  meetings,
+  goals,
+} from "@/lib/schema";
 import { getTodayEvents } from "@/lib/google/calendar";
 import { getEmailStats } from "@/lib/google/gmail";
+import { getConnectedAccounts } from "@/lib/google/oauth";
 import { getLarkTodayEvents, isLarkConfigured } from "@/lib/lark/client";
 import { getCurrentWeather } from "@/lib/weather";
-import { isAgentXConfigured, getMessageStats, getRecentMessages } from "@/lib/lark/agentx";
+import {
+  isAgentXConfigured,
+  getMessageStats,
+  getRecentMessages,
+} from "@/lib/lark/agentx";
 
 export async function GET() {
   const now = new Date();
@@ -15,7 +27,7 @@ export async function GET() {
   const allReminders = await db.select().from(reminders).all();
   const pendingReminders = allReminders.filter((r) => r.status === "pending");
   const overdueReminders = pendingReminders.filter(
-    (r) => r.due_date && new Date(r.due_date) < now
+    (r) => r.due_date && new Date(r.due_date) < now,
   );
   const todayReminders = pendingReminders.filter((r) => {
     if (!r.due_date) return false;
@@ -42,13 +54,17 @@ export async function GET() {
     .filter((r) => {
       if (!r.last_contact) return true;
       const daysSince = Math.floor(
-        (Date.now() - new Date(r.last_contact).getTime()) / (1000 * 60 * 60 * 24)
+        (Date.now() - new Date(r.last_contact).getTime()) /
+          (1000 * 60 * 60 * 24),
       );
       return daysSince > (r.contact_frequency_days || 30);
     })
     .map((r) => {
       const daysSince = r.last_contact
-        ? Math.floor((Date.now() - new Date(r.last_contact).getTime()) / (1000 * 60 * 60 * 24))
+        ? Math.floor(
+            (Date.now() - new Date(r.last_contact).getTime()) /
+              (1000 * 60 * 60 * 24),
+          )
         : null;
       return { ...r, days_since_contact: daysSince };
     });
@@ -64,7 +80,7 @@ export async function GET() {
   // Goals
   const allGoals = await db.select().from(goals).all();
   const onTrackGoals = allGoals.filter(
-    (g) => (g.current_percentage || 0) >= (g.target_percentage || 100) * 0.5
+    (g) => (g.current_percentage || 0) >= (g.target_percentage || 100) * 0.5,
   );
 
   // Calendar events — merge Google + Lark (both gracefully fail)
@@ -75,7 +91,7 @@ export async function GET() {
   try {
     const googleEvents = await getTodayEvents();
     calendarEvents.push(
-      ...googleEvents.map((e) => ({ ...e, source: "google" }))
+      ...googleEvents.map((e) => ({ ...e, source: "google" })),
     );
   } catch {
     // Not connected to Google - that's fine
@@ -98,16 +114,36 @@ export async function GET() {
     return aTime - bTime;
   });
 
-  // Email stats (graceful failure)
-  let emailStats = { unread: 0, actionNeeded: 0 };
+  // Email stats per connected account (graceful failure)
+  const emailAccounts: Array<{
+    email: string;
+    unread: number;
+    actionNeeded: number;
+  }> = [];
   try {
-    const stats = await getEmailStats();
-    if (stats) {
-      emailStats = { unread: stats.unreadCount, actionNeeded: stats.unreadCount };
+    const accounts = await getConnectedAccounts();
+    for (const acct of accounts) {
+      try {
+        const stats = await getEmailStats(acct.email);
+        if (stats) {
+          emailAccounts.push({
+            email: acct.email,
+            unread: stats.unreadCount,
+            actionNeeded: stats.unreadCount,
+          });
+        }
+      } catch {
+        // This account's Gmail not accessible
+      }
     }
   } catch {
     // Not connected
   }
+  const emailStats = {
+    unread: emailAccounts.reduce((sum, a) => sum + a.unread, 0),
+    actionNeeded: emailAccounts.reduce((sum, a) => sum + a.actionNeeded, 0),
+    accounts: emailAccounts,
+  };
 
   // Weather (graceful failure)
   let weather = null;
@@ -139,7 +175,9 @@ export async function GET() {
       overdue: overdueReminders.length,
       today: todayReminders.length,
       items: [
-        ...overdueReminders.slice(0, 5).map((r) => ({ ...r, _urgency: "overdue" })),
+        ...overdueReminders
+          .slice(0, 5)
+          .map((r) => ({ ...r, _urgency: "overdue" })),
         ...todayReminders.slice(0, 5).map((r) => ({ ...r, _urgency: "today" })),
       ].slice(0, 5),
     },
@@ -178,6 +216,13 @@ export async function GET() {
     meetings: {
       today: todayMeetings.length,
       upcoming: upcomingMeetings.length,
+      items: upcomingMeetings.slice(0, 5).map((m) => ({
+        id: m.id,
+        title: m.title,
+        date: m.date,
+        location: m.location,
+        status: m.status,
+      })),
     },
     goals: {
       onTrack: onTrackGoals.length,
