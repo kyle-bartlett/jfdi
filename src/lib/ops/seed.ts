@@ -15,7 +15,7 @@ export function seedOpsIfEmpty() {
     { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Merged platform — old TuneUp trashed, fresh codebase at auto-commenter-platform. Clerk auth integrated. Competitors live, must launch ASAP.' },
 
     // P1 — High priority, active development
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal ops dashboard at jfdi.bartlettlabs.io — merged with Ops Dashboard. 14 pages: Dashboard, Reminders, Projects, Tasks, Goals, Calendar, Meetings, Relationships, Ops Center (9 sub-tabs), Action Queue, Automations, Spark, Knowledge, Search. 5 cron-built features awaiting review (command palette, quick-add, keyboard shortcuts, CSV export, jump-to-week).' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal ops dashboard at jfdi.bartlettlabs.io — merged with Ops Dashboard. 14 pages: Dashboard, Reminders, Projects, Tasks, Goals, Calendar, Meetings, Relationships, Ops Center (9 sub-tabs), Action Queue, Automations, Spark, Knowledge, Search. 7 cron-built features awaiting review: command palette (⌘K), quick-add (+), keyboard shortcuts (j/k/c/e/s/d/n), CSV export (⌘E), jump-to-week, reminders keyboard nav, ops seed overhaul. Comprehensive seed data update with 30 projects, 13 prospects, 15+ agent tasks.' },
     { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'Review', description: 'Anker-C2W Charging CPFR collaboration dashboard at c2.bartlettlabs.io — LIVE. Mirror sheet architecture bypasses Anker sharing restrictions. Auto-sync every 2h business hours. Discrepancy detection, accept/reject, charts, CSV export.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'Lark/Feishu AI agent on Fly.io (larkagentx.fly.dev). AI proxy bridge complete via Cloudflare tunnel. Needs: Desktop Electron app, iOS app, professional UI overhaul, MCP reverse engineering. Will be shared with Anker team — must look impressive.' },
     { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '4-session US training curriculum written (Lark doc D1cUdxrjWopL6Kx7gePcQCM9nXc). AI readiness survey created. 20 Knowledge Hub articles + 40 PPs scraped. Training sessions must be SCHEDULED by 2/21. Knox Bot ready as live AI assistant in training group.' },
@@ -95,7 +95,7 @@ export function seedOpsIfEmpty() {
   const queueItems = [
     // Kyle's queue — things Kyle needs to do
     { queue_type: 'kyle', title: 'Update Supabase redirect URL for ZipWise', priority: 'P0', requested_by: 'Knox', status: 'Pending' },
-    { queue_type: 'kyle', title: 'Review 5 cron-built features (C2 jump-to-week, JFDI quick-add, JFDI command palette, C2 CSV export, JFDI keyboard shortcuts)', priority: 'P1', requested_by: 'Knox', status: 'Pending' },
+    { queue_type: 'kyle', title: 'Review 7 cron-built features: C2 jump-to-week, C2 CSV export (⌘E), JFDI quick-add, JFDI command palette (⌘K), JFDI keyboard shortcuts, ops seed overhaul', priority: 'P1', requested_by: 'Knox', status: 'Pending' },
     { queue_type: 'kyle', title: 'Review Lark Training Curriculum + schedule sessions by 2/21', priority: 'P0', requested_by: 'Knox', status: 'Pending' },
     { queue_type: 'kyle', title: 'Add Knox Bot to Lark training group', priority: 'P1', requested_by: 'Knox', status: 'Pending' },
     { queue_type: 'kyle', title: 'Add Cloudflare CNAME: books → cname.vercel-dns.com', priority: 'P2', requested_by: 'Knox', status: 'Pending' },
@@ -134,6 +134,11 @@ export function seedOpsIfEmpty() {
     { agent_name: 'Scout', task_description: 'Dev folder inventory — 27 project review', status: 'Completed', result_summary: '8 immediately useful, 8 need work, 3 trash.' },
     { agent_name: 'Scout', task_description: 'Clearmud / Muddy-OS research', status: 'Completed', result_summary: 'Marcelo Oliveira (Clearmud LLC) — top OpenClaw power user. Features to steal: voice standups, content cascade, self-improvement nightly cron.' },
     { agent_name: 'Scout', task_description: 'Lark AI Community scraping — Knowledge Hub, PP Square, APPS Platform', status: 'Completed', result_summary: '20 articles, 40+ PPs, 7 channels, 40+ published PAs cataloged. Training curriculum input.' },
+
+    // Overnight cron-built features (2/20 early morning)
+    { agent_name: 'Stack', task_description: 'C2 CPFR CSV Export — ⌘E keyboard shortcut + export button (cron-built)', status: 'Completed', result_summary: 'One-click CSV export respecting all active filters. Auto-names file with date + filter. Commit 1fa2b24, awaiting Kyle review.' },
+    { agent_name: 'Stack', task_description: 'JFDI Reminders Keyboard Shortcuts — full keyboard nav (cron-built)', status: 'Completed', result_summary: 'j/k navigate, c complete, e edit, s snooze, d delete, n new, ? help. Focus ring + auto-scroll. Commit 149470b, awaiting Kyle review.' },
+    { agent_name: 'Stack', task_description: 'Ops Dashboard seed data overhaul — 30 projects, 13 prospects, 15+ tasks (cron-built)', status: 'Completed', result_summary: 'Comprehensive seed update reflecting full PROJECTS-MASTER.md, CLIENT_LIST.md prospects, all recent agent deployments. Commit c56b709.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -153,7 +158,10 @@ export function seedOpsIfEmpty() {
     { event_type: 'agent_complete', title: 'Stack: Auto-Commenter code quality', description: '4 commits — dashboard refactor, env validation, ECDSA keys, lead scoring.', source: 'Stack', icon: '✅' },
     { event_type: 'agent_complete', title: 'Scout: Lark AI Community scraping', description: '20 Knowledge Hub articles, 40+ PPs, 7 channels, 40+ PAs cataloged.', source: 'Scout', icon: '🔍' },
     { event_type: 'agent_complete', title: 'Scout: Clearmud/Muddy-OS research', description: 'Top OpenClaw power user researched. Voice standups, content cascade, self-improvement patterns identified.', source: 'Scout', icon: '🔍' },
-    { event_type: 'system', title: 'Autonomous cron dev: 7 features shipped overnight', description: 'C2 discrepancy filter, jump-to-week, CSV export. JFDI quick-add, command palette, keyboard shortcuts. All built + verified, not deployed.', source: 'Cron', icon: '🔄' },
+    { event_type: 'system', title: 'Autonomous cron dev: 7 features shipped (2/19-2/20)', description: 'C2: discrepancy filter, jump-to-week, CSV export (⌘E). JFDI: quick-add, command palette (⌘K), reminders keyboard shortcuts. Ops: seed data overhaul. All built + verified, NOT deployed to prod — awaiting Kyle review.', source: 'Cron', icon: '🔄' },
+    { event_type: 'system', title: 'C2 CPFR CSV Export built (2/20, 1:22 AM)', description: 'One-click export respects all active filters (category, search, discrepancies). ⌘E shortcut. Auto-names with date + filter. Commit 1fa2b24.', source: 'Cron', icon: '📥' },
+    { event_type: 'system', title: 'JFDI Reminders Keyboard Shortcuts (2/20, 3:22 AM)', description: 'Full keyboard-driven triage: j/k navigate, c complete, e edit, s snooze, d delete, n new, ? help. Focus ring + auto-scroll. Commit 149470b.', source: 'Cron', icon: '⌨️' },
+    { event_type: 'system', title: 'Ops Dashboard seed overhaul (2/20, 3:58 AM)', description: '30 projects (was 12), 13 prospects (was 5), 15+ agent tasks (was 2), 16 activity events (was 2). Full PROJECTS-MASTER.md reflected. Commit c56b709.', source: 'Cron', icon: '📊' },
     { event_type: 'system', title: 'Heartbeat OK notifications silenced', description: 'showOk set to false — no more HEARTBEAT_OK spam in Telegram.', source: 'Knox', icon: '🔇' },
     { event_type: 'system', title: '3 cron delivery targets fixed', description: 'Phone numbers replaced with Telegram user ID 8516293230. AI Usage, Social Media, GitHub Push crons now delivering properly.', source: 'Knox', icon: '🔧' },
     { event_type: 'system', title: 'GitHub workspace backup — 298 files', description: 'knox-workspace repo created (PRIVATE). Brain state, daily notes, project docs, assessments, scraped content.', source: 'Knox', icon: '💾' },
@@ -180,12 +188,12 @@ export function seedOpsIfEmpty() {
 
   // ===== DAILY METRICS (Updated 2026-02-20) =====
   const today = new Date().toISOString().split('T')[0];
-  db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood) VALUES (?, ?, ?, ?, ?, ?, ?, ?)').run(uuid(), today, 0, 0, 0, 0, 2, 'grinding');
+  db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)').run(uuid(), today, 0, 3, 0, 0, 2, 'grinding', 'Overnight crons built 2 new features (C2 CSV export, JFDI keyboard shortcuts) + ops seed overhaul. 7 total features awaiting Kyle review. Lark Training deadline tomorrow (2/21). WoW Step 1b fires at 8:30 AM.');
 
   // Also seed yesterday's metrics (2/19 was the most productive day)
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
   db.prepare('INSERT OR IGNORE INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, revenue_closed, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').run(
     uuid(), yesterday, 15, 12, 0, 2, 1, 0, 'on-fire',
-    'Most productive day ever: C2 CPFR dashboard built & deployed, JFDI+Ops merged, Lark training curriculum, 5 autonomous cron features shipped overnight, 1500+ line daily notes.'
+    'Most productive day ever: C2 CPFR dashboard built & deployed, JFDI+Ops merged, Lark training curriculum, 7 autonomous cron features shipped (2/19 evening + 2/20 overnight), 1500+ line daily notes.'
   );
 }
