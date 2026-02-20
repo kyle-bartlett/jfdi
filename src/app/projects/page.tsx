@@ -72,6 +72,9 @@ export default function ProjectsPage() {
   const [editingTaskTitle, setEditingTaskTitle] = useState("");
   const [formData, setFormData] = useState(emptyProjectForm);
   const [taskFormData, setTaskFormData] = useState(emptyTaskForm);
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  const [inlineTaskForm, setInlineTaskForm] = useState<string | null>(null);
+  const [inlineTaskTitle, setInlineTaskTitle] = useState("");
   const { toast } = useToast();
 
   const loadProjects = useCallback(async () => {
@@ -171,7 +174,7 @@ export default function ProjectsPage() {
     }
   };
 
-  const updateTaskStatus = async (taskId: string, status: string) => {
+  const updateTaskStatus = async (taskId: string, status: string, projectId?: string) => {
     try {
       await fetch(`/api/tasks?id=${taskId}`, {
         method: "PATCH",
@@ -179,6 +182,14 @@ export default function ProjectsPage() {
         body: JSON.stringify({ status }),
       });
       if (selectedProject) loadProjectTasks(selectedProject);
+      // Also refresh inline-expanded project tasks
+      if (projectId && expandedProjects.has(projectId)) {
+        const res = await fetch(`/api/tasks?project_id=${projectId}`);
+        const tasks = await res.json();
+        setProjects((prev) =>
+          prev.map((p) => (p.id === projectId ? { ...p, tasks } : p))
+        );
+      }
       loadProjects(); // Refresh progress
     } catch {
       toast("Failed to update task", "error");
@@ -220,6 +231,51 @@ export default function ProjectsPage() {
       tags: parseTags(project.tags),
     });
     setEditingProject(project);
+  };
+
+  const toggleExpand = async (project: Project) => {
+    const next = new Set(expandedProjects);
+    if (next.has(project.id)) {
+      next.delete(project.id);
+    } else {
+      next.add(project.id);
+      // Load tasks if not already loaded
+      if (!project.tasks) {
+        try {
+          const res = await fetch(`/api/tasks?project_id=${project.id}`);
+          const tasks = await res.json();
+          setProjects((prev) =>
+            prev.map((p) => (p.id === project.id ? { ...p, tasks } : p))
+          );
+        } catch {
+          toast("Failed to load tasks", "error");
+        }
+      }
+    }
+    setExpandedProjects(next);
+  };
+
+  const createInlineTask = async (projectId: string) => {
+    if (!inlineTaskTitle.trim()) return;
+    try {
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: inlineTaskTitle.trim(), project_id: projectId, status: "todo", priority: "medium" }),
+      });
+      setInlineTaskTitle("");
+      setInlineTaskForm(null);
+      toast("Task added");
+      // Reload tasks for this project
+      const res = await fetch(`/api/tasks?project_id=${projectId}`);
+      const tasks = await res.json();
+      setProjects((prev) =>
+        prev.map((p) => (p.id === projectId ? { ...p, tasks } : p))
+      );
+      loadProjects();
+    } catch {
+      toast("Failed to add task", "error");
+    }
   };
 
   const filtered = spaceFilter === "all" ? projects : projects.filter((p) => p.space === spaceFilter);
@@ -439,21 +495,26 @@ export default function ProjectsPage() {
                     {status.replace(/-/g, " ")} ({items.length})
                   </h3>
                   <div className="space-y-2">
-                    {items.map((project) => (
-                      <div key={project.id} className="card cursor-pointer" onClick={() => loadProjectTasks(project)}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-medium">{project.name}</h3>
-                            {project.description && (
-                              <p className="text-xs text-muted-foreground mt-1 truncate max-w-md">{project.description}</p>
-                            )}
-                            {parseTags(project.tags).length > 0 && (
-                              <div className="flex gap-1 mt-1.5">
-                                {parseTags(project.tags).map((tag) => (
-                                  <span key={tag} className="badge badge-muted text-xs">{tag}</span>
-                                ))}
-                              </div>
-                            )}
+                    {items.map((project) => {
+                      const isExpanded = expandedProjects.has(project.id);
+                      return (
+                      <div key={project.id} className="card">
+                        <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleExpand(project)}>
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <span className={`text-xs text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`} style={{ display: "inline-block" }}>▶</span>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-medium">{project.name}</h3>
+                              {project.description && (
+                                <p className="text-xs text-muted-foreground mt-1 truncate max-w-md">{project.description}</p>
+                              )}
+                              {parseTags(project.tags).length > 0 && (
+                                <div className="flex gap-1 mt-1.5">
+                                  {parseTags(project.tags).map((tag) => (
+                                    <span key={tag} className="badge badge-muted text-xs">{tag}</span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
                             <span className="badge badge-primary">{project.space === "bartlett-labs" ? "BL" : project.space.slice(0, 3)}</span>
@@ -480,8 +541,71 @@ export default function ProjectsPage() {
                             </button>
                           </div>
                         </div>
+                        {/* Inline Task List */}
+                        {isExpanded && (
+                          <div className="mt-3 pt-3 border-t border-border">
+                            {project.tasks && project.tasks.length > 0 ? (
+                              <div className="space-y-1.5">
+                                {project.tasks.map((task) => (
+                                  <div key={task.id} className="flex items-center gap-2 pl-5 group">
+                                    <button
+                                      onClick={() => updateTaskStatus(task.id, task.status === "done" ? "todo" : "done", project.id)}
+                                      className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center text-[10px] transition-colors ${
+                                        task.status === "done"
+                                          ? "bg-primary border-primary text-primary-foreground"
+                                          : task.status === "in-progress"
+                                          ? "border-primary bg-primary/10"
+                                          : "border-muted-foreground/40 hover:border-primary"
+                                      }`}
+                                      aria-label={task.status === "done" ? "Mark undone" : "Mark done"}
+                                    >
+                                      {task.status === "done" && "✓"}
+                                    </button>
+                                    <span className={`text-sm flex-1 ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>
+                                      {task.title}
+                                    </span>
+                                    {task.status !== "done" && task.status !== "todo" && (
+                                      <span className="text-[10px] text-primary/70 font-medium uppercase">{task.status}</span>
+                                    )}
+                                    <span className={`text-[10px] ${task.priority === "high" ? "text-red-500" : task.priority === "medium" ? "text-amber-500" : "text-muted-foreground"}`}>
+                                      {task.priority === "high" ? "!" : task.priority === "medium" ? "–" : ""}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-xs text-muted-foreground pl-5">No tasks yet</p>
+                            )}
+                            {/* Inline quick-add task */}
+                            {inlineTaskForm === project.id ? (
+                              <div className="flex items-center gap-2 pl-5 mt-2">
+                                <input
+                                  className="input text-sm py-1 flex-1"
+                                  placeholder="Task title..."
+                                  value={inlineTaskTitle}
+                                  onChange={(e) => setInlineTaskTitle(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") createInlineTask(project.id);
+                                    if (e.key === "Escape") { setInlineTaskForm(null); setInlineTaskTitle(""); }
+                                  }}
+                                  autoFocus
+                                />
+                                <button onClick={() => createInlineTask(project.id)} className="text-xs text-primary hover:underline">Add</button>
+                                <button onClick={() => { setInlineTaskForm(null); setInlineTaskTitle(""); }} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setInlineTaskForm(project.id); setInlineTaskTitle(""); }}
+                                className="text-xs text-muted-foreground hover:text-primary pl-5 mt-2"
+                              >
+                                + Add task
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )
