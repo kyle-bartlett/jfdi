@@ -4,16 +4,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const navItems = [
-  { href: "/", label: "Dashboard", icon: "📊" },
-  { href: "/reminders", label: "Reminders", icon: "🔔" },
-  { href: "/projects", label: "Projects", icon: "📁" },
-  { href: "/relationships", label: "Relationships", icon: "👥" },
-  { href: "/meetings", label: "Meetings", icon: "📅" },
-  { href: "/knowledge", label: "Knowledge", icon: "🧠" },
-  { href: "/spark", label: "Spark", icon: "⚡" },
-  { href: "/goals", label: "Goals", icon: "🎯" },
-  { href: "/chat", label: "Chat", icon: "💬", shortcut: "⌘K" },
+const sections = [
+  {
+    label: "JFDI",
+    items: [
+      { href: "/", label: "Dashboard", icon: "📊" },
+      { href: "/reminders", label: "Reminders", icon: "🔔" },
+      { href: "/projects", label: "Projects", icon: "📁" },
+      { href: "/relationships", label: "Relationships", icon: "👥" },
+      { href: "/meetings", label: "Meetings", icon: "📅" },
+      { href: "/knowledge", label: "Knowledge", icon: "🧠" },
+      { href: "/spark", label: "Spark", icon: "⚡" },
+      { href: "/goals", label: "Goals", icon: "🎯" },
+      { href: "/chat", label: "Chat", icon: "💬", shortcut: "⌘K" },
+    ],
+  },
+  {
+    label: "OPS",
+    items: [
+      { href: "/ops", label: "Ops Center", icon: "🏠" },
+      { href: "/action-queue", label: "Action Queue", icon: "📥" },
+      { href: "/automations", label: "Automations", icon: "🤖" },
+    ],
+  },
 ];
 
 export default function Sidebar() {
@@ -29,31 +42,45 @@ export default function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 py-2 overflow-y-auto">
-        {navItems.map((item) => {
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href));
+        {sections.map((section) => (
+          <div key={section.label}>
+            {/* Section label */}
+            <div className="px-3 lg:px-4 pt-3 pb-1">
+              <span className="hidden lg:block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                {section.label}
+              </span>
+              <span className="lg:hidden text-[8px] font-bold uppercase text-muted-foreground/40 text-center block">
+                {section.label}
+              </span>
+            </div>
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 mx-1 lg:mx-2 rounded-lg transition-colors text-sm ${
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <span className="text-base">{item.icon}</span>
-              <span className="hidden lg:inline flex-1">{item.label}</span>
-              {"shortcut" in item && item.shortcut && (
-                <span className="hidden lg:inline text-[10px] text-muted-foreground/60">
-                  {item.shortcut}
-                </span>
-              )}
-            </Link>
-          );
-        })}
+            {section.items.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 mx-1 lg:mx-2 rounded-lg transition-colors text-sm ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <span className="text-base">{item.icon}</span>
+                  <span className="hidden lg:inline flex-1">{item.label}</span>
+                  {"shortcut" in item && item.shortcut && (
+                    <span className="hidden lg:inline text-[10px] text-muted-foreground/60">
+                      {item.shortcut}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
       {/* Footer */}
