@@ -145,6 +145,35 @@ export default function Dashboard() {
     day: "numeric",
   });
 
+  // Quick add actions
+  const quickAddReminder = async (title: string) => {
+    try {
+      await fetch("/api/reminders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, priority: "medium", category: "personal" }),
+      });
+      toast("Reminder added");
+      await loadData();
+    } catch {
+      toast("Failed to add reminder", "error");
+    }
+  };
+
+  const quickAddTask = async (title: string) => {
+    try {
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, priority: "medium", status: "todo" }),
+      });
+      toast("Task added");
+      await loadData();
+    } catch {
+      toast("Failed to add task", "error");
+    }
+  };
+
   // Quick actions
   const completeReminder = async (id: string) => {
     try {
@@ -214,12 +243,14 @@ export default function Dashboard() {
             today={data?.reminders.today ?? 0}
             pending={data?.reminders.pending ?? 0}
             onComplete={completeReminder}
+            onQuickAdd={quickAddReminder}
           />
 
           <TasksWidget
             items={data?.tasks.items || []}
             todayCount={data?.tasks.today ?? 0}
             onComplete={completeTask}
+            onQuickAdd={quickAddTask}
           />
 
           <CalendarWidget events={data?.calendar || []} />
