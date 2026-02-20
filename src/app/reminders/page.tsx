@@ -52,7 +52,9 @@ export default function RemindersPage() {
   const [deleteTarget, setDeleteTarget] = useState<Reminder | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [snoozeOpenId, setSnoozeOpenId] = useState<string | null>(null);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const snoozeRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   const loadReminders = useCallback(async () => {
@@ -79,6 +81,123 @@ export default function RemindersPage() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const filteredReminders = filterReminders(reminders, activeTab);
+
+  // Keyboard shortcuts for power-user navigation
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Don't capture when typing in inputs, textareas, or modals are open
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable ||
+        showForm ||
+        editingReminder ||
+        deleteTarget
+      ) return;
+
+      const items = filteredReminders;
+
+      switch (e.key) {
+        case "n": // New reminder
+          e.preventDefault();
+          setFormData(emptyForm);
+          setShowForm(true);
+          break;
+        case "ArrowDown":
+        case "j": // Vim-style down
+          e.preventDefault();
+          setFocusedIndex((prev) => {
+            const next = Math.min(prev + 1, items.length - 1);
+            scrollItemIntoView(next);
+            return next;
+          });
+          break;
+        case "ArrowUp":
+        case "k": // Vim-style up
+          e.preventDefault();
+          setFocusedIndex((prev) => {
+            const next = Math.max(prev - 1, 0);
+            scrollItemIntoView(next);
+            return next;
+          });
+          break;
+        case "c": // Complete focused reminder
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            const item = items[focusedIndex];
+            if (item.status !== "completed") {
+              e.preventDefault();
+              completeReminder(item.id);
+              // Move focus up if at end of list
+              if (focusedIndex >= items.length - 1) {
+                setFocusedIndex(Math.max(0, focusedIndex - 1));
+              }
+            }
+          }
+          break;
+        case "e":
+        case "Enter": // Edit focused reminder
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            e.preventDefault();
+            openEdit(items[focusedIndex]);
+          }
+          break;
+        case "d": // Delete focused reminder
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            e.preventDefault();
+            setDeleteTarget(items[focusedIndex]);
+          }
+          break;
+        case "s": // Snooze focused reminder
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            const item = items[focusedIndex];
+            if (item.status !== "completed") {
+              e.preventDefault();
+              setSnoozeOpenId(snoozeOpenId === item.id ? null : item.id);
+            }
+          }
+          break;
+        case "x": // Toggle select focused reminder
+        case " ": // Space to select
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            const item = items[focusedIndex];
+            if (item.status !== "completed") {
+              e.preventDefault();
+              toggleSelect(item.id);
+            }
+          }
+          break;
+        case "Escape":
+          e.preventDefault();
+          setFocusedIndex(-1);
+          setSnoozeOpenId(null);
+          setSelectedIds(new Set());
+          break;
+        case "?": // Show keyboard shortcut hints
+          e.preventDefault();
+          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • Esc Clear");
+          break;
+      }
+    };
+
+    const scrollItemIntoView = (index: number) => {
+      if (listRef.current) {
+        const items = listRef.current.querySelectorAll("[data-reminder-item]");
+        items[index]?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [filteredReminders, focusedIndex, showForm, editingReminder, deleteTarget, snoozeOpenId]);
+
+  // Reset focus when tab changes
+  useEffect(() => {
+    setFocusedIndex(-1);
+  }, [activeTab]);
 
   const createReminder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -206,8 +325,6 @@ export default function RemindersPage() {
     });
   };
 
-  const filteredReminders = filterReminders(reminders, activeTab);
-
   const tabs: { key: FilterTab; label: string; count: number }[] = [
     { key: "all", label: "All", count: reminders.filter((r) => r.status !== "completed").length },
     { key: "overdue", label: "Overdue", count: filterReminders(reminders, "overdue").length },
@@ -292,9 +409,18 @@ export default function RemindersPage() {
           action={activeTab === "all" ? { label: "+ New Reminder", onClick: () => setShowForm(true) } : undefined}
         />
       ) : (
-        <div className="space-y-2">
-          {filteredReminders.map((reminder) => (
-            <div key={reminder.id} className="card flex items-center gap-3">
+        <div className="space-y-2" ref={listRef}>
+          {filteredReminders.map((reminder, index) => (
+            <div
+              key={reminder.id}
+              data-reminder-item
+              onClick={() => setFocusedIndex(index)}
+              className={`card flex items-center gap-3 transition-all ${
+                focusedIndex === index
+                  ? "ring-2 ring-primary/50 bg-primary/5"
+                  : ""
+              }`}
+            >
               {/* Batch select checkbox */}
               {reminder.status !== "completed" && (
                 <input
@@ -374,6 +500,15 @@ export default function RemindersPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Keyboard shortcut hint */}
+      {!loading && filteredReminders.length > 0 && (
+        <div className="mt-3 text-center">
+          <span className="text-[10px] text-muted-foreground/40">
+            Press <kbd className="px-1 py-0.5 rounded bg-muted text-muted-foreground/60 text-[9px]">?</kbd> for keyboard shortcuts
+          </span>
         </div>
       )}
 
