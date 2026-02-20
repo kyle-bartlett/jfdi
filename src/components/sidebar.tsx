@@ -16,7 +16,7 @@ const sections = [
       { href: "/knowledge", label: "Knowledge", icon: "🧠" },
       { href: "/spark", label: "Spark", icon: "⚡" },
       { href: "/goals", label: "Goals", icon: "🎯" },
-      { href: "/chat", label: "Chat", icon: "💬", shortcut: "⌘K" },
+      { href: "/chat", label: "Chat", icon: "💬" },
     ],
   },
   {
@@ -71,11 +71,6 @@ export default function Sidebar() {
                 >
                   <span className="text-base">{item.icon}</span>
                   <span className="hidden lg:inline flex-1">{item.label}</span>
-                  {"shortcut" in item && item.shortcut && (
-                    <span className="hidden lg:inline text-[10px] text-muted-foreground/60">
-                      {item.shortcut}
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -88,6 +83,20 @@ export default function Sidebar() {
         <div className="hidden lg:block mb-2">
           <ThemeToggle />
         </div>
+        <button
+          onClick={() => {
+            document.dispatchEvent(
+              new KeyboardEvent("keydown", { key: "k", metaKey: true })
+            );
+          }}
+          className="flex items-center gap-2 px-3 py-2 w-full rounded-lg text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors mb-1"
+        >
+          <span>🔍</span>
+          <span className="hidden lg:inline flex-1 text-left">Search</span>
+          <kbd className="hidden lg:inline text-[10px] text-muted-foreground/60 bg-muted px-1.5 py-0.5 rounded">
+            ⌘K
+          </kbd>
+        </button>
         <Link
           href="/api/auth/google"
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"

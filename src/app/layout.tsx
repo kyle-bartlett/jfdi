@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Sidebar from "@/components/sidebar";
 import ChatPanel from "@/components/chat-panel";
+import { CommandPalette } from "@/components/command-palette";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/ui/toast";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
               {children}
             </main>
             <ChatPanel />
+            <CommandPalette />
           </ToastProvider>
         </ThemeProvider>
       </body>
