@@ -8,27 +8,27 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (30 projects)
-  // Last updated: 2026-02-20 11:58 AM CT
+  // Last updated: 2026-02-20 5:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
     { title: 'ZipWise', priority: 'P0', status: 'In Progress', description: 'AI-powered route optimization for field sales reps. React Native + Supabase. Deployed to zipwise.bartlettlabs.io. Login/signup + 9-step onboarding wizard built. Quick-Complete Stops feature built overnight (2/20) — tap badge to complete visit with spring animation + undo toast. Clients waiting to test. MUST LAUNCH THIS WEEK — competitors are live. Blocked: Kyle needs to update Supabase redirect URL.' },
     { title: 'Bartlett Labs Website', priority: 'P0', status: 'In Progress', description: 'Company website at bartlettlabs.io — deployed to Vercel. Needs content + polish to be client-ready. First impression for all prospects.' },
-    { title: 'LinkedIn Business Page', priority: 'P0', status: 'In Progress', description: 'Professional LinkedIn presence — page exists, needs content populated with generated ideas from previous sessions. Critical for credibility.' },
-    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merging TuneUp into auto-commenter-platform codebase. Code quality sweep complete (10/10). Clerk auth integrated. Competitors exist — MUST launch ASAP.' },
+    { title: 'LinkedIn Business Page', priority: 'P0', status: 'In Progress', description: 'Professional LinkedIn presence — page exists, needs content populated. Browser config fixed (efficient mode) for LinkedIn admin access. Critical for credibility.' },
+    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merging TuneUp into auto-commenter-platform codebase. Code quality sweep complete (10/10). Clerk auth integrated. Duplicate Automation feature built (2/20 5:22 PM) — one-click clone of automation configs. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. Merged with Ops Dashboard (33 files, 4,700+ lines). 12 pages including Ops Center, Action Queue, Automations. 11 cron-built features awaiting Kyle review: Quick-Add, Command Palette (⌘K), Reminders Keyboard Shortcuts (j/k/c/e/s/d/n/?), plus overnight builds across C2, ZipWise, Gmail Brain, KDP Books.' },
-    { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'Review', description: 'Anker-C2W Charging CPFR collaboration dashboard at c2.bartlettlabs.io. Live with mirror sheet architecture (bypasses Anker sharing restrictions). Dynamic column mapping, discrepancy detection, accept/reject system. Cron-built overnight: CSV Export (⌘E), Jump-to-Current-Week. 12 UI improvements deployed 2/19. Mirror sync running every 2h during business hours.' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. Merged with Ops Dashboard (33 files, 4,700+ lines). 12 pages including Ops Center, Action Queue, Automations. Cron-built features awaiting review: Quick-Add, Command Palette (⌘K), Reminders Keyboard Shortcuts (j/k/c/e/s/d/n/?), Inline Task Expansion (expand project cards to see/edit tasks without page navigation). 13 features total across all projects.' },
+    { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'Review', description: 'Anker-C2W Charging CPFR collaboration dashboard at c2.bartlettlabs.io. Live with mirror sheet architecture (bypasses Anker sharing restrictions). Dynamic column mapping, discrepancy detection, accept/reject system. Cron-built: CSV Export (⌘E), Jump-to-Current-Week. 12 UI improvements deployed 2/19. Mirror sync running every 2h during business hours.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'AI agent for Lark/Feishu — deployed on Fly.io (larkagentx.fly.dev). AI proxy bridge via Cloudflare Tunnel complete. Needs: Desktop Electron app, iOS app, professional UI overhaul, MCP reverse engineering. Will be shared with Anker team — MUST look professional.' },
-    { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ DEADLINE TOMORROW (2/21) — Management-assigned task. Train US Anker employees on Lark/AI tools. 4-session curriculum written (Lark doc D1cUdxrjWopL6Kx7gePcQCM9nXc). AI Readiness Survey created. Scraped 20 Knowledge Hub articles + 40+ PAs + 9 Feishu docs. Knox Bot ready for training group (groupPolicy: open, requireMention: true). MUST follow up with Kyle TODAY.' },
+    { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ DEADLINE TOMORROW (2/21) — Management-assigned task. Train US Anker employees on Lark/AI tools. 4-session curriculum written (Lark doc D1cUdxrjWopL6Kx7gePcQCM9nXc). AI Readiness Survey created. Scraped 20 Knowledge Hub articles + 40+ PAs + 9 Feishu docs. Knox Bot ready for training group. Kyle briefed at 5:22 PM — one of 3 action items flagged.' },
     { title: 'Gmail Brain', priority: 'P1', status: 'In Progress', description: 'Intelligent Gmail processing at gmail-brain.bartlettlabs.io. Assessment: 6/10 — great QStash pipeline, needs auth + UI overhaul (60-90 hrs). Batch Actions feature built overnight (2/20) — checkboxes, select all per section (Work/Personal), floating dark action bar, batch reclassify/undo, parallel processing in batches of 5. Will be shared with Anker team.' },
     { title: 'Commerce Shopify', priority: 'P1', status: 'Backlog', description: 'E-commerce via ShopifyNicheApp — 70+ files scaffolded. Blocked on external service setup: Supabase, Shopify store, Printful account, API keys. Phase 1 (Research Engine) ready after setup.' },
     { title: 'DP Team Automation', priority: 'P1', status: 'In Progress', description: '⭐ VERY IMPORTANT — Management directive. Automate CPFR forecasting for team members + build validation tool. A2UI dashboards for visual impact. Current: auto-pulls manual work, users still forecast manually. Next: automate the forecasting itself.' },
 
     // P2 — Important, not urgent
     { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. In development since Sep 2025. 6 fake personas planned per release schedule. STEALTH CRITICAL — LinkedIn will ban if detected. MainUser automatic posting needs to start NOW. Needs bartlettlabs.io subdomain + desktop app.' },
-    { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: 'Week-over-Week forecast automation. Knox approach: skip GAS entirely, use gog CLI + Google Sheets API. 4-phase process documented. 5 team child sheets. GAS scripts still handle distribution (Knox automation not live yet). WoW Week 07 Step 1b fired today at 8:30 AM via GAS.' },
+    { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: 'Week-over-Week forecast automation. Knox approach: skip GAS entirely, use gog CLI + Google Sheets API. 4-phase process documented. 5 team child sheets. GAS scripts still handle distribution (Knox automation not live yet). WoW Week 07 Step 1b fired today (Fri 2/20) at 8:30 AM via GAS. DATA_WEEK_NUMBER may need update from 5 to 7.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — currently used weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder. Automation plan: pull from Google Sheets every Tuesday.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Kindle Direct Publishing automation at kdp-book-app.vercel.app. Kyle has one book on Amazon KDP. 2 cron features built 2/20: Review Queue Keyboard Shortcuts (a approve+advance, h/l navigate, r reject, g regenerate) + Duplicate Book (one-click clone of book settings). Pending CNAME: books.bartlettlabs.io.' },
     { title: 'Alloy Email Automation', priority: 'P2', status: 'In Progress', description: 'Anker email automation — web scraper works (pulls weekly report), data processing fails. Kyle says "way easier than the WoW file shit." Trash data processing script, Knox automates the rest.' },
@@ -41,7 +41,7 @@ export function seedOpsIfEmpty() {
     { title: 'Lego-OS', priority: 'P3', status: 'Backlog', description: '🦁 Long-term SaaS vision ($100+/mo). 24/7 AI monitoring for Lego set investment. Kyle has ~$2K in sets for resale (fall 2026 - 4 years out). "GOING TO BE A BEAST."' },
     { title: 'DP Chatbot', priority: 'P3', status: 'In Progress', description: 'Demand planning chatbot — Knox has checklist items. Will be shared with Anker team — must be professional.' },
     { title: 'Freelance Tool', priority: 'P3', status: 'Backlog', description: 'Job search tool focused on freelance platforms. Started fall 2025. Needs user-friendly UI (web/desktop/iOS, NOT terminal-only).' },
-    { title: 'GitHub Audit', priority: 'P3', status: 'In Progress', description: 'Ongoing review of all repos — fix bad code across the board. knox-workspace repo created (298 files, private). Daily auto-push cron active.' },
+    { title: 'GitHub Audit', priority: 'P3', status: 'In Progress', description: 'Ongoing review of all repos — fix bad code across the board. knox-workspace repo created (298+ files, private). Daily auto-push cron active.' },
 
     // P4 — Backlog / ideas
     { title: 'Franchise Investment Platform', priority: 'P4', status: 'Backlog', description: 'Web app fully built, untested. Launch on bartlettlabs.io + iOS app.' },
@@ -50,7 +50,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Runs on iPhone, responses not right. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — search topic → aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential with proper packaging.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI. Ops Center (9 sub-tabs), Action Queue, Automations page. Seed data refreshed hourly with latest project states, prospects, agent tasks, activity events. Activity Timeline, Command Center with animated counters + donut chart + pipeline funnel. 30 projects, 13 prospects, 21 agent tasks tracked.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI. Ops Center (9 sub-tabs), Action Queue, Automations page. Seed data refreshed hourly with latest project states, prospects, agent tasks, activity events. Activity Timeline, Command Center with animated counters + donut chart + pipeline funnel. 30 projects, 13 prospects, 23 agent tasks tracked. 7 seed refreshes today alone.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -106,24 +106,24 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-20 11:58 AM CT
+  // Last updated: 2026-02-20 5:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
-    { queue_type: 'kyle', title: 'Review 11 cron-built features', priority: 'P0', requested_by: 'Knox', description: 'C2 Jump-to-Week, JFDI Quick-Add, JFDI Command Palette (⌘K), C2 CSV Export (⌘E), JFDI Keyboard Shortcuts, ZipWise Quick-Complete Stops, Gmail Brain Batch Actions, KDP Review Queue Shortcuts, KDP Duplicate Book, Ops Seed Overhaul ×2. All committed to GitHub, awaiting approval before deploying to prod.' },
-    { queue_type: 'kyle', title: '⚠️ Schedule Lark Training sessions — DEADLINE TOMORROW 2/21', priority: 'P0', requested_by: 'Knox', description: 'Management-assigned. Curriculum written (Lark doc D1cUdxrjWopL6Kx7gePcQCM9nXc), AI Readiness Survey created (ArLsdr5DvozEnexZBhdcsrrhnYj). Need to review + schedule sessions + add Knox Bot to training group.' },
-    { queue_type: 'kyle', title: 'Update Supabase redirect URL for ZipWise', priority: 'P1', requested_by: 'Stack', description: 'Add https://zipwise.bartlettlabs.io to Supabase → Settings → Authentication → URL Configuration. Blocking ZipWise launch.' },
-    { queue_type: 'kyle', title: 'Add Knox Bot to Lark training group', priority: 'P1', requested_by: 'Knox', description: 'Knox Bot will serve as live AI assistant in NA AI Tools Initiative group. Config already supports it (groupPolicy: open, requireMention: true). Tied to Lark Training deadline.' },
+    { queue_type: 'kyle', title: 'Review 13 cron-built features', priority: 'P0', requested_by: 'Knox', description: 'C2 Jump-to-Week, JFDI Quick-Add, JFDI Command Palette (⌘K), C2 CSV Export (⌘E), JFDI Keyboard Shortcuts, ZipWise Quick-Complete Stops, Gmail Brain Batch Actions, KDP Review Queue Shortcuts, KDP Duplicate Book, JFDI Inline Task Expansion, Auto-Commenter Duplicate Automation, Ops Seed Overhaul. All committed to GitHub, awaiting approval before deploying.' },
+    { queue_type: 'kyle', title: '⚠️ Schedule Lark Training sessions — DEADLINE TOMORROW 2/21', priority: 'P0', requested_by: 'Knox', description: 'Management-assigned. Curriculum written (Lark doc D1cUdxrjWopL6Kx7gePcQCM9nXc), AI Readiness Survey created. Kyle briefed at 5:22 PM. Need to review + schedule + add Knox Bot to training group.' },
+    { queue_type: 'kyle', title: 'Update Supabase redirect URL for ZipWise', priority: 'P1', requested_by: 'Stack', description: 'Add https://zipwise.bartlettlabs.io to Supabase → Settings → Authentication → URL Configuration. Blocking ZipWise launch. Kyle briefed at 5:22 PM.' },
+    { queue_type: 'kyle', title: 'Run openclaw gateway restart', priority: 'P1', requested_by: 'Knox', description: 'Gateway security issue: config patch triggered restart → LAN IP reconnect → blocks browser + sub-agent ops. Quick terminal command fix. Kyle alerted via Telegram.' },
     { queue_type: 'kyle', title: 'Add Cloudflare CNAME: books → cname.vercel-dns.com', priority: 'P2', requested_by: 'Stack', description: 'KDP Book Studio needs books.bartlettlabs.io DNS record.' },
     { queue_type: 'kyle', title: 'Set up Reddit/X accounts for Bartlett Labs', priority: 'P2', requested_by: 'Knox', description: 'X: @BartlettLabs account with brand logo/bio. Reddit: create r/BartlettLabs subreddit + brand account.' },
 
     // Knox's queue
-    { queue_type: 'knox', title: 'Deploy 11 approved features to Vercel', priority: 'P1', requested_by: 'Knox', description: 'C2 CPFR (Jump-to-Week + CSV Export), JFDI (Quick-Add + Command Palette + Keyboard Shortcuts), ZipWise (Quick-Complete), Gmail Brain (Batch Actions), KDP (Shortcuts + Duplicate Book) — all awaiting Kyle approval.' },
-    { queue_type: 'knox', title: 'Verify Lark card rendering', priority: 'P2', requested_by: 'Knox', description: 'Check that AI tips cron sends as Lark Interactive Cards (not plain text) on next fire.' },
-    { queue_type: 'knox', title: 'Monitor WoW Week 07 data', priority: 'P1', requested_by: 'Knox', description: 'Step 1b fired today at 8:30 AM via GAS (Weekly Forecast pull). Knox WoW automation not live yet — GAS scripts handle distribution. DATA_WEEK_NUMBER may need update from 5 to 7.' },
+    { queue_type: 'knox', title: 'Deploy 13 approved features to Vercel', priority: 'P1', requested_by: 'Knox', description: 'C2 CPFR (×2), JFDI (×4), ZipWise, Gmail Brain, KDP (×2), Auto-Commenter — all committed to GitHub, awaiting Kyle approval before deploying to prod.' },
+    { queue_type: 'knox', title: 'LinkedIn content creation (browser unblocked)', priority: 'P1', requested_by: 'Knox', description: 'Browser efficient mode working for LinkedIn admin dashboard. BLOCKED by gateway security issue — needs openclaw gateway restart first.' },
+    { queue_type: 'knox', title: 'Monitor WoW Week 07 data', priority: 'P1', requested_by: 'Knox', description: 'Step 1b fired today at 8:30 AM via GAS (Weekly Forecast pull). Knox WoW automation not live yet. DATA_WEEK_NUMBER may need update from 5 to 7.' },
     { queue_type: 'knox', title: 'Deploy Scout for prospect research', priority: 'P2', requested_by: 'Knox', description: 'Research new Crosby/Houston prospects beyond the current 13. Expand pipeline.' },
     { queue_type: 'knox', title: 'Deploy Pulse for LinkedIn content', priority: 'P2', requested_by: 'Knox', description: 'LinkedIn Business Page needs content. Deploy Pulse to create posts.' },
-    { queue_type: 'knox', title: 'Push GitHub workspace backup', priority: 'P3', requested_by: 'Knox', description: 'Periodic push of knox-workspace repo (kyle-bartlett/knox-workspace). Daily cron handles this automatically.' },
+    { queue_type: 'knox', title: 'Submit PP to PP Square', priority: 'P2', requested_by: 'Knox', description: 'PP Builder cron fixed (delivery target). Kyle briefed on PP submission at 5:22 PM. Submit next generated PP for AI leaderboard points.' },
   ];
 
   const insertQueue = db.prepare('INSERT INTO queues (id, queue_type, title, priority, requested_by, description) VALUES (?, ?, ?, ?, ?, ?)');
@@ -161,7 +161,9 @@ export function seedOpsIfEmpty() {
     { agent_name: 'Stack', task_description: 'Gmail Brain Batch Actions (cron, 2/20 7:22 AM)', status: 'Completed', result_summary: 'Checkboxes, select all per section, floating action bar, batch reclassify/undo, parallel processing batches of 5. Commit 2f89f83. Awaiting review.' },
     { agent_name: 'Stack', task_description: 'KDP Book App Review Queue Shortcuts (cron, 2/20 9:22 AM)', status: 'Completed', result_summary: 'a approve+advance, h/l navigate, r reject, g regenerate, 1/2/3 switch views. Commit ca41443. Awaiting review.' },
     { agent_name: 'Stack', task_description: 'KDP Book App Duplicate Book (cron, 2/20 11:22 AM)', status: 'Completed', result_summary: 'One-click clone of book settings (type, content level, genre, audience, page count, trim size). Copy icon on rows + Duplicate button in modal. Commit c69db8c. Awaiting review.' },
-    { agent_name: 'Stack', task_description: 'Ops Dashboard seed data overhaul ×4 (cron, 2/20 overnight)', status: 'Completed', result_summary: '30 projects, 13 prospects, 21 agent tasks, 20+ activity events, 13 queue items. Multiple refreshes throughout day.' },
+    { agent_name: 'Stack', task_description: 'JFDI Inline Task Expansion (cron, 2/20 3:22 PM)', status: 'Completed', result_summary: 'Expand/collapse chevron on project cards — view tasks, check off, add new tasks inline without page navigation. +141 lines. Commit b19c5e2. Awaiting review.' },
+    { agent_name: 'Stack', task_description: 'Auto-Commenter Duplicate Automation (cron, 2/20 5:22 PM)', status: 'Completed', result_summary: 'One-click clone of automation config (name, targets, limits, connection, personalization). Pre-fills builder form via sessionStorage. Commit 6801acf. Awaiting review.' },
+    { agent_name: 'Stack', task_description: 'Ops Dashboard seed data overhaul ×7 (cron, 2/20 all day)', status: 'Completed', result_summary: '30 projects, 13 prospects, 23 agent tasks, 22+ activity events, 12 queue items. 7 refreshes throughout the day keeping dashboard current.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -208,11 +210,16 @@ export function seedOpsIfEmpty() {
     { event_type: 'agent_complete', title: 'KDP Book App Review Queue Shortcuts built', description: 'a approve+advance, h/l navigate, r reject, g regenerate, 1/2/3 switch views. Commit ca41443.', source: 'Stack (cron)', icon: '📖' },
     { event_type: 'agent_complete', title: 'KDP Book App Duplicate Book built', description: 'One-click clone of book settings (type, content level, genre, audience, page count, trim size). Copy icon on rows + Duplicate button in modal. Commit c69db8c.', source: 'Stack (cron)', icon: '📋' },
 
+    // Afternoon features (2/20)
+    { event_type: 'agent_complete', title: 'JFDI Inline Task Expansion built', description: 'Expand project cards to view/edit/add tasks inline — no page navigation. One-click checkboxes, inline quick-add. Commit b19c5e2.', source: 'Stack (cron)', icon: '📂' },
+    { event_type: 'agent_complete', title: 'Auto-Commenter Duplicate Automation built', description: 'One-click clone of automation config. Pre-fills builder form with source settings. Commit 6801acf.', source: 'Stack (cron)', icon: '🔄' },
+
     // System events
-    { event_type: 'system', title: 'knox-workspace GitHub backup active', description: '298+ files pushed to kyle-bartlett/knox-workspace (PRIVATE). Daily auto-push cron running.', source: 'Knox', icon: '💾' },
-    { event_type: 'system', title: 'Config optimized: showOk=false, delivery targets fixed', description: 'Heartbeat OK spam silenced. 3 cron delivery targets fixed from phone numbers → Telegram user ID 8516293230.', source: 'Knox', icon: '🔧' },
-    { event_type: 'system', title: 'Lark AI tips → Interactive Cards', description: 'Cron cd83f145 updated to send tips as Lark Cards with headers/sections/code blocks instead of plain text.', source: 'Knox', icon: '💬' },
-    { event_type: 'system', title: 'Ops Dashboard seed data — hourly refresh active', description: '30 projects, 13 real prospects, 21 agent tasks, 20+ activity events. Cron bc233846 updates seed hourly.', source: 'Knox (cron)', icon: '📊' },
+    { event_type: 'system', title: '3 cron delivery channels fixed (4:58 PM)', description: 'PP Builder, Billion $ Ideas, MOPA Prompt all had channel:"last" which fails in isolated sessions. Fixed to channel:"telegram", to:"8516293230". Billion $ Ideas scope reduced from 2→1 idea (was timing out).', source: 'Knox', icon: '🔧' },
+    { event_type: 'system', title: 'Browser config: efficient mode enabled', description: 'browser.snapshotDefaults.mode: "efficient" — fixes LinkedIn admin dashboard timeouts. Tested successfully (74 elements, no timeout).', source: 'Knox', icon: '🌐' },
+    { event_type: 'system', title: 'Gateway security issue flagged', description: 'Config patch triggered gateway restart → LAN IP reconnect (192.168.68.65) → security check blocks browser+sub-agent ops on plaintext ws://. Kyle alerted — needs openclaw gateway restart.', source: 'Knox', icon: '⚠️' },
+    { event_type: 'note', title: 'Kyle came online (5:22 PM) — briefed on 3 items', description: 'After ~19 hours offline. Briefed on: (1) Lark Training deadline tomorrow, (2) Supabase redirect URL for ZipWise, (3) PP Square submission. Going mobile soon.', source: 'Knox', icon: '👤' },
+    { event_type: 'system', title: 'Ops Dashboard seed data — 7 refreshes today', description: '30 projects, 13 real prospects, 23 agent tasks, 22+ activity events. Hourly cron bc233846 keeping dashboard current with all project changes.', source: 'Knox (cron)', icon: '📊' },
   ];
 
   const insertActivity = db.prepare("INSERT INTO activity_log (id, event_type, title, description, source, icon, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))");
@@ -232,7 +239,7 @@ export function seedOpsIfEmpty() {
   insertMetrics.run(uuid(), '2026-02-19', 15, 12, 0, 2, 8, 'on-fire',
     'MOST PRODUCTIVE DAY EVER. 8 Stack deploys, C2 CPFR from scratch, JFDI+Ops merge, Lark training curriculum, 5 autonomous cron features. 1,500+ line daily notes.');
 
-  // Today (2/20) — autonomous overnight + morning machine
-  insertMetrics.run(uuid(), today, 0, 11, 0, 0, 9, 'grinding',
-    'Autonomous cron machine overnight+morning: 11 features built across 5 projects (C2 CPFR ×2, JFDI ×3, ZipWise, Gmail Brain, KDP Books ×2, Ops Dashboard ×4). All committed to GitHub, 11 awaiting Kyle review. Lark Training deadline TOMORROW (2/21). WoW Week 07 Step 1b fired 8:30 AM. Kyle offline since 10:32 PM last night — 1,800+ lines of daily notes today.');
+  // Today (2/20) — autonomous cron machine all day
+  insertMetrics.run(uuid(), today, 0, 13, 0, 0, 9, 'grinding',
+    'Full-day autonomous cron machine: 13 features built across 7 projects (C2 CPFR ×2, JFDI ×4, ZipWise, Gmail Brain, KDP Books ×2, Auto-Commenter, Ops Dashboard ×7). All committed to GitHub, 13 awaiting Kyle review. Kyle came online at 5:22 PM — briefed on Lark Training deadline (tomorrow), Supabase URL, PP submission. 3 cron delivery targets fixed (PP Builder, Billion $ Ideas, MOPA). Browser efficient mode enabled for LinkedIn. Gateway security issue flagged for Kyle restart. 2,000+ lines of daily notes.');
 }
