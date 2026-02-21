@@ -67,6 +67,18 @@ export function QueueBoard({ queueType, title, icon }: QueueBoardProps) {
     Done: 'bg-green-500/20 text-green-400',
   };
 
+  const nextStatus: Record<string, string> = {
+    Pending: 'Reviewed',
+    Reviewed: 'Done',
+    Done: 'Pending',
+  };
+
+  const handleCycleStatus = async (e: React.MouseEvent, item: QueueItem) => {
+    e.stopPropagation();
+    const next = nextStatus[item.status] || 'Pending';
+    await handleStatusChange(item.id, next);
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64 text-slate-400">Loading...</div>;
 
   const pendingCount = items.filter(i => i.status === 'Pending').length;
@@ -124,7 +136,13 @@ export function QueueBoard({ queueType, title, icon }: QueueBoardProps) {
                 <div className="flex items-center gap-2 mb-1">
                   <PriorityBadge priority={item.priority} />
                   <h3 className="text-sm font-medium text-slate-100">{item.title}</h3>
-                  <span className={`text-xs px-2 py-0.5 rounded ${statusBg[item.status]}`}>{item.status}</span>
+                  <button
+                    onClick={(e) => handleCycleStatus(e, item)}
+                    className={`text-xs px-2 py-0.5 rounded cursor-pointer hover:ring-1 hover:ring-white/20 transition-all active:scale-95 ${statusBg[item.status]}`}
+                    title={`Click to change: ${item.status} → ${nextStatus[item.status]}`}
+                  >
+                    {item.status}
+                  </button>
                 </div>
                 {item.description && <p className="text-xs text-slate-400 line-clamp-2">{item.description}</p>}
               </div>
