@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useToast } from "@/components/ui/toast";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Modal } from "@/components/ui/modal";
@@ -46,6 +46,186 @@ const defaultForm = {
   period_start: "",
   period_end: "",
 };
+
+// ---------------------------------------------------------------------------
+// Clickable / draggable progress bar with +/- increment buttons
+// ---------------------------------------------------------------------------
+function ClickableProgressBar({
+  goalId,
+  current,
+  target,
+  pct,
+  onUpdate,
+}: {
+  goalId: string;
+  current: number;
+  target: number;
+  pct: number;
+  onUpdate: (id: string, value: number) => void;
+}) {
+  const barRef = useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState(false);
+  const [preview, setPreview] = useState<number | null>(null);
+
+  const computeValue = useCallback(
+    (clientX: number) => {
+      const bar = barRef.current;
+      if (!bar) return current;
+      const rect = bar.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      return Math.round(ratio * target);
+    },
+    [current, target],
+  );
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      e.preventDefault();
+      setDragging(true);
+      const val = computeValue(e.clientX);
+      setPreview(val);
+      (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    },
+    [computeValue],
+  );
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!dragging) {
+        // Show hover preview
+        const val = computeValue(e.clientX);
+        setPreview(val);
+        return;
+      }
+      const val = computeValue(e.clientX);
+      setPreview(val);
+    },
+    [dragging, computeValue],
+  );
+
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!dragging) return;
+      setDragging(false);
+      const val = computeValue(e.clientX);
+      setPreview(null);
+      if (val !== current) {
+        onUpdate(goalId, val);
+      }
+    },
+    [dragging, computeValue, current, goalId, onUpdate],
+  );
+
+  const handlePointerLeave = useCallback(() => {
+    if (!dragging) setPreview(null);
+  }, [dragging]);
+
+  const increment = useCallback(
+    (delta: number) => {
+      const next = Math.max(0, Math.min(target, current + delta));
+      if (next !== current) onUpdate(goalId, next);
+    },
+    [current, target, goalId, onUpdate],
+  );
+
+  const displayPct = preview !== null ? Math.round((preview / target) * 100) : pct;
+  const displayValue = preview !== null ? preview : current;
+  const barColor =
+    displayPct >= 75 ? "bg-accent" : displayPct >= 40 ? "bg-warning" : "bg-destructive";
+
+  return (
+    <div className="mt-3">
+      <div className="flex justify-between text-xs text-muted-foreground mb-1">
+        <span>
+          {displayValue}% of {target}%
+          {preview !== null && preview !== current && (
+            <span className="ml-1 text-primary opacity-70">
+              (→ {preview}%)
+            </span>
+          )}
+        </span>
+        <span
+          className={
+            displayPct >= 75
+              ? "text-accent"
+              : displayPct >= 40
+                ? "text-warning"
+                : "text-destructive"
+          }
+        >
+          {displayPct}% complete
+        </span>
+      </div>
+
+      {/* Clickable/draggable bar */}
+      <div
+        ref={barRef}
+        className="w-full h-3 bg-muted rounded-full overflow-hidden cursor-pointer relative group"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
+        style={{ touchAction: "none" }}
+        title="Click or drag to set progress"
+      >
+        <div
+          className={`h-full rounded-full transition-all ${barColor} ${
+            dragging ? "" : "group-hover:opacity-90"
+          }`}
+          style={{ width: `${Math.min(preview !== null ? (preview / target) * 100 : pct, 100)}%` }}
+        />
+      </div>
+
+      {/* Increment buttons */}
+      <div className="flex items-center gap-1.5 mt-2">
+        <button
+          onClick={() => increment(-10)}
+          disabled={current <= 0}
+          className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+        >
+          −10
+        </button>
+        <button
+          onClick={() => increment(-5)}
+          disabled={current <= 0}
+          className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+        >
+          −5
+        </button>
+        <button
+          onClick={() => increment(5)}
+          disabled={current >= target}
+          className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+        >
+          +5
+        </button>
+        <button
+          onClick={() => increment(10)}
+          disabled={current >= target}
+          className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+        >
+          +10
+        </button>
+        <button
+          onClick={() => increment(25)}
+          disabled={current >= target}
+          className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+        >
+          +25
+        </button>
+        <span className="flex-1" />
+        {current > 0 && current < target && (
+          <button
+            onClick={() => onUpdate(goalId, target)}
+            className="text-[11px] px-2 py-0.5 rounded bg-accent/20 text-accent hover:bg-accent/30 transition-colors"
+          >
+            Complete ✓
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -256,54 +436,14 @@ export default function GoalsPage() {
                   </div>
                 </div>
 
-                {/* Progress bar */}
-                <div className="mt-3">
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>
-                      {g.current_percentage}% of {g.target_percentage}%
-                    </span>
-                    <span
-                      className={
-                        pct >= 75
-                          ? "text-accent"
-                          : pct >= 40
-                            ? "text-warning"
-                            : "text-destructive"
-                      }
-                    >
-                      {pct}% complete
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${
-                        pct >= 75
-                          ? "bg-accent"
-                          : pct >= 40
-                            ? "bg-warning"
-                            : "bg-destructive"
-                      }`}
-                      style={{ width: `${Math.min(pct, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Quick progress buttons */}
-                <div className="flex gap-2 mt-3">
-                  {[10, 25, 50, 75, 100].map((val) => (
-                    <button
-                      key={val}
-                      onClick={() => updateProgress(g.id, val)}
-                      className={`text-xs px-2 py-1 rounded transition-colors ${
-                        g.current_percentage === val
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {val}%
-                    </button>
-                  ))}
-                </div>
+                {/* Progress bar — click anywhere to set progress */}
+                <ClickableProgressBar
+                  goalId={g.id}
+                  current={g.current_percentage}
+                  target={g.target_percentage}
+                  pct={pct}
+                  onUpdate={updateProgress}
+                />
 
                 {/* Period */}
                 {(g.period_start || g.period_end) && (
