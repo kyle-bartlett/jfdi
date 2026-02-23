@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { ActionQueueItem } from '@/lib/ops/types';
 import { agentColors, timeAgo } from '@/lib/ops/utils';
 
@@ -25,6 +25,9 @@ export default function ActionQueuePage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNotes, setEditNotes] = useState('');
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected' | 'modified'>('all');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [showShortcuts, setShowShortcuts] = useState(true);
+  const focusedCardRef = useRef<HTMLDivElement>(null);
 
   const fetchItems = useCallback(async () => {
     try {
@@ -39,6 +42,101 @@ export default function ActionQueuePage() {
   }, []);
 
   useEffect(() => { fetchItems(); }, [fetchItems]);
+
+  // Scroll focused card into view
+  useEffect(() => {
+    if (focusedCardRef.current) {
+      focusedCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [focusedIndex]);
+
+  // Keyboard shortcuts for queue triage
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const total = filteredItems.length;
+      if (total === 0 && e.key !== '?') return;
+
+      switch (e.key) {
+        case 'j':
+        case 'ArrowDown':
+          e.preventDefault();
+          setFocusedIndex((prev) => Math.min(prev + 1, total - 1));
+          break;
+        case 'k':
+        case 'ArrowUp':
+          e.preventDefault();
+          setFocusedIndex((prev) => Math.max(prev - 1, 0));
+          break;
+        case 'a': {
+          if (focusedIndex >= 0 && focusedIndex < total) {
+            const item = filteredItems[focusedIndex];
+            if (item.status === 'pending') {
+              e.preventDefault();
+              handleApprove(item.id);
+            }
+          }
+          break;
+        }
+        case 'x': {
+          if (focusedIndex >= 0 && focusedIndex < total) {
+            const item = filteredItems[focusedIndex];
+            if (item.status === 'pending') {
+              e.preventDefault();
+              handleReject(item.id);
+            }
+          }
+          break;
+        }
+        case 'm': {
+          if (focusedIndex >= 0 && focusedIndex < total) {
+            const item = filteredItems[focusedIndex];
+            if (item.status === 'pending') {
+              e.preventDefault();
+              handleModify(item);
+            }
+          }
+          break;
+        }
+        case '1':
+          e.preventDefault();
+          setFilter('all');
+          setFocusedIndex(-1);
+          break;
+        case '2':
+          e.preventDefault();
+          setFilter('pending');
+          setFocusedIndex(-1);
+          break;
+        case '3':
+          e.preventDefault();
+          setFilter('approved');
+          setFocusedIndex(-1);
+          break;
+        case '4':
+          e.preventDefault();
+          setFilter('rejected');
+          setFocusedIndex(-1);
+          break;
+        case '?':
+          e.preventDefault();
+          setShowShortcuts((prev) => !prev);
+          break;
+        case 'Escape':
+          setFocusedIndex(-1);
+          setEditingId(null);
+          break;
+        default:
+          break;
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
 
   const updateItem = async (id: string, updates: Partial<ActionQueueItem>) => {
     await fetch('/api/action-queue', {
@@ -115,14 +213,26 @@ export default function ActionQueuePage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {filteredItems.map((item) => (
+          {filteredItems.map((item, idx) => {
+            const isFocused = idx === focusedIndex;
+            return (
             <div
               key={item.id}
+              ref={isFocused ? focusedCardRef : undefined}
               className={`card transition-all ${
-                item.status === 'pending' ? 'border-l-4 border-l-yellow-500' :
-                item.status === 'approved' ? 'border-l-4 border-l-green-500 opacity-75' :
-                item.status === 'rejected' ? 'border-l-4 border-l-red-500 opacity-60' :
-                'border-l-4 border-l-blue-500 opacity-75'
+                isFocused
+                  ? 'ring-2 ring-primary/60 border-l-4 ' + (
+                      item.status === 'pending' ? 'border-l-yellow-500' :
+                      item.status === 'approved' ? 'border-l-green-500 opacity-75' :
+                      item.status === 'rejected' ? 'border-l-red-500 opacity-60' :
+                      'border-l-blue-500 opacity-75'
+                    )
+                  : (
+                      item.status === 'pending' ? 'border-l-4 border-l-yellow-500' :
+                      item.status === 'approved' ? 'border-l-4 border-l-green-500 opacity-75' :
+                      item.status === 'rejected' ? 'border-l-4 border-l-red-500 opacity-60' :
+                      'border-l-4 border-l-blue-500 opacity-75'
+                    )
               }`}
             >
               <div className="flex items-start justify-between gap-4">
@@ -209,7 +319,43 @@ export default function ActionQueuePage() {
                 </div>
               )}
             </div>
-          ))}
+          ); })}
+        </div>
+      )}
+
+      {/* Keyboard Shortcuts Hint Bar */}
+      {showShortcuts && filteredItems.length > 0 && !editingId && (
+        <div className="fixed bottom-4 right-4 z-40 bg-card/95 backdrop-blur-sm border border-border rounded-xl shadow-lg px-4 py-2.5 text-xs flex items-center gap-3">
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 bg-secondary rounded text-[10px] font-mono font-semibold">j</kbd>
+            <kbd className="px-1.5 py-0.5 bg-secondary rounded text-[10px] font-mono font-semibold">k</kbd>
+            <span className="text-muted-foreground">navigate</span>
+          </span>
+          <span className="w-px h-4 bg-border" />
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded text-[10px] font-mono font-semibold">a</kbd>
+            <span className="text-muted-foreground">approve</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 bg-red-500/20 text-red-400 rounded text-[10px] font-mono font-semibold">x</kbd>
+            <span className="text-muted-foreground">reject</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 bg-blue-500/20 text-blue-400 rounded text-[10px] font-mono font-semibold">m</kbd>
+            <span className="text-muted-foreground">modify</span>
+          </span>
+          <span className="w-px h-4 bg-border" />
+          <span className="flex items-center gap-1.5">
+            <kbd className="px-1.5 py-0.5 bg-secondary rounded text-[10px] font-mono font-semibold">1-4</kbd>
+            <span className="text-muted-foreground">filter</span>
+          </span>
+          <button
+            onClick={() => setShowShortcuts(false)}
+            className="ml-1 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Dismiss"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
         </div>
       )}
     </div>
