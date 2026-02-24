@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-24 4:00 PM CT
+  // Last updated: 2026-02-24 5:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Streak Tracker with habit tracking + achievement badges (2/24 3:04 PM cron). Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 50+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 4:00 PM. WoW crisis resolved, trust rebuild mode active.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Streak Tracker with habit tracking + achievement badges (2/24 3:04 PM cron). Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 50+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 5:00 PM. WoW crisis resolved, trust rebuild mode active. Kyle at Anker work (afternoon block 3-8 PM, team meeting tonight for project status presentation).' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -65,7 +65,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-23 — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-24 5:00 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -111,7 +111,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-24 4:00 PM CT
+  // Last updated: 2026-02-24 5:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/24)
-  // Last updated: 2026-02-24 4:00 PM CT
+  // Last updated: 2026-02-24 5:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -231,7 +231,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-24 4:00 PM CT
+  // Last updated: 2026-02-24 5:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -295,7 +295,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-24 4:00 PM CT
+  // Last updated: 2026-02-24 5:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
