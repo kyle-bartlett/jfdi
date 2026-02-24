@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-24 7:58 AM CT
+  // Last updated: 2026-02-24 8:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -28,7 +28,7 @@ export function seedOpsIfEmpty() {
 
     // P2 — Important, not urgent
     { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 3). STEALTH CRITICAL.' },
-    { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: 'Week-over-Week forecast automation via gog CLI. Knox-managed runs proven. Week 08: 276,675 rows, 5 teams distributed in ~30 min (2/22). Mid-week partial re-run (2/24) after upstream data fix — re-pulled Open FC only, preserved QTD Rev + Last Wk. Sunday morning schedule established.' },
+    { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: '🔴 DATA BROKEN (2/24 ~8:48 AM). Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk → Last Wk shows $0 → ALL WoW deltas meaningless across ALL 5 depts. Need to re-pull Week 07 Open FC as Last Wk. Kyle actively engaged on fix. Week 08 full run was clean (2/22). CRITICAL LESSON: Filter deletions by BOTH Col A AND Col S. NEVER delete by data type alone.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Full book pipeline (fiction, self-help, journals, planners, puzzles, cookbooks — ANY type). Status Filter Tabs on Auto-Factory (2/24 cron). Approve All Remaining in review queue. Repo renamed from Coloring_Books → Books. 6 comprehensive test prompts delivered. NOT a coloring book app.' },
     { title: 'Alloy Email Automation', priority: 'P2', status: 'In Progress', description: 'Anker email automation — web scraper works (pulls weekly report), data processing fails. Kyle says "way easier than the WoW file." Trash data processing script, Knox automates the rest.' },
@@ -37,7 +37,7 @@ export function seedOpsIfEmpty() {
     { title: 'Amazon Vendor Central Automation', priority: 'P2', status: 'In Progress', description: 'Weekly download/upload/email workflow for Amazon reports. FULLY SET UP ✅ (2/23). Cron Sunday 5 PM CT. Login kyle.bartlett@anker.com → download Sales + Inventory CSVs → upload to Drive → email team.' },
     { title: 'Anker Project Status Sheet', priority: 'P2', status: 'In Progress', description: 'Weekly Monday 2 PM cron auto-generates formatted progress notes for Kyle\'s coordinator. Rigid bullet-point format with bold headers. Kyle: "Saved me a TON of time." Cron ID: 65ca3ebf.' },
     { title: 'PP Square / AI Leaderboard', priority: 'P2', status: 'In Progress', description: 'ALL 10 PPs LIVE on PP Square with tags + Lark docs (tenant-readable) + landscape cover images (all 10 completed by Kyle 2/24). Kyle\'s energy: 105 pts, rank #115 (up from #644). PP Builder cron generates demand planning prompts. Goal: #1 company-wide.' },
-    { title: 'Marcus Chen LinkedIn Persona', priority: 'P2', status: 'In Progress', description: 'Phantom engagement persona. Full LinkedIn profile built (photo, banner, headline, about, work history, education). 3 daily warming crons active (8 AM / 12:30 PM / 8 PM). Day 3 of warming. No posting yet — warming period ~7 days.' },
+    { title: 'Marcus Chen LinkedIn Persona', priority: 'P2', status: 'In Progress', description: 'Phantom engagement persona. Full LinkedIn profile built (photo, banner, headline, about, work history, education). 3 daily warming crons active (8 AM / 12:30 PM / 8 PM). Day 3 of warming. Kyle manually logged Marcus into Chrome ~8:42 AM (2/24). Session now live. No posting yet — warming period ~7 days.' },
 
     // P3 — Lower priority / long-term
     { title: 'Resume + Job Ops', priority: 'P3', status: 'In Progress', description: 'Updated resume for LinkedIn + Job Ops tool. Kyle targeting AI positions at 2x current Anker salary.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 45+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 7:58 AM.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 47+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 8:59 AM.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -111,23 +111,22 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-24 7:58 AM CT
+  // Last updated: 2026-02-24 8:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
+    { queue_type: 'kyle', title: '🔴 WoW DATA BROKEN — Last Wk Open FC destroyed (2/24 ~8:48 AM)', priority: 'P0', requested_by: 'Knox', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk now shows $0.00/0 units → ALL WoW deltas broken. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered this at ~8:30 AM and is actively engaged. DO NOT send Lark notifications.' },
     { queue_type: 'kyle', title: '⚠️ Schedule Lark Training sessions — OVERDUE (was 2/21)', priority: 'P0', requested_by: 'Knox', description: 'Management-assigned. Curriculum written, AI Readiness Survey created. Knox Bot in training group. Kyle needs to review + schedule sessions. OVERDUE.' },
     { queue_type: 'kyle', title: 'Fix bartlettlabs.io build error', priority: 'P0', requested_by: 'Kyle', description: 'Website has a build error from 2 AM redesign. Kyle is fixing. LinkedIn alignment ON HOLD until website finalized.' },
     { queue_type: 'kyle', title: 'Finish ZipWise — CLIENTS WAITING', priority: 'P0', requested_by: 'Kyle', description: 'ZipWise has clients willing to test it live. Needs finishing. Supabase redirect URL still blocking auth flow.' },
-    { queue_type: 'kyle', title: 'Verify WoW partial re-run data (2/24)', priority: 'P1', requested_by: 'Knox', description: 'Upstream data fix triggered partial re-run. Knox re-pulled Open FC and distributed to all 5 teams. Kyle needs to verify before Lark notifications go out. DO NOT send notifications until Kyle confirms.' },
     { queue_type: 'kyle', title: 'CPFR weekly automation — show Knox the workflow', priority: 'P1', requested_by: 'Kyle', description: 'Kyle teased showing Knox the weekly CPFR updates to automate: "Feel like adding some weekly automation to your list?" Deferred during late night session 2/24.' },
 
     // Knox's queue
-    { queue_type: 'knox', title: 'WoW re-run: fix Index column & re-distribute Charging', priority: 'P0', requested_by: 'Knox', description: 'Re-run hit Index column bug on Charging. Regenerating rollup with proper Index, then re-distributing. Comment restoration pending. Other 4 teams may also need re-distribution.' },
-    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'All 3 platforms posted 2/23. Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0 posts (needs browser setup).' },
-    { queue_type: 'knox', title: 'Marcus Chen warming — Day 3', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Warming period ~7 days before content posting begins.' },
+    { queue_type: 'knox', title: '🔴 FIX WoW Last Wk Open FC data — re-pull Week 07', priority: 'P0', requested_by: 'Knox', description: 'Re-pull original Week 07 Open FC from source and write as Last Wk in parent sheet. TOP PRIORITY. Root cause: deletion filtered by Col S only (Open FC) without Col A filter (Current Wk), nuking Last Wk data. 6 bugs total from re-run.' },
+    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'X/Twitter post live 8:29 AM. LinkedIn Bartlett Labs expired (needs re-auth). Marcus Chen session now live. Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
+    { queue_type: 'knox', title: 'Marcus Chen warming — Day 3 (session live)', priority: 'P1', requested_by: 'Knox', description: 'Kyle logged Marcus into Chrome ~8:42 AM. 3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Next cron: 12:30 PM midday scroll.' },
     { queue_type: 'knox', title: 'Monitor Amazon Vendor Central cron (Sunday 5 PM)', priority: 'P2', requested_by: 'Knox', description: 'First automated run. May need Kyle to log in if session expired. Full flow documented.' },
     { queue_type: 'knox', title: '98 new leads — consolidate and present to Kyle', priority: 'P2', requested_by: 'Scout', description: '98 CRM-ready leads from Yelp + Yellow Pages (Houston/Crosby). Need to consolidate and share with Kyle for outreach prioritization.' },
-    { queue_type: 'knox', title: 'Deploy Scout for expanded prospect research', priority: 'P2', requested_by: 'Knox', description: 'Research new Crosby/Houston prospects beyond current pipeline. Expand coverage area.' },
   ];
 
   const insertQueue = db.prepare('INSERT INTO queues (id, queue_type, title, priority, requested_by, description) VALUES (?, ?, ?, ?, ?, ?)');
@@ -137,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/24)
-  // Last updated: 2026-02-24 7:58 AM CT
+  // Last updated: 2026-02-24 8:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -191,11 +190,15 @@ export function seedOpsIfEmpty() {
     // 2/24 cron-built features + WoW re-run
     { agent_name: 'Stack', task_description: 'ZipWise Search Bar on History Screen (cron, 2/24 1:22 AM)', status: 'Completed', result_summary: 'Instant visit lookup — search by client name, zip, notes. Filters across all day groups. Results count + clear button.' },
     { agent_name: 'Stack', task_description: 'KDP Book Studio Status Filter Tabs on Auto-Factory (cron, 2/24 3:22 AM)', status: 'Completed', result_summary: 'Filter tabs: All | In Progress | Ready for Review | Approved | Published. Count badges per tab.' },
-    { agent_name: 'Knox', task_description: 'WoW partial re-run — upstream data fix (2/24 3:30 AM)', status: 'Running', result_summary: 'Re-pulled Open FC (122K rows). SKU Rollup regenerated (2,573 rows). Charging distribution has Index column bug — fixing. Awaiting Kyle verification.' },
+    { agent_name: 'Knox', task_description: 'WoW partial re-run — upstream data fix (2/24 3:30 AM)', status: 'Failed', result_summary: '🔴 BROKE WoW DATA. Deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk shows $0 → all WoW deltas meaningless. 6 bugs total: tab quoting, dollar signs, customer normalization, Index column, col A formula, DELETION SCOPE TOO BROAD. Kyle discovered ~8:30 AM. Recovery needed: re-pull Week 07 Open FC as Last Wk.' },
 
     // 2/24 morning cron features (5:23 AM + 7:23 AM)
     { agent_name: 'Stack', task_description: 'JFDI Inline Quick-Add Task from 10K ft View (cron, 2/24 5:23 AM)', status: 'Completed', result_summary: '"+" button on project cards in list view. Type task title → Enter to add. No navigation needed. 2-second task creation vs 4+ clicks. Deployed to Vercel.' },
     { agent_name: 'Stack', task_description: 'JFDI Enhanced Dashboard Tasks Widget (cron, 2/24 7:23 AM)', status: 'Completed', result_summary: 'Project context labels under each task. Overdue highlighting (red + "Xd late" badge). Overdue count in header. Complete All batch action. Tasks auto-sorted: overdue first. Deployed to Vercel.' },
+
+    // 2/24 morning session (~8:30-8:53 AM) — Kyle woke up
+    { agent_name: 'Knox', task_description: 'X/Twitter social media post (2/24 8:29 AM)', status: 'Completed', result_summary: 'Posted: "If your team needs a tutorial to use the AI, the AI is solving the wrong problem." LinkedIn Bartlett Labs needs re-auth.' },
+    { agent_name: 'Knox', task_description: 'Marcus Chen LinkedIn auth fix (2/24 ~8:42 AM)', status: 'Completed', result_summary: 'Kyle manually logged Marcus into Chrome. Session confirmed live. Next warming cron: 12:30 PM midday scroll.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -219,7 +222,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-24 7:58 AM CT
+  // Last updated: 2026-02-24 8:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -257,9 +260,14 @@ export function seedOpsIfEmpty() {
     { event_type: 'agent_complete', title: 'JFDI Inline Quick-Add Task from 10K ft View (cron, 2/24 5:23 AM)', description: '"+" button on project cards — type and Enter to add tasks without navigating to Ground view. 2-second creation vs 4+ clicks.', source: 'Stack (cron)', icon: '➕' },
     { event_type: 'agent_complete', title: 'JFDI Enhanced Dashboard Tasks Widget (cron, 2/24 7:23 AM)', description: 'Project context labels, overdue highlighting (red + "Xd late" badge), Complete All batch action. Tasks auto-sorted overdue-first.', source: 'Stack (cron)', icon: '📋' },
 
+    // 2/24 morning — Kyle woke up, WoW crisis discovered
+    { event_type: 'system', title: '🔴 WoW DATA BROKEN — Kyle discovered 8:30 AM (2/24)', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk shows $0.00 / 0 units → ALL WoW deltas meaningless across 5 depts. Root cause: deletion filtered by Col S only without Col A filter. Kyle: "Stop guessing or you\'re gonna really piss me off." NEW RULES: 1) Filter by BOTH Col A + Col S, 2) Listen before diagnosing, 3) Last Wk is sacred in partial re-runs.', source: 'Knox', icon: '🔴' },
+    { event_type: 'agent_complete', title: 'X/Twitter post live (2/24 8:29 AM)', description: '"If your team needs a tutorial to use the AI, the AI is solving the wrong problem." LinkedIn Bartlett Labs needs re-auth.', source: 'Knox (cron)', icon: '🐦' },
+    { event_type: 'system', title: 'Marcus Chen LinkedIn session confirmed live (2/24 ~8:42 AM)', description: 'Kyle manually logged Marcus into Chrome. Knox initially snapshotted wrong browser profile. Kyle confirmed: "Dude I am looking at the screen. You are logged in as marcus."', source: 'Knox', icon: '👤' },
+
     // Operational stats
     { event_type: 'milestone', title: '77+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. 5 features shipped today alone (2/24).', source: 'Knox', icon: '🤖' },
-    { event_type: 'milestone', title: '14 days operational — zero data loss', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW automation proven. Trust compounding through consistent execution.', source: 'Knox', icon: '🏆' },
+    { event_type: 'milestone', title: '14 days operational', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW automation proven but partial re-run broke data (2/24). Lesson learned: use existing scripts, filter deletions carefully.', source: 'Knox', icon: '🏆' },
   ];
 
   const insertActivity = db.prepare("INSERT INTO activity_log (id, event_type, title, description, source, icon, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))");
@@ -270,7 +278,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-24 7:58 AM CT
+  // Last updated: 2026-02-24 8:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -295,7 +303,7 @@ export function seedOpsIfEmpty() {
   insertMetrics.run(uuid(), '2026-02-23', 4, 8, 0, 0, 12, 'on-fire',
     'CPFR Forecast Enhancement delivered (Kyle: "You nailed it"). 98 CRM leads from Scout. Amazon Vendor Central fully set up. Anker Project Status cron. 3 cron features shipped (JFDI, Gmail Brain, ZipWise). Social media 3x.');
 
-  // 2/24 (today) — WoW re-run + 4 cron features + KDP test prompts
-  insertMetrics.run(uuid(), today, 2, 6, 0, 0, 13, 'grinding',
-    'WoW partial re-run (upstream data fix) — awaiting Kyle verification. 4 cron features shipped: ZipWise Search, KDP Filter Tabs, JFDI Quick-Add, JFDI Dashboard Tasks Widget. 6 KDP test prompts delivered. 13-day active streak. Kyle session ran until ~3:45 AM.');
+  // 2/24 (today) — WoW re-run BROKE DATA + 4 cron features + KDP test prompts
+  insertMetrics.run(uuid(), today, 3, 7, 0, 0, 13, 'damage-control',
+    '🔴 WoW partial re-run DESTROYED Last Wk Open FC data (3:30 AM). Kyle woke up ~8:30 AM, discovered issue. All WoW deltas broken across 5 depts. Root cause: deletion too broad (Col S only, no Col A filter). 4 cron features shipped. X/Twitter post live. Marcus Chen auth fixed. Kyle actively engaged on WoW recovery.');
 }
