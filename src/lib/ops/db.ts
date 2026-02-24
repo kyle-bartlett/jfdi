@@ -90,7 +90,7 @@ function initializeOpsDb(db: Database.Database) {
 
     CREATE TABLE IF NOT EXISTS agent_tasks (
       id TEXT PRIMARY KEY,
-      agent_name TEXT NOT NULL CHECK(agent_name IN ('Stack','Pulse','Scout','Reach','Bridge','Forge','Wire')),
+      agent_name TEXT NOT NULL CHECK(agent_name IN ('Stack','Pulse','Scout','Reach','Bridge','Forge','Wire','Knox')),
       task_description TEXT DEFAULT '',
       status TEXT DEFAULT 'Queued' CHECK(status IN ('Queued','Running','Completed','Failed')),
       deployed_at TEXT DEFAULT (datetime('now')),
