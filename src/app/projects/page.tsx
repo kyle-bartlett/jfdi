@@ -57,6 +57,60 @@ const emptyTaskForm = {
   due_date: "",
 };
 
+// Inline quick-add component for 10K ft view
+function InlineTaskAdd({ projectId, onAdded }: { projectId: string; onAdded: () => void }) {
+  const [title, setTitle] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const submit = async () => {
+    const t = title.trim();
+    if (!t) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: t, project_id: projectId, priority: "medium", status: "todo" }),
+      });
+      setTitle("");
+      onAdded();
+      inputRef.current?.focus();
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/50" onClick={(e) => e.stopPropagation()}>
+      <input
+        ref={inputRef}
+        type="text"
+        className="flex-1 text-xs bg-muted/50 border border-border rounded-md px-2.5 py-1.5 placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary"
+        placeholder="Add task and press Enter..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            submit();
+          }
+          if (e.key === "Escape") {
+            e.preventDefault();
+            setTitle("");
+          }
+        }}
+        disabled={submitting}
+      />
+      {submitting && <span className="text-[10px] text-muted-foreground animate-pulse">...</span>}
+    </div>
+  );
+}
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,6 +127,7 @@ export default function ProjectsPage() {
   const [formData, setFormData] = useState(emptyProjectForm);
   const [taskFormData, setTaskFormData] = useState(emptyTaskForm);
   const [searchQuery, setSearchQuery] = useState("");
+  const [inlineAddProjectId, setInlineAddProjectId] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -520,6 +575,18 @@ export default function ProjectsPage() {
                               <span className="text-xs text-muted-foreground w-8">{project.progress}%</span>
                             </div>
                             <button
+                              onClick={(e) => { e.stopPropagation(); setInlineAddProjectId(inlineAddProjectId === project.id ? null : project.id); }}
+                              className={`w-5 h-5 rounded flex items-center justify-center text-xs transition-colors ${
+                                inlineAddProjectId === project.id
+                                  ? "text-primary bg-primary/10"
+                                  : "text-muted-foreground hover:text-primary hover:bg-muted"
+                              }`}
+                              title="Quick add task"
+                              aria-label="Quick add task"
+                            >
+                              +
+                            </button>
+                            <button
                               onClick={(e) => { e.stopPropagation(); openEditProject(project); }}
                               className="text-xs text-muted-foreground hover:text-foreground px-1"
                               aria-label="Edit project"
@@ -535,6 +602,15 @@ export default function ProjectsPage() {
                             </button>
                           </div>
                         </div>
+                        {inlineAddProjectId === project.id && (
+                          <InlineTaskAdd
+                            projectId={project.id}
+                            onAdded={() => {
+                              toast("Task added");
+                              loadProjects();
+                            }}
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
