@@ -53,7 +53,9 @@ export default function RemindersPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [snoozeOpenId, setSnoozeOpenId] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [batchSnoozeOpen, setBatchSnoozeOpen] = useState(false);
   const snoozeRef = useRef<HTMLDivElement>(null);
+  const batchSnoozeRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -176,9 +178,15 @@ export default function RemindersPage() {
           setSnoozeOpenId(null);
           setSelectedIds(new Set());
           break;
+        case "S": // Batch snooze selected (Shift+S)
+          if (selectedIds.size > 0) {
+            e.preventDefault();
+            setBatchSnoozeOpen(!batchSnoozeOpen);
+          }
+          break;
         case "?": // Show keyboard shortcut hints
           e.preventDefault();
-          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • Esc Clear");
+          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • S Batch Snooze • Esc Clear");
           break;
       }
     };
@@ -192,7 +200,7 @@ export default function RemindersPage() {
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [filteredReminders, focusedIndex, showForm, editingReminder, deleteTarget, snoozeOpenId]);
+  }, [filteredReminders, focusedIndex, showForm, editingReminder, deleteTarget, snoozeOpenId, selectedIds, batchSnoozeOpen]);
 
   // Reset focus when tab changes
   useEffect(() => {
@@ -305,6 +313,39 @@ export default function RemindersPage() {
     }
   };
 
+  // Close batch snooze dropdown on outside click
+  useEffect(() => {
+    if (!batchSnoozeOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (batchSnoozeRef.current && !batchSnoozeRef.current.contains(e.target as Node)) {
+        setBatchSnoozeOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [batchSnoozeOpen]);
+
+  const batchSnooze = async (snoozedUntil: Date) => {
+    const count = selectedIds.size;
+    try {
+      await Promise.all(
+        Array.from(selectedIds).map((id) =>
+          fetch(`/api/reminders?id=${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "snoozed", snoozed_until: snoozedUntil.toISOString() }),
+          })
+        )
+      );
+      setSelectedIds(new Set());
+      setBatchSnoozeOpen(false);
+      toast(`${count} reminders snoozed until ${formatRelativeTime(snoozedUntil.toISOString())}`);
+      loadReminders();
+    } catch {
+      toast("Failed to batch snooze", "error");
+    }
+  };
+
   const openEdit = (reminder: Reminder) => {
     setFormData({
       title: reminder.title,
@@ -367,6 +408,27 @@ export default function RemindersPage() {
               <button onClick={batchComplete} className="btn btn-secondary text-sm">
                 Complete ({selectedIds.size})
               </button>
+              <div className="relative" ref={batchSnoozeRef}>
+                <button
+                  onClick={() => setBatchSnoozeOpen(!batchSnoozeOpen)}
+                  className="btn btn-secondary text-sm"
+                >
+                  ⏰ Snooze ({selectedIds.size})
+                </button>
+                {batchSnoozeOpen && (
+                  <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-lg py-1 min-w-[180px]">
+                    {getSnoozeOptions().map((opt) => (
+                      <button
+                        key={opt.label}
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors"
+                        onClick={() => batchSnooze(opt.date)}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button onClick={batchDelete} className="btn btn-danger text-sm">
                 Delete ({selectedIds.size})
               </button>
