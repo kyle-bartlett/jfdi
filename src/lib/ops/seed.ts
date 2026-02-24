@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-24 9:59 AM CT
+  // Last updated: 2026-02-24 10:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -28,7 +28,7 @@ export function seedOpsIfEmpty() {
 
     // P2 — Important, not urgent
     { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 3). STEALTH CRITICAL.' },
-    { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: '🔴 DATA BROKEN (2/24 ~8:48 AM). Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk → Last Wk shows $0 → ALL WoW deltas meaningless across ALL 5 depts. Need to re-pull Week 07 Open FC as Last Wk. Kyle actively engaged on fix. Week 08 full run was clean (2/22). CRITICAL LESSON: Filter deletions by BOTH Col A AND Col S. NEVER delete by data type alone.' },
+    { title: 'WoW Forecast Automation', priority: 'P2', status: 'Blocked', description: '🔴 DATA BROKEN (2/24 ~8:48 AM). Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk → Last Wk shows $0 → ALL WoW deltas meaningless across ALL 5 depts. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM, no further direction since 8:53 AM. DO NOT send Lark notifications. CRITICAL LESSON: Filter deletions by BOTH Col A AND Col S. NEVER delete by data type alone. 2 hours since Kyle last engaged on this.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Full book pipeline (fiction, self-help, journals, planners, puzzles, cookbooks — ANY type). Status Filter Tabs on Auto-Factory (2/24 cron). Approve All Remaining in review queue. Repo renamed from Coloring_Books → Books. 6 comprehensive test prompts delivered. NOT a coloring book app.' },
     { title: 'Alloy Email Automation', priority: 'P2', status: 'In Progress', description: 'Anker email automation — web scraper works (pulls weekly report), data processing fails. Kyle says "way easier than the WoW file." Trash data processing script, Knox automates the rest.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 48+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 9:59 AM.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 48+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 10:59 AM.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -111,11 +111,11 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-24 9:59 AM CT
+  // Last updated: 2026-02-24 10:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
-    { queue_type: 'kyle', title: '🔴 WoW DATA BROKEN — Last Wk Open FC destroyed (2/24 ~8:48 AM)', priority: 'P0', requested_by: 'Knox', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk now shows $0.00/0 units → ALL WoW deltas broken. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered this at ~8:30 AM and is actively engaged. DO NOT send Lark notifications.' },
+    { queue_type: 'kyle', title: '🔴 WoW DATA BROKEN — Last Wk Open FC destroyed (2/24 ~8:48 AM)', priority: 'P0', requested_by: 'Knox', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk now shows $0.00/0 units → ALL WoW deltas broken. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM. No further direction since 8:53 AM (~2 hrs ago). DO NOT send Lark notifications.' },
     { queue_type: 'kyle', title: '⚠️ Schedule Lark Training sessions — OVERDUE (was 2/21)', priority: 'P0', requested_by: 'Knox', description: 'Management-assigned. Curriculum written, AI Readiness Survey created. Knox Bot in training group. Kyle needs to review + schedule sessions. OVERDUE.' },
     { queue_type: 'kyle', title: 'Fix bartlettlabs.io build error', priority: 'P0', requested_by: 'Kyle', description: 'Website has a build error from 2 AM redesign. Kyle is fixing. LinkedIn alignment ON HOLD until website finalized.' },
     { queue_type: 'kyle', title: 'Finish ZipWise — CLIENTS WAITING', priority: 'P0', requested_by: 'Kyle', description: 'ZipWise has clients willing to test it live. Needs finishing. Supabase redirect URL still blocking auth flow.' },
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/24)
-  // Last updated: 2026-02-24 9:59 AM CT
+  // Last updated: 2026-02-24 10:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -223,7 +223,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-24 9:59 AM CT
+  // Last updated: 2026-02-24 10:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -280,7 +280,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-24 9:59 AM CT
+  // Last updated: 2026-02-24 10:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -307,5 +307,5 @@ export function seedOpsIfEmpty() {
 
   // 2/24 (today) — WoW re-run BROKE DATA + 5 cron features + KDP test prompts
   insertMetrics.run(uuid(), today, 3, 8, 0, 0, 13, 'damage-control',
-    '🔴 WoW partial re-run DESTROYED Last Wk Open FC data (3:30 AM). Kyle woke up ~8:30 AM, discovered issue. All WoW deltas broken across 5 depts. Root cause: deletion too broad (Col S only, no Col A filter). 5 cron features shipped (ZipWise history search, KDP status filters, JFDI quick-add, JFDI tasks widget, JFDI auto-refresh). X/Twitter post live. Marcus Chen auth fixed. WoW recovery awaiting Kyle direction.');
+    '🔴 WoW partial re-run DESTROYED Last Wk Open FC data (3:30 AM). Kyle woke up ~8:30 AM, discovered issue. No further direction since 8:53 AM (~2 hrs). All WoW deltas broken across 5 depts. Root cause: deletion too broad (Col S only, no Col A filter). 5 cron features shipped (ZipWise history search, KDP status filters, JFDI quick-add, JFDI tasks widget, JFDI auto-refresh). X/Twitter post live. Marcus Chen auth fixed. Kyle silent since 8:53 AM — likely at Anker work or handling WoW independently.');
 }
