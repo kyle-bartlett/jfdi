@@ -143,5 +143,28 @@ function initializeOpsDb(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_activity_log_starred ON activity_log(starred);
     CREATE INDEX IF NOT EXISTS idx_activity_log_pinned ON activity_log(pinned);
     CREATE INDEX IF NOT EXISTS idx_daily_metrics_date ON daily_metrics(metric_date);
+
+    CREATE TABLE IF NOT EXISTS daily_habits (
+      id TEXT PRIMARY KEY,
+      habit_date TEXT NOT NULL,
+      habit_key TEXT NOT NULL,
+      completed INTEGER DEFAULT 0,
+      streak_count INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS achievements (
+      id TEXT PRIMARY KEY,
+      badge_key TEXT NOT NULL UNIQUE,
+      badge_name TEXT NOT NULL,
+      badge_icon TEXT DEFAULT '🏅',
+      unlocked_at TEXT DEFAULT (datetime('now')),
+      created_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_daily_habits_date ON daily_habits(habit_date);
+    CREATE INDEX IF NOT EXISTS idx_daily_habits_key ON daily_habits(habit_key);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_daily_habits_unique ON daily_habits(habit_date, habit_key);
+    CREATE INDEX IF NOT EXISTS idx_achievements_key ON achievements(badge_key);
   `);
 }

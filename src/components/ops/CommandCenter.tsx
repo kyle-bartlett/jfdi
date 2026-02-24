@@ -18,7 +18,6 @@ function AnimatedNumber({ target, duration = 1000, prefix = '', suffix = '' }: {
     const animate = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCurrent(Math.round(from + (target - from) * eased));
       if (progress < 1) {
@@ -31,6 +30,165 @@ function AnimatedNumber({ target, duration = 1000, prefix = '', suffix = '' }: {
   }, [target, duration]);
 
   return <span>{prefix}{current.toLocaleString()}{suffix}</span>;
+}
+
+// ─── Live Clock + Session Timer ────────────────────────────────────
+function LiveClock({ sessionStart }: { sessionStart: Date }) {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const elapsed = Math.floor((now.getTime() - sessionStart.getTime()) / 1000);
+  const hours = Math.floor(elapsed / 3600);
+  const mins = Math.floor((elapsed % 3600) / 60);
+  const secs = elapsed % 60;
+  const sessionStr = hours > 0
+    ? `${hours}h ${mins}m`
+    : mins > 0
+      ? `${mins}m ${secs}s`
+      : `${secs}s`;
+
+  return (
+    <div className="flex flex-col items-end gap-0.5">
+      <span className="text-sm font-mono text-foreground font-medium">
+        {now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+      </span>
+      <span className="text-[10px] text-muted-foreground">
+        Session: {sessionStr}
+      </span>
+    </div>
+  );
+}
+
+// ─── Stat Ticker ───────────────────────────────────────────────────
+function StatTicker({ data }: { data: OpsDashboardData }) {
+  const stats = [
+    `${data.totals.projects} projects tracked`,
+    `${data.totals.prospects} pipeline prospects`,
+    `${data.weeklyAgentDeploys} agent deploys this week`,
+    `$${data.pipelineValue.toLocaleString()} pipeline value`,
+    `${data.totals.ideas} ideas captured`,
+    `${data.totals.prompts} prompts in library`,
+    `${data.completionRate}% completion rate`,
+    `${data.activeAgents.length} agents running now`,
+    `${data.kyleQueuePending + data.knoxQueuePending} queue items pending`,
+  ];
+
+  const tickerContent = stats.join(' · ');
+
+  return (
+    <div className="overflow-hidden mt-4 py-2 border-t border-border/50">
+      <div className="ticker-track whitespace-nowrap">
+        <span className="text-xs text-muted-foreground px-4">{tickerContent}</span>
+        <span className="text-xs text-muted-foreground px-4">{tickerContent}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Today's Wins ──────────────────────────────────────────────────
+function TodaysWins() {
+  const [wins, setWins] = useState<{ id: string; title: string; created_at: string }[]>([]);
+  const [showInput, setShowInput] = useState(false);
+  const [winText, setWinText] = useState('');
+  const [newWinId, setNewWinId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchWins();
+  }, []);
+
+  const fetchWins = async () => {
+    try {
+      const res = await fetch('/api/ops/activity?event_type=milestone&limit=20');
+      const data = await res.json();
+      // Filter to today's wins (ones with 🏆 icon)
+      const today = new Date().toISOString().split('T')[0];
+      const todayWins = data.filter((e: { icon: string; created_at: string }) =>
+        e.icon === '🏆' && e.created_at?.startsWith(today)
+      );
+      setWins(todayWins);
+    } catch {
+      // ok
+    }
+  };
+
+  const addWin = async () => {
+    if (!winText.trim()) return;
+    try {
+      const res = await fetch('/api/ops/activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: 'milestone',
+          title: winText.trim(),
+          source: 'Kyle',
+          icon: '🏆',
+          description: 'Daily win',
+        }),
+      });
+      const newWin = await res.json();
+      setNewWinId(newWin.id);
+      setTimeout(() => setNewWinId(null), 1500);
+      setWinText('');
+      setShowInput(false);
+      fetchWins();
+    } catch {
+      // ok
+    }
+  };
+
+  return (
+    <div className="widget">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="widget-title mb-0">🏆 Today&apos;s Wins</h3>
+        <button
+          onClick={() => setShowInput(!showInput)}
+          className="w-7 h-7 flex items-center justify-center rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-sm font-bold"
+        >
+          +
+        </button>
+      </div>
+
+      {showInput && (
+        <div className="flex gap-2 mb-3">
+          <input
+            autoFocus
+            type="text"
+            value={winText}
+            onChange={(e) => setWinText(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') addWin(); if (e.key === 'Escape') setShowInput(false); }}
+            placeholder="Log a win..."
+            className="input flex-1"
+          />
+          <button onClick={addWin} className="btn btn-primary text-sm">Add</button>
+        </div>
+      )}
+
+      {wins.length === 0 ? (
+        <p className="text-sm text-muted-foreground text-center py-4">No wins logged yet today. Start crushing it! 💪</p>
+      ) : (
+        <div className="space-y-2">
+          {wins.map((win) => (
+            <div
+              key={win.id}
+              className={`flex items-center gap-2 p-2 rounded-lg bg-card border border-border ${
+                win.id === newWinId ? 'win-sparkle win-glow' : ''
+              }`}
+            >
+              <span className="text-lg">🏆</span>
+              <span className="text-sm text-foreground flex-1">{win.title}</span>
+              <span className="text-[10px] text-muted-foreground">
+                {new Date(win.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─── Mini Donut Chart ──────────────────────────────────────────────
@@ -47,8 +205,8 @@ function DonutChart({ segments, size = 120, strokeWidth = 14 }: {
     return (
       <div className="flex items-center justify-center" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#1e293b" strokeWidth={strokeWidth} />
-          <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central" fill="#64748b" fontSize="12">—</text>
+          <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="hsl(var(--border))" strokeWidth={strokeWidth} />
+          <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central" fill="hsl(var(--muted-foreground))" fontSize="12">—</text>
         </svg>
       </div>
     );
@@ -75,14 +233,13 @@ function DonutChart({ segments, size = 120, strokeWidth = 14 }: {
               strokeDashoffset={-offset}
               strokeLinecap="round"
               className="transition-all duration-700"
-              style={{ filter: 'drop-shadow(0 0 3px ' + seg.color + '40)' }}
             />
           );
         })}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-xl font-bold text-slate-100">{total}</span>
-        <span className="text-[10px] text-slate-500 uppercase tracking-wider">total</span>
+        <span className="text-xl font-bold text-foreground">{total}</span>
+        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">total</span>
       </div>
     </div>
   );
@@ -96,10 +253,10 @@ function ProgressBar({ value, max, color, label }: {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-slate-400">{label}</span>
-        <span className="text-slate-300 font-medium">{value}/{max}</span>
+        <span className="text-muted-foreground">{label}</span>
+        <span className="text-foreground font-medium">{value}/{max}</span>
       </div>
-      <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+      <div className="h-2 bg-secondary rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{ width: `${pct}%`, backgroundColor: color }}
@@ -118,7 +275,7 @@ function PipelineFunnel({ stages }: { stages: { label: string; count: number; co
         const widthPct = Math.max((stage.count / maxCount) * 100, 15);
         return (
           <div key={i} className="flex items-center gap-2">
-            <span className="text-xs text-slate-500 w-20 text-right truncate">{stage.label}</span>
+            <span className="text-xs text-muted-foreground w-20 text-right truncate">{stage.label}</span>
             <div className="flex-1 relative">
               <div
                 className="h-6 rounded-r-md flex items-center px-2 transition-all duration-700"
@@ -160,11 +317,11 @@ function MoodSelector({ currentMood, onSelect }: { currentMood: string; onSelect
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 bg-slate-800/80 border border-slate-700 rounded-lg hover:border-slate-500 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 bg-secondary border border-border rounded-lg hover:border-muted-foreground/40 transition-colors"
       >
         <span className="text-xl">{current.emoji}</span>
-        <span className="text-sm text-slate-300">{current.label}</span>
-        <svg className="w-3 h-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <span className="text-sm text-foreground">{current.label}</span>
+        <svg className="w-3 h-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -172,13 +329,13 @@ function MoodSelector({ currentMood, onSelect }: { currentMood: string; onSelect
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute top-full mt-1 left-0 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-xl p-2 min-w-[160px]">
+          <div className="absolute top-full mt-1 left-0 z-50 bg-popover border border-border rounded-lg shadow-xl p-2 min-w-[160px]">
             {MOODS.map(mood => (
               <button
                 key={mood.value}
                 onClick={() => { onSelect(mood.value); setIsOpen(false); }}
                 className={`w-full flex items-center gap-2 px-3 py-1.5 rounded text-sm transition-colors ${
-                  mood.value === currentMood ? 'bg-blue-600/20 text-blue-400' : 'text-slate-300 hover:bg-slate-700'
+                  mood.value === currentMood ? 'bg-primary/20 text-primary' : 'text-foreground hover:bg-muted'
                 }`}
               >
                 <span>{mood.emoji}</span>
@@ -193,17 +350,62 @@ function MoodSelector({ currentMood, onSelect }: { currentMood: string; onSelect
 }
 
 // ─── Quick Action Button ───────────────────────────────────────────
-function QuickAction({ icon, label, onClick, color = 'bg-slate-700 hover:bg-slate-600' }: {
+function QuickAction({ icon, label, onClick, color = 'bg-secondary hover:bg-muted' }: {
   icon: string; label: string; onClick: () => void; color?: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-1.5 p-3 rounded-xl ${color} transition-all hover:scale-105 active:scale-95 border border-slate-600/50`}
+      className={`flex flex-col items-center gap-1.5 p-3 rounded-xl ${color} transition-all hover:scale-105 active:scale-95 border border-border`}
     >
       <span className="text-xl">{icon}</span>
-      <span className="text-[10px] text-slate-300 font-medium">{label}</span>
+      <span className="text-[10px] text-muted-foreground font-medium">{label}</span>
     </button>
+  );
+}
+
+// ─── Interactive KPI Card ──────────────────────────────────────────
+function KPICard({ icon, label, value, sub, trend, trendUp, tabTarget }: {
+  icon: string;
+  label: string;
+  value: React.ReactNode;
+  sub: React.ReactNode;
+  trend?: string;
+  trendUp?: boolean;
+  tabTarget?: string;
+}) {
+  const handleClick = () => {
+    if (tabTarget) {
+      window.dispatchEvent(new CustomEvent('switch-tab', { detail: tabTarget }));
+    }
+  };
+
+  return (
+    <div
+      onClick={handleClick}
+      className={`bg-card rounded-xl border border-border p-5 transition-colors group ${
+        tabTarget ? 'cursor-pointer hover:border-primary/50 hover:bg-primary/5' : 'hover:border-muted-foreground/40'
+      }`}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-lg group-hover:scale-110 transition-transform">{icon}</span>
+        <span className="text-xs text-muted-foreground uppercase tracking-wider">{label}</span>
+        {tabTarget && (
+          <svg className="w-3 h-3 text-muted-foreground ml-auto opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        )}
+      </div>
+      <div className="text-2xl font-bold text-foreground">{value}</div>
+      <div className="flex items-center gap-2 mt-1">
+        <span className="text-xs text-muted-foreground">{sub}</span>
+        {trend && (
+          <span className={`text-xs px-1.5 py-0.5 rounded ${trendUp ? 'bg-accent/10 text-accent' : 'bg-secondary text-muted-foreground'}`}>
+            {trend}
+          </span>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -215,6 +417,7 @@ export function CommandCenter() {
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const [showQuickNote, setShowQuickNote] = useState(false);
   const [quickNote, setQuickNote] = useState('');
+  const [sessionStart] = useState(new Date());
 
   const fetchData = () => {
     fetch('/api/ops/dashboard')
@@ -230,7 +433,6 @@ export function CommandCenter() {
 
   useEffect(() => { fetchData(); }, []);
 
-  // Auto-refresh every 60 seconds
   useEffect(() => {
     const interval = setInterval(fetchData, 60000);
     return () => clearInterval(interval);
@@ -261,8 +463,8 @@ export function CommandCenter() {
     setShowQuickNote(false);
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64 text-slate-400">Booting command center...</div>;
-  if (!data) return <div className="text-slate-400">Failed to load dashboard</div>;
+  if (loading) return <div className="flex items-center justify-center h-64 text-muted-foreground">Booting command center...</div>;
+  if (!data) return <div className="text-muted-foreground">Failed to load dashboard</div>;
 
   const hour = new Date().getHours();
   const greeting = hour < 5 ? '🌙 Late night grind' : hour < 12 ? '☀️ Morning ops' : hour < 17 ? '⚡ Afternoon push' : hour < 21 ? '🔥 Evening build' : '🌙 Night shift';
@@ -273,48 +475,46 @@ export function CommandCenter() {
   const reviewProjects = data.projectsByStatus.find(s => s.status === 'Review')?.count || 0;
 
   const projectSegments = [
-    { label: 'Done', value: doneProjects, color: '#22c55e' },
-    { label: 'In Progress', value: inProgressProjects, color: '#3b82f6' },
-    { label: 'Review', value: reviewProjects, color: '#eab308' },
-    { label: 'Backlog', value: backlogProjects, color: '#64748b' },
+    { label: 'Done', value: doneProjects, color: 'hsl(158, 100%, 43%)' },
+    { label: 'In Progress', value: inProgressProjects, color: 'hsl(196, 100%, 44%)' },
+    { label: 'Review', value: reviewProjects, color: 'hsl(38, 92%, 50%)' },
+    { label: 'Backlog', value: backlogProjects, color: 'hsl(215, 20%, 50%)' },
   ];
 
   const pipelineFunnelData = [
-    { label: 'Lead', count: data.pipelineByStatus.find(s => s.status === 'Lead')?.count || 0, color: '#94a3b8' },
-    { label: 'Contacted', count: data.pipelineByStatus.find(s => s.status === 'Contacted')?.count || 0, color: '#3b82f6' },
-    { label: 'Responded', count: data.pipelineByStatus.find(s => s.status === 'Responded')?.count || 0, color: '#06b6d4' },
-    { label: 'Proposal', count: data.pipelineByStatus.find(s => s.status === 'Proposal')?.count || 0, color: '#eab308' },
-    { label: 'Negotiating', count: data.pipelineByStatus.find(s => s.status === 'Negotiating')?.count || 0, color: '#f97316' },
-    { label: 'Won', count: data.pipelineByStatus.find(s => s.status === 'Won')?.count || 0, color: '#22c55e' },
+    { label: 'Lead', count: data.pipelineByStatus.find(s => s.status === 'Lead')?.count || 0, color: 'hsl(215, 20%, 65%)' },
+    { label: 'Contacted', count: data.pipelineByStatus.find(s => s.status === 'Contacted')?.count || 0, color: 'hsl(196, 100%, 44%)' },
+    { label: 'Responded', count: data.pipelineByStatus.find(s => s.status === 'Responded')?.count || 0, color: 'hsl(188, 100%, 42%)' },
+    { label: 'Proposal', count: data.pipelineByStatus.find(s => s.status === 'Proposal')?.count || 0, color: 'hsl(38, 92%, 50%)' },
+    { label: 'Negotiating', count: data.pipelineByStatus.find(s => s.status === 'Negotiating')?.count || 0, color: 'hsl(25, 95%, 53%)' },
+    { label: 'Won', count: data.pipelineByStatus.find(s => s.status === 'Won')?.count || 0, color: 'hsl(158, 100%, 43%)' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-800 to-blue-900/30 rounded-2xl border border-slate-700 p-6">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full -translate-y-32 translate-x-32 blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-violet-500/5 rounded-full translate-y-24 -translate-x-24 blur-2xl" />
-
+      <div className="relative overflow-hidden bg-card rounded-2xl border border-border p-6">
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h2 className="text-xl font-bold text-slate-100">{greeting}</h2>
+              <h2 className="text-xl font-bold text-foreground">{greeting}</h2>
               <MoodSelector currentMood={mood} onSelect={handleMoodChange} />
             </div>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-muted-foreground">
               {data.totals.projects} projects · {data.totals.prospects} prospects · {data.weeklyAgentDeploys} agent deploys this week
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-xs text-slate-400">Live</span>
-              <span className="text-xs text-slate-500">· {timeAgo(lastRefresh.toISOString())}</span>
+            <LiveClock sessionStart={sessionStart} />
+            <div className="flex items-center gap-2 px-3 py-2 bg-secondary rounded-lg">
+              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+              <span className="text-xs text-muted-foreground">Live</span>
+              <span className="text-xs text-muted-foreground">· {timeAgo(lastRefresh.toISOString())}</span>
             </div>
             <button
               onClick={fetchData}
-              className="p-2 bg-slate-700/50 rounded-lg hover:bg-slate-600 transition-colors text-slate-400 hover:text-slate-200"
+              className="p-2 bg-secondary rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
               title="Refresh"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -323,9 +523,12 @@ export function CommandCenter() {
             </button>
           </div>
         </div>
+
+        {/* Stat Ticker */}
+        <StatTicker data={data} />
       </div>
 
-      {/* KPI Cards Row */}
+      {/* KPI Cards Row — now interactive */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <KPICard
           icon="📋"
@@ -334,6 +537,7 @@ export function CommandCenter() {
           sub={`${inProgressProjects} active`}
           trend={data.completionRate > 0 ? `${data.completionRate}% done` : undefined}
           trendUp={data.completionRate > 30}
+          tabTarget="projects"
         />
         <KPICard
           icon="🎯"
@@ -342,6 +546,7 @@ export function CommandCenter() {
           sub={<AnimatedNumber target={data.pipelineValue} prefix="$" />}
           trend="total value"
           trendUp
+          tabTarget="pipeline"
         />
         <KPICard
           icon="🤖"
@@ -350,39 +555,45 @@ export function CommandCenter() {
           sub="this week"
           trend={`${data.activeAgents.length} running`}
           trendUp={data.activeAgents.length > 0}
+          tabTarget="agents"
         />
         <KPICard
           icon="💡"
           label="Ideas"
           value={<AnimatedNumber target={data.totals.ideas} />}
           sub={`${data.ideasByStatus.find(s => s.status === 'New')?.count || 0} new`}
+          tabTarget="ideas"
         />
         <KPICard
           icon="📝"
           label="Prompts"
           value={<AnimatedNumber target={data.totals.prompts} />}
           sub="in library"
+          tabTarget="prompts"
         />
       </div>
 
+      {/* Today's Wins */}
+      <TodaysWins />
+
       {/* Quick Actions */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">⚡ Quick Actions</h3>
+      <div className="widget">
+        <h3 className="widget-title">⚡ Quick Actions</h3>
         <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
-          <QuickAction icon="📝" label="Quick Note" onClick={() => setShowQuickNote(true)} color="bg-blue-600/20 hover:bg-blue-600/30" />
+          <QuickAction icon="📝" label="Quick Note" onClick={() => setShowQuickNote(true)} color="bg-primary/10 hover:bg-primary/20" />
           <QuickAction icon="🤖" label="Deploy Agent" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'agents' }))} />
           <QuickAction icon="💡" label="New Idea" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'ideas' }))} />
           <QuickAction icon="🎯" label="Add Prospect" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'pipeline' }))} />
           <QuickAction icon="📋" label="New Project" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'projects' }))} />
           <QuickAction icon="📥" label="Kyle Queue" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'kyle' }))} />
           <QuickAction icon="🔒" label="Knox Queue" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'knox' }))} />
-          <QuickAction icon="📊" label="Timeline" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'timeline' }))} />
+          <QuickAction icon="🔥" label="Streaks" onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'streaks' }))} />
         </div>
       </div>
 
       {/* Quick Note Inline */}
       {showQuickNote && (
-        <div className="bg-blue-600/10 border border-blue-500/30 rounded-xl p-4 animate-fadeIn">
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 animate-fadeIn">
           <div className="flex gap-3">
             <span className="text-2xl">📝</span>
             <div className="flex-1">
@@ -393,11 +604,11 @@ export function CommandCenter() {
                 onChange={(e) => setQuickNote(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleQuickNote(); if (e.key === 'Escape') setShowQuickNote(false); }}
                 placeholder="Quick thought, note, or update..."
-                className="w-full px-3 py-2 text-sm bg-slate-800 border border-slate-700 rounded-lg text-slate-50 placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                className="input"
               />
             </div>
-            <button onClick={handleQuickNote} className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors">Save</button>
-            <button onClick={() => setShowQuickNote(false)} className="px-3 py-2 text-sm text-slate-400 hover:text-slate-200">✕</button>
+            <button onClick={handleQuickNote} className="btn btn-primary">Save</button>
+            <button onClick={() => setShowQuickNote(false)} className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground">✕</button>
           </div>
         </div>
       )}
@@ -405,67 +616,73 @@ export function CommandCenter() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Project Status Donut */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">📊 Project Status</h3>
+        <div className="widget">
+          <h3 className="widget-title">📊 Project Status</h3>
           <div className="flex items-center justify-center gap-6">
             <DonutChart segments={projectSegments} />
             <div className="space-y-2">
               {projectSegments.map(seg => (
                 <div key={seg.label} className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: seg.color }} />
-                  <span className="text-xs text-slate-400">{seg.label}</span>
-                  <span className="text-xs font-medium text-slate-200">{seg.value}</span>
+                  <span className="text-xs text-muted-foreground">{seg.label}</span>
+                  <span className="text-xs font-medium text-foreground">{seg.value}</span>
                 </div>
               ))}
             </div>
           </div>
           <div className="mt-4">
-            <ProgressBar value={doneProjects} max={data.totals.projects} color="#22c55e" label="Completion" />
+            <ProgressBar value={doneProjects} max={data.totals.projects} color="hsl(158, 100%, 43%)" label="Completion" />
           </div>
         </div>
 
         {/* Pipeline Funnel */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">🎯 Pipeline Funnel</h3>
+        <div className="widget">
+          <h3 className="widget-title">🎯 Pipeline Funnel</h3>
           <PipelineFunnel stages={pipelineFunnelData} />
-          <div className="mt-4 pt-3 border-t border-slate-700/50 flex justify-between text-xs text-slate-400">
+          <div className="mt-4 pt-3 border-t border-border flex justify-between text-xs text-muted-foreground">
             <span>Total Value</span>
-            <span className="text-green-400 font-medium">${data.pipelineValue.toLocaleString()}</span>
+            <span className="text-accent font-medium">${data.pipelineValue.toLocaleString()}</span>
           </div>
         </div>
 
         {/* Queue Overview */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">📥 Queues</h3>
+        <div className="widget">
+          <h3 className="widget-title">📥 Queues</h3>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
+            <div
+              className="flex items-center justify-between p-4 bg-secondary rounded-lg cursor-pointer hover:bg-muted transition-colors"
+              onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'kyle' }))}
+            >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">👤</span>
                 <div>
-                  <div className="text-sm font-medium text-slate-200">Kyle&apos;s Queue</div>
-                  <div className="text-xs text-slate-500">Items awaiting review</div>
+                  <div className="text-sm font-medium text-foreground">Kyle&apos;s Queue</div>
+                  <div className="text-xs text-muted-foreground">Items awaiting review</div>
                 </div>
               </div>
-              <div className={`text-2xl font-bold ${data.kyleQueuePending > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
+              <div className={`text-2xl font-bold ${data.kyleQueuePending > 0 ? 'text-warning' : 'text-accent'}`}>
                 <AnimatedNumber target={data.kyleQueuePending} />
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
+            <div
+              className="flex items-center justify-between p-4 bg-secondary rounded-lg cursor-pointer hover:bg-muted transition-colors"
+              onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'knox' }))}
+            >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🔒</span>
                 <div>
-                  <div className="text-sm font-medium text-slate-200">Knox&apos;s Queue</div>
-                  <div className="text-xs text-slate-500">Tasks to execute</div>
+                  <div className="text-sm font-medium text-foreground">Knox&apos;s Queue</div>
+                  <div className="text-xs text-muted-foreground">Tasks to execute</div>
                 </div>
               </div>
-              <div className={`text-2xl font-bold ${data.knoxQueuePending > 0 ? 'text-blue-400' : 'text-green-400'}`}>
+              <div className={`text-2xl font-bold ${data.knoxQueuePending > 0 ? 'text-primary' : 'text-accent'}`}>
                 <AnimatedNumber target={data.knoxQueuePending} />
               </div>
             </div>
 
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-muted-foreground">
                 {data.kyleQueuePending + data.knoxQueuePending === 0 ? '✅ All queues clear!' : `${data.kyleQueuePending + data.knoxQueuePending} items need attention`}
               </span>
             </div>
@@ -475,27 +692,27 @@ export function CommandCenter() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Active Agents */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">🤖 Active Sub-Agents</h3>
+        <div className="widget">
+          <h3 className="widget-title">🤖 Active Sub-Agents</h3>
           {data.activeAgents.length === 0 ? (
             <div className="text-center py-6">
               <span className="text-3xl mb-2 block">😴</span>
-              <p className="text-slate-500 text-sm">No agents currently running</p>
-              <p className="text-slate-600 text-xs mt-1">Deploy one from Quick Actions above</p>
+              <p className="text-muted-foreground text-sm">No agents currently running</p>
+              <p className="text-muted-foreground/60 text-xs mt-1">Deploy one from Quick Actions above</p>
             </div>
           ) : (
             <div className="space-y-3">
               {data.activeAgents.map((a) => (
-                <div key={a.id} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+                <div key={a.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
                   <div className="flex items-center gap-3">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${agentColors[a.agent_name] || 'bg-slate-600 text-slate-300'}`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${agentColors[a.agent_name] || 'bg-secondary text-muted-foreground'}`}>
                       {a.agent_name}
                     </span>
-                    <span className="text-sm text-slate-200">{a.task_description}</span>
+                    <span className="text-sm text-foreground">{a.task_description}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs text-slate-400">{timeAgo(a.deployed_at)}</span>
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                    <span className="text-xs text-muted-foreground">{timeAgo(a.deployed_at)}</span>
                   </div>
                 </div>
               ))}
@@ -504,22 +721,22 @@ export function CommandCenter() {
         </div>
 
         {/* P0 Priorities */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">🔥 Top Priorities (P0)</h3>
+        <div className="widget">
+          <h3 className="widget-title">🔥 Top Priorities (P0)</h3>
           {data.p0Projects.length === 0 ? (
             <div className="text-center py-6">
               <span className="text-3xl mb-2 block">🎉</span>
-              <p className="text-slate-500 text-sm">No P0 items — nice!</p>
+              <p className="text-muted-foreground text-sm">No P0 items — nice!</p>
             </div>
           ) : (
             <div className="space-y-3">
               {data.p0Projects.map((p) => (
-                <div key={p.id} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+                <div key={p.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
                   <div className="flex items-center gap-3">
                     <PriorityBadge priority={p.priority} />
-                    <span className="text-sm text-slate-200">{p.title}</span>
+                    <span className="text-sm text-foreground">{p.title}</span>
                   </div>
-                  <span className="text-xs text-slate-400 bg-slate-700 px-2 py-1 rounded">{p.status}</span>
+                  <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">{p.status}</span>
                 </div>
               ))}
             </div>
@@ -527,49 +744,21 @@ export function CommandCenter() {
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">📈 Recent Projects</h3>
+      {/* Recent Projects */}
+      <div className="widget">
+        <h3 className="widget-title">📈 Recent Projects</h3>
         <div className="space-y-2">
           {data.recentProjects.map((p) => (
-            <div key={p.id} className="flex items-center justify-between py-2 border-b border-slate-700/50 last:border-0">
+            <div key={p.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
               <div className="flex items-center gap-3">
                 <PriorityBadge priority={p.priority} />
-                <span className="text-sm text-slate-200">{p.title}</span>
-                <span className="text-xs text-slate-500 bg-slate-700/50 px-2 py-0.5 rounded">{p.status}</span>
+                <span className="text-sm text-foreground">{p.title}</span>
+                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">{p.status}</span>
               </div>
-              <span className="text-xs text-slate-500">{timeAgo(p.updated_at)}</span>
+              <span className="text-xs text-muted-foreground">{timeAgo(p.updated_at)}</span>
             </div>
           ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── KPI Card Component ────────────────────────────────────────────
-function KPICard({ icon, label, value, sub, trend, trendUp }: {
-  icon: string;
-  label: string;
-  value: React.ReactNode;
-  sub: React.ReactNode;
-  trend?: string;
-  trendUp?: boolean;
-}) {
-  return (
-    <div className="bg-slate-800 rounded-xl border border-slate-700 p-5 hover:border-slate-600 transition-colors group">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-lg group-hover:scale-110 transition-transform">{icon}</span>
-        <span className="text-xs text-slate-400 uppercase tracking-wider">{label}</span>
-      </div>
-      <div className="text-2xl font-bold text-slate-50">{value}</div>
-      <div className="flex items-center gap-2 mt-1">
-        <span className="text-xs text-slate-500">{sub}</span>
-        {trend && (
-          <span className={`text-xs px-1.5 py-0.5 rounded ${trendUp ? 'bg-green-500/10 text-green-400' : 'bg-slate-700 text-slate-500'}`}>
-            {trend}
-          </span>
-        )}
       </div>
     </div>
   );

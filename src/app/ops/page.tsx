@@ -9,10 +9,12 @@ import { PromptLibrary } from '@/components/ops/PromptLibrary';
 import { QueueBoard } from '@/components/ops/QueueBoard';
 import { AgentTasks } from '@/components/ops/AgentTasks';
 import { ActivityTimeline } from '@/components/ops/ActivityTimeline';
+import { StreakTracker } from '@/components/ops/StreakTracker';
 
 const TABS = [
   { id: 'command', label: '🏠 Command Center' },
   { id: 'timeline', label: '⏱️ Activity' },
+  { id: 'streaks', label: '🔥 Streaks' },
   { id: 'projects', label: '📋 Projects' },
   { id: 'ideas', label: '💡 Ideas' },
   { id: 'pipeline', label: '🎯 Pipeline' },
@@ -64,6 +66,7 @@ export default function OpsPage() {
       <div>
         {activeTab === 'command' && <CommandCenter />}
         {activeTab === 'timeline' && <ActivityTimeline />}
+        {activeTab === 'streaks' && <StreakTracker />}
         {activeTab === 'projects' && <ProjectsBoard />}
         {activeTab === 'ideas' && <IdeasBoard />}
         {activeTab === 'pipeline' && <PipelineBoard />}
