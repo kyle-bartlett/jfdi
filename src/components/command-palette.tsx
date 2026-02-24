@@ -28,12 +28,51 @@ const PAGES: SearchResult[] = [
   { id: "page-automations", type: "page", title: "Automations", icon: "🤖", href: "/automations" },
 ];
 
+// Quick-create command prefixes
+const CREATE_COMMANDS: Record<
+  string,
+  { label: string; icon: string; endpoint: string; bodyKey: string; successMsg: string }
+> = {
+  "/task": {
+    label: "New Task",
+    icon: "✏️",
+    endpoint: "/api/tasks",
+    bodyKey: "title",
+    successMsg: "Task created",
+  },
+  "/reminder": {
+    label: "New Reminder",
+    icon: "🔔",
+    endpoint: "/api/reminders",
+    bodyKey: "title",
+    successMsg: "Reminder created",
+  },
+  "/note": {
+    label: "Quick Note",
+    icon: "📝",
+    endpoint: "/api/knowledge",
+    bodyKey: "title",
+    successMsg: "Note saved",
+  },
+};
+
+function detectCreateCommand(q: string): { cmd: (typeof CREATE_COMMANDS)[string]; text: string } | null {
+  const lower = q.toLowerCase();
+  for (const [prefix, cmd] of Object.entries(CREATE_COMMANDS)) {
+    if (lower.startsWith(prefix + " ") && q.length > prefix.length + 1) {
+      return { cmd, text: q.slice(prefix.length + 1).trim() };
+    }
+  }
+  return null;
+}
+
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [creating, setCreating] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -72,6 +111,28 @@ export function CommandPalette() {
     if (!q) {
       setResults(PAGES);
       setSelectedIndex(0);
+      return;
+    }
+
+    // Show create command hints when user types "/" alone
+    if (q === "/") {
+      const cmdResults: SearchResult[] = Object.entries(CREATE_COMMANDS).map(([prefix, cmd]) => ({
+        id: `cmd-${prefix}`,
+        type: "page" as const,
+        title: `${prefix} [text]`,
+        subtitle: cmd.label,
+        icon: cmd.icon,
+        href: "#",
+      }));
+      setResults(cmdResults);
+      setSelectedIndex(0);
+      return;
+    }
+
+    // If a create command is active, don't search — just show the create UI
+    if (detectCreateCommand(query)) {
+      setResults([]);
+      setLoading(false);
       return;
     }
 
@@ -136,6 +197,38 @@ export function CommandPalette() {
     [close, router]
   );
 
+  const handleQuickCreate = useCallback(async () => {
+    const match = detectCreateCommand(query);
+    if (!match || !match.text) return;
+    setCreating(true);
+    try {
+      const body: Record<string, string> = { [match.cmd.bodyKey]: match.text };
+      // Add sensible defaults
+      if (match.cmd.endpoint === "/api/tasks") {
+        body.priority = "medium";
+        body.status = "todo";
+      } else if (match.cmd.endpoint === "/api/reminders") {
+        body.priority = "medium";
+        body.category = "personal";
+      }
+      const res = await fetch(match.cmd.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error("Failed to create");
+      close();
+      // Brief visual feedback via the query itself
+      setQuery(`✓ ${match.cmd.successMsg}`);
+      setTimeout(close, 600);
+    } catch {
+      setQuery(`✗ Failed to create`);
+      setTimeout(() => setQuery(query), 1500);
+    } finally {
+      setCreating(false);
+    }
+  }, [query, close]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     switch (e.key) {
       case "ArrowDown":
@@ -148,7 +241,10 @@ export function CommandPalette() {
         break;
       case "Enter":
         e.preventDefault();
-        if (results[selectedIndex]) {
+        // Check if it's a quick-create command first
+        if (detectCreateCommand(query)) {
+          handleQuickCreate();
+        } else if (results[selectedIndex]) {
           navigate(results[selectedIndex]);
         }
         break;
@@ -212,13 +308,36 @@ export function CommandPalette() {
             </kbd>
           </div>
 
+          {/* Quick-create preview */}
+          {(() => {
+            const match = detectCreateCommand(query);
+            if (!match) return null;
+            return (
+              <div className="px-4 py-3 border-b border-border bg-primary/5">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">{match.cmd.icon}</span>
+                  <span className="text-xs font-medium text-primary">{match.cmd.label}</span>
+                  <span className="text-xs text-muted-foreground">→</span>
+                  <span className="text-sm font-medium truncate">{match.text}</span>
+                  <span className="ml-auto">
+                    {creating ? (
+                      <span className="text-xs text-muted-foreground animate-pulse">Creating...</span>
+                    ) : (
+                      <kbd className="text-[10px] text-muted-foreground/60 bg-muted px-1.5 py-0.5 rounded">↵ Create</kbd>
+                    )}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Results */}
           <div ref={listRef} className="max-h-72 overflow-y-auto py-1">
-            {results.length === 0 ? (
+            {results.length === 0 && !detectCreateCommand(query) ? (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
                 No results found
               </div>
-            ) : (
+            ) : results.length === 0 ? null : (
               results.map((result, i) => {
                 const badge = getTypeBadge(result.type);
                 return (
@@ -266,10 +385,11 @@ export function CommandPalette() {
           </div>
 
           {/* Footer hint */}
-          <div className="px-4 py-2 border-t border-border flex items-center gap-4 text-[10px] text-muted-foreground/50">
+          <div className="px-4 py-2 border-t border-border flex items-center gap-4 text-[10px] text-muted-foreground/50 flex-wrap">
             <span>↑↓ Navigate</span>
             <span>↵ Open</span>
             <span>ESC Close</span>
+            <span className="border-l border-border/50 pl-4">/task · /reminder · /note to quick-create</span>
           </div>
         </div>
       </div>
