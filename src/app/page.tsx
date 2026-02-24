@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { PrioritiesWidget } from "@/components/dashboard-widgets/priorities-widget";
 import { TasksWidget } from "@/components/dashboard-widgets/tasks-widget";
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
@@ -121,22 +121,62 @@ interface DashboardData {
 export default function Dashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
 
-  const loadData = useCallback(async () => {
+  const REFRESH_INTERVAL_MS = 60_000; // 60 seconds
+
+  const loadData = useCallback(async (silent = false) => {
+    if (!silent) setRefreshing(true);
     try {
       const res = await fetch("/api/dashboard");
       const json = await res.json();
       setData(json);
+      setLastRefresh(new Date());
     } catch {
-      toast("Failed to load dashboard", "error");
+      if (!silent) toast("Failed to load dashboard", "error");
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   }, [toast]);
 
   useEffect(() => {
     loadData();
+  }, [loadData]);
+
+  // Tick the "last refresh" label every 10s so it stays accurate
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setTick((n) => n + 1), 10_000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Auto-refresh: poll every 60s, pause when tab is hidden
+  useEffect(() => {
+    const startTimer = () => {
+      if (refreshTimer.current) clearInterval(refreshTimer.current);
+      refreshTimer.current = setInterval(() => loadData(true), REFRESH_INTERVAL_MS);
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (refreshTimer.current) { clearInterval(refreshTimer.current); refreshTimer.current = null; }
+      } else {
+        loadData(true); // Refresh immediately on tab focus
+        startTimer();
+      }
+    };
+
+    startTimer();
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      if (refreshTimer.current) clearInterval(refreshTimer.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [loadData]);
 
   const today = new Date().toLocaleDateString("en-US", {
@@ -243,7 +283,20 @@ export default function Dashboard() {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">Good {getTimeOfDay()}, Kyle</h1>
-          <p className="text-muted-foreground mt-1">{today}</p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-muted-foreground">{today}</p>
+            <button
+              onClick={() => loadData()}
+              disabled={refreshing}
+              className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+              title="Refresh dashboard"
+            >
+              <span className={`inline-block ${refreshing ? "animate-spin" : ""}`}>↻</span>
+              {lastRefresh && (
+                <span>{formatLastRefresh(lastRefresh)}</span>
+              )}
+            </button>
+          </div>
         </div>
         {data?.weather && <WeatherWidget weather={data.weather} />}
       </div>
@@ -318,4 +371,13 @@ function getTimeOfDay() {
   if (hour < 12) return "morning";
   if (hour < 17) return "afternoon";
   return "evening";
+}
+
+function formatLastRefresh(date: Date): string {
+  const now = new Date();
+  const diffSec = Math.floor((now.getTime() - date.getTime()) / 1000);
+  if (diffSec < 5) return "just now";
+  if (diffSec < 60) return `${diffSec}s ago`;
+  const diffMin = Math.floor(diffSec / 60);
+  return `${diffMin}m ago`;
 }
