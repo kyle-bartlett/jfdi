@@ -48,6 +48,9 @@ export async function GET() {
     return d <= todayStr; // due today or overdue
   });
 
+  // Build project name lookup for task context
+  const projectNameMap = new Map(allProjects.map((p) => [p.id, p.name]));
+
   // Relationships
   const allRelationships = await db.select().from(relationships).all();
   const needsAttention = allRelationships
@@ -198,6 +201,7 @@ export async function GET() {
         id: t.id,
         title: t.title,
         project_id: t.project_id,
+        project_name: t.project_id ? projectNameMap.get(t.project_id) || null : null,
         status: t.status,
         priority: t.priority,
         due_date: t.due_date,

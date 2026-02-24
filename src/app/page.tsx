@@ -33,6 +33,7 @@ interface TaskItem {
   id: string;
   title: string;
   project_id: string | null;
+  project_name: string | null;
   status: string;
   priority: string;
   due_date: string | null;
@@ -203,6 +204,24 @@ export default function Dashboard() {
     }
   };
 
+  const completeAllTasks = async (ids: string[]) => {
+    try {
+      await Promise.all(
+        ids.map((id) =>
+          fetch(`/api/tasks?id=${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "done" }),
+          })
+        )
+      );
+      toast(`${ids.length} tasks completed`);
+      await loadData();
+    } catch {
+      toast("Failed to complete tasks", "error");
+    }
+  };
+
   const markContacted = async (id: string) => {
     try {
       await fetch(`/api/relationships?id=${id}`, {
@@ -250,6 +269,7 @@ export default function Dashboard() {
             items={data?.tasks.items || []}
             todayCount={data?.tasks.today ?? 0}
             onComplete={completeTask}
+            onCompleteAll={completeAllTasks}
             onQuickAdd={quickAddTask}
           />
 
