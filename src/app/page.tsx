@@ -262,6 +262,25 @@ export default function Dashboard() {
     }
   };
 
+  const snoozeTask = async (id: string, newDate: string) => {
+    try {
+      await fetch(`/api/tasks?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ due_date: newDate }),
+      });
+      const formatted = new Date(newDate).toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+      toast(`Task snoozed to ${formatted}`);
+      await loadData();
+    } catch {
+      toast("Failed to snooze task", "error");
+    }
+  };
+
   const markContacted = async (id: string) => {
     try {
       await fetch(`/api/relationships?id=${id}`, {
@@ -324,6 +343,7 @@ export default function Dashboard() {
             onComplete={completeTask}
             onCompleteAll={completeAllTasks}
             onQuickAdd={quickAddTask}
+            onSnooze={snoozeTask}
           />
 
           <CalendarWidget events={data?.calendar || []} />

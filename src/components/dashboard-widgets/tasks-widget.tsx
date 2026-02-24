@@ -19,6 +19,64 @@ interface Props {
   onComplete?: (id: string) => void;
   onCompleteAll?: (ids: string[]) => Promise<void>;
   onQuickAdd?: (title: string) => Promise<void>;
+  onSnooze?: (id: string, newDate: string) => void;
+}
+
+function getSnoozeDate(option: 'tomorrow' | 'next-monday' | 'next-week'): string {
+  const now = new Date();
+  const target = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  switch (option) {
+    case 'tomorrow':
+      target.setDate(target.getDate() + 1);
+      break;
+    case 'next-monday': {
+      const daysUntilMonday = (8 - target.getDay()) % 7 || 7;
+      target.setDate(target.getDate() + daysUntilMonday);
+      break;
+    }
+    case 'next-week':
+      target.setDate(target.getDate() + 7);
+      break;
+  }
+  return target.toISOString();
+}
+
+function SnoozeButton({ taskId, onSnooze }: { taskId: string; onSnooze: (id: string, newDate: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const pick = (option: 'tomorrow' | 'next-monday' | 'next-week') => {
+    onSnooze(taskId, getSnoozeDate(option));
+    setOpen(false);
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
+        className="opacity-0 group-hover:opacity-100 w-5 h-5 rounded flex items-center justify-center text-[11px] text-muted-foreground hover:text-primary hover:bg-muted transition-all flex-shrink-0"
+        title="Snooze task"
+      >
+        🕐
+      </button>
+      {open && (
+        <div className="absolute right-0 top-6 z-50 bg-popover border border-border rounded-md shadow-md py-1 min-w-[120px]">
+          <button onClick={() => pick('tomorrow')} className="w-full text-left px-3 py-1 text-xs hover:bg-muted transition-colors">Tomorrow</button>
+          <button onClick={() => pick('next-monday')} className="w-full text-left px-3 py-1 text-xs hover:bg-muted transition-colors">Next Monday</button>
+          <button onClick={() => pick('next-week')} className="w-full text-left px-3 py-1 text-xs hover:bg-muted transition-colors">Next Week</button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function isOverdue(dateStr: string | null): boolean {
@@ -31,7 +89,7 @@ function isOverdue(dateStr: string | null): boolean {
   return taskDate < today;
 }
 
-export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd }: Props) {
+export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd, onSnooze }: Props) {
   const [adding, setAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -147,6 +205,9 @@ export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQu
                   )}
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
+                  {onSnooze && (
+                    <SnoozeButton taskId={t.id} onSnooze={onSnooze} />
+                  )}
                   {overdue && t.due_date && (
                     <span className="text-[9px] text-destructive font-medium">
                       {formatDaysOverdue(t.due_date)}
