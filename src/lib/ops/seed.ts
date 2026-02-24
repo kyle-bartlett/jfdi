@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-24 10:59 AM CT
+  // Last updated: 2026-02-24 11:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -18,7 +18,7 @@ export function seedOpsIfEmpty() {
     { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Quick-Create commands in ⌘K palette, collapsible sections, Inline Quick-Add Task from 10K ft view (2/24 5:23 AM cron), Enhanced Dashboard Tasks Widget (2/24 7:23 AM cron — project context, overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s with live "last updated" indicator + tab visibility optimization (2/24 9:24 AM cron).' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Quick-Create commands in ⌘K palette, collapsible sections, Inline Quick-Add Task from 10K ft view (2/24 5:23 AM cron), Enhanced Dashboard Tasks Widget (2/24 7:23 AM cron — project context, overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s with live "last updated" indicator + tab visibility optimization (2/24 9:24 AM cron), Inline Task Snooze — reschedule tasks with one click via Tomorrow/Monday/Next Week dropdown (2/24 11:24 AM cron).' },
     { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'In Progress', description: 'Anker-C2W Charging CPFR dashboard at c2.bartlettlabs.io. Live with mirror sheet. Dynamic columns, discrepancy detection, accept/reject. CSV Export (⌘E), Jump-to-Week, Discrepancy Filter, Inventory Risk Alerts, Dashboard Keyboard Shortcuts (1-5 categories, d/w/r/?), Active Filter Summary Bar with one-click Clear All (2/22 cron). Mirror sync every 2h.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'AI agent for Lark/Feishu — deployed on Fly.io (larkagentx.fly.dev). AI proxy bridge via Cloudflare Tunnel. Needs: Desktop Electron, iOS, professional UI overhaul. Will be shared with Anker team.' },
     { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ OVERDUE (was due 2/21). Management-assigned. 4-session curriculum written, AI Readiness Survey created. Knox Bot added to training group. Still needs Kyle to review + schedule sessions.' },
@@ -28,7 +28,7 @@ export function seedOpsIfEmpty() {
 
     // P2 — Important, not urgent
     { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 3). STEALTH CRITICAL.' },
-    { title: 'WoW Forecast Automation', priority: 'P2', status: 'Blocked', description: '🔴 DATA BROKEN (2/24 ~8:48 AM). Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk → Last Wk shows $0 → ALL WoW deltas meaningless across ALL 5 depts. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM, no further direction since 8:53 AM. DO NOT send Lark notifications. CRITICAL LESSON: Filter deletions by BOTH Col A AND Col S. NEVER delete by data type alone. 2 hours since Kyle last engaged on this.' },
+    { title: 'WoW Forecast Automation', priority: 'P2', status: 'Blocked', description: '🔴 DATA BROKEN (2/24 ~8:48 AM). Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk → Last Wk shows $0 → ALL WoW deltas meaningless across ALL 5 depts. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM, no further direction since 8:53 AM (~3 hrs ago). DO NOT send Lark notifications. CRITICAL LESSON: Filter deletions by BOTH Col A AND Col S. NEVER delete by data type alone. Kyle silent since 8:53 AM — likely at Anker work.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Full book pipeline (fiction, self-help, journals, planners, puzzles, cookbooks — ANY type). Status Filter Tabs on Auto-Factory (2/24 cron). Approve All Remaining in review queue. Repo renamed from Coloring_Books → Books. 6 comprehensive test prompts delivered. NOT a coloring book app.' },
     { title: 'Alloy Email Automation', priority: 'P2', status: 'In Progress', description: 'Anker email automation — web scraper works (pulls weekly report), data processing fails. Kyle says "way easier than the WoW file." Trash data processing script, Knox automates the rest.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 48+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 10:59 AM.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 48+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 11:59 AM.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -111,11 +111,11 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-24 10:59 AM CT
+  // Last updated: 2026-02-24 11:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
-    { queue_type: 'kyle', title: '🔴 WoW DATA BROKEN — Last Wk Open FC destroyed (2/24 ~8:48 AM)', priority: 'P0', requested_by: 'Knox', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk now shows $0.00/0 units → ALL WoW deltas broken. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM. No further direction since 8:53 AM (~2 hrs ago). DO NOT send Lark notifications.' },
+    { queue_type: 'kyle', title: '🔴 WoW DATA BROKEN — Last Wk Open FC destroyed (2/24 ~8:48 AM)', priority: 'P0', requested_by: 'Knox', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk now shows $0.00/0 units → ALL WoW deltas broken. Need to re-pull Week 07 Open FC as Last Wk. Kyle discovered ~8:30 AM. No further direction since 8:53 AM (~3 hrs ago). DO NOT send Lark notifications.' },
     { queue_type: 'kyle', title: '⚠️ Schedule Lark Training sessions — OVERDUE (was 2/21)', priority: 'P0', requested_by: 'Knox', description: 'Management-assigned. Curriculum written, AI Readiness Survey created. Knox Bot in training group. Kyle needs to review + schedule sessions. OVERDUE.' },
     { queue_type: 'kyle', title: 'Fix bartlettlabs.io build error', priority: 'P0', requested_by: 'Kyle', description: 'Website has a build error from 2 AM redesign. Kyle is fixing. LinkedIn alignment ON HOLD until website finalized.' },
     { queue_type: 'kyle', title: 'Finish ZipWise — CLIENTS WAITING', priority: 'P0', requested_by: 'Kyle', description: 'ZipWise has clients willing to test it live. Needs finishing. Supabase redirect URL still blocking auth flow.' },
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/24)
-  // Last updated: 2026-02-24 10:59 AM CT
+  // Last updated: 2026-02-24 11:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -196,6 +196,7 @@ export function seedOpsIfEmpty() {
     { agent_name: 'Stack', task_description: 'JFDI Inline Quick-Add Task from 10K ft View (cron, 2/24 5:23 AM)', status: 'Completed', result_summary: '"+" button on project cards in list view. Type task title → Enter to add. No navigation needed. 2-second task creation vs 4+ clicks. Deployed to Vercel.' },
     { agent_name: 'Stack', task_description: 'JFDI Enhanced Dashboard Tasks Widget (cron, 2/24 7:23 AM)', status: 'Completed', result_summary: 'Project context labels under each task. Overdue highlighting (red + "Xd late" badge). Overdue count in header. Complete All batch action. Tasks auto-sorted: overdue first. Deployed to Vercel.' },
     { agent_name: 'Stack', task_description: 'JFDI Dashboard Auto-Refresh every 60s (cron, 2/24 9:24 AM)', status: 'Completed', result_summary: 'Auto-refresh every 60s. Tab visibility optimization (pauses when hidden, refreshes on focus). Live "last updated" indicator (just now/23s ago/1m ago). Manual ↻ button with spin animation. Silent error handling. Deployed to Vercel.' },
+    { agent_name: 'Stack', task_description: 'JFDI Inline Task Snooze — Reschedule with One Click (cron, 2/24 11:24 AM)', status: 'Completed', result_summary: 'Clock icon dropdown with Tomorrow/Monday/Next Week options. Smart date calculation. Instant reschedule via new /api/tasks/snooze endpoint. Task disappears from today\'s view after snooze. Critical for morning triage — 2 clicks vs 6+ clicks. Deployed to Vercel.' },
 
     // 2/24 morning session (~8:30-8:53 AM) — Kyle woke up
     { agent_name: 'Knox', task_description: 'X/Twitter social media post (2/24 8:29 AM)', status: 'Completed', result_summary: 'Posted: "If your team needs a tutorial to use the AI, the AI is solving the wrong problem." LinkedIn Bartlett Labs needs re-auth.' },
@@ -223,7 +224,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-24 10:59 AM CT
+  // Last updated: 2026-02-24 11:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -262,13 +263,15 @@ export function seedOpsIfEmpty() {
     { event_type: 'agent_complete', title: 'JFDI Enhanced Dashboard Tasks Widget (cron, 2/24 7:23 AM)', description: 'Project context labels, overdue highlighting (red + "Xd late" badge), Complete All batch action. Tasks auto-sorted overdue-first.', source: 'Stack (cron)', icon: '📋' },
     { event_type: 'agent_complete', title: 'JFDI Dashboard Auto-Refresh every 60s (cron, 2/24 9:24 AM)', description: 'Auto-refresh data every 60s. Tab visibility optimization (pauses when hidden). Live "last updated" indicator. Manual ↻ with spin animation.', source: 'Stack (cron)', icon: '🔄' },
 
+    { event_type: 'agent_complete', title: 'JFDI Inline Task Snooze (cron, 2/24 11:24 AM)', description: 'Clock icon dropdown: Tomorrow/Monday/Next Week. Smart date calc. New /api/tasks/snooze endpoint. 2 clicks to reschedule vs 6+. Critical for morning task triage.', source: 'Stack (cron)', icon: '⏰' },
+
     // 2/24 morning — Kyle woke up, WoW crisis discovered
     { event_type: 'system', title: '🔴 WoW DATA BROKEN — Kyle discovered 8:30 AM (2/24)', description: 'Knox re-run at 3:30 AM deleted ALL Open FC rows (Current + Last Wk) instead of just Current Wk. Last Wk shows $0.00 / 0 units → ALL WoW deltas meaningless across 5 depts. Root cause: deletion filtered by Col S only without Col A filter. Kyle: "Stop guessing or you\'re gonna really piss me off." NEW RULES: 1) Filter by BOTH Col A + Col S, 2) Listen before diagnosing, 3) Last Wk is sacred in partial re-runs.', source: 'Knox', icon: '🔴' },
     { event_type: 'agent_complete', title: 'X/Twitter post live (2/24 8:29 AM)', description: '"If your team needs a tutorial to use the AI, the AI is solving the wrong problem." LinkedIn Bartlett Labs needs re-auth.', source: 'Knox (cron)', icon: '🐦' },
     { event_type: 'system', title: 'Marcus Chen LinkedIn session confirmed live (2/24 ~8:42 AM)', description: 'Kyle manually logged Marcus into Chrome. Knox initially snapshotted wrong browser profile. Kyle confirmed: "Dude I am looking at the screen. You are logged in as marcus."', source: 'Knox', icon: '👤' },
 
     // Operational stats
-    { event_type: 'milestone', title: '78+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. 6 features shipped today alone (2/24).', source: 'Knox', icon: '🤖' },
+    { event_type: 'milestone', title: '79+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. 7 features shipped today alone (2/24).', source: 'Knox', icon: '🤖' },
     { event_type: 'milestone', title: '14 days operational', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW automation proven but partial re-run broke data (2/24). Lesson learned: use existing scripts, filter deletions carefully.', source: 'Knox', icon: '🏆' },
   ];
 
@@ -280,7 +283,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-24 10:59 AM CT
+  // Last updated: 2026-02-24 11:59 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -307,5 +310,5 @@ export function seedOpsIfEmpty() {
 
   // 2/24 (today) — WoW re-run BROKE DATA + 5 cron features + KDP test prompts
   insertMetrics.run(uuid(), today, 3, 8, 0, 0, 13, 'damage-control',
-    '🔴 WoW partial re-run DESTROYED Last Wk Open FC data (3:30 AM). Kyle woke up ~8:30 AM, discovered issue. No further direction since 8:53 AM (~2 hrs). All WoW deltas broken across 5 depts. Root cause: deletion too broad (Col S only, no Col A filter). 5 cron features shipped (ZipWise history search, KDP status filters, JFDI quick-add, JFDI tasks widget, JFDI auto-refresh). X/Twitter post live. Marcus Chen auth fixed. Kyle silent since 8:53 AM — likely at Anker work or handling WoW independently.');
+    '🔴 WoW partial re-run DESTROYED Last Wk Open FC data (3:30 AM). Kyle woke up ~8:30 AM, discovered issue. No further direction since 8:53 AM (~3 hrs). All WoW deltas broken across 5 depts. Root cause: deletion too broad (Col S only, no Col A filter). 7 cron features shipped (ZipWise history search, KDP status filters, JFDI quick-add, JFDI tasks widget, JFDI auto-refresh, JFDI task snooze). X/Twitter post live. Marcus Chen auth fixed. Kyle silent since 8:53 AM — likely at Anker work.');
 }
