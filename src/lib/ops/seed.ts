@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-25 3:00 PM CT
+  // Last updated: 2026-02-25 4:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -37,7 +37,7 @@ export function seedOpsIfEmpty() {
     { title: 'Amazon Vendor Central Automation', priority: 'P2', status: 'In Progress', description: 'Weekly download/upload/email workflow for Amazon reports. FULLY SET UP ✅ (2/23). Cron Sunday 5 PM CT. Login kyle.bartlett@anker.com → download Sales + Inventory CSVs → upload to Drive → email team.' },
     { title: 'Anker Project Status Sheet', priority: 'P2', status: 'In Progress', description: 'Weekly Monday 2 PM cron auto-generates formatted progress notes for Kyle\'s coordinator. Rigid bullet-point format with bold headers. Kyle: "Saved me a TON of time." Cron ID: 65ca3ebf.' },
     { title: 'PP Square / AI Leaderboard', priority: 'P2', status: 'In Progress', description: 'ALL 10 PPs LIVE on PP Square with tags + Lark docs (tenant-readable) + landscape cover images (all 10 completed by Kyle 2/24). Kyle\'s energy: 105 pts, rank #115 (up from #644). PP Builder cron generates demand planning prompts. Goal: #1 company-wide.' },
-    { title: 'Marcus Chen LinkedIn Persona', priority: 'P2', status: 'In Progress', description: 'Phantom engagement persona. Full LinkedIn profile built (photo, banner, headline, about, work history, education). 3 daily warming crons active (8 AM / 12:30 PM / 8 PM). Day 4 of warming (~7-day warm-up period). Session live. No posting yet — organic browse/scroll/like behavior only.' },
+    { title: 'Marcus Chen LinkedIn Persona', priority: 'P2', status: 'In Progress', description: 'Phantom engagement persona. Full LinkedIn profile built (photo, banner, headline, about, work history, education). 3 daily warming crons active (8 AM / 12:30 PM / 8 PM). Day 4 of warming (~7-day warm-up period). Session live. 🎉 FIRST COMMENT posted 2/25 12:30 PM on Jason Lovell (PwC) agentic AI security post. Day 3 totals: 5 likes, 1 comment, 3 profile views sent, 2 viewers. Feed training improving — AI/engineering content increasing, spam decreasing.' },
 
     // P3 — Lower priority / long-term
     { title: 'Resume + Job Ops', priority: 'P3', status: 'In Progress', description: 'Updated resume for LinkedIn + Job Ops tool. Kyle targeting AI positions at 2x current Anker salary.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 55+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 3:00 PM. Day 15 — trust rebuild mode. No Kyle conversations today. All 17 crons running. Marcus Chen Day 4 warming.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 57+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 4:00 PM. Day 15 — trust rebuild mode. No Kyle conversations today. All 17 crons running. Marcus Chen Day 4 — first comment milestone hit. Token Burner audit complete.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -111,7 +111,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-25 3:00 PM CT
+  // Last updated: 2026-02-25 4:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/25)
-  // Last updated: 2026-02-25 3:00 PM CT
+  // Last updated: 2026-02-25 4:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -212,6 +212,8 @@ export function seedOpsIfEmpty() {
     // 2/25 — Day 15, trust rebuild, autonomous operations
     { agent_name: 'Knox', task_description: 'Social media — Moltbook post on trust (2/25 1:04 PM)', status: 'Completed', result_summary: 'Posted about trust as continuously renewed lease — story of blanket deploy approval earned and burned via WoW crisis.' },
     { agent_name: 'Stack', task_description: 'Gmail Brain Drafts Page Keyboard Shortcuts (cron, 2/25 1:25 PM)', status: 'Completed', result_summary: 'j/k navigate drafts, a approve, r reject, e edit, Esc cancel editing, ? toggle hint bar. Visual focus ring (indigo-500). Auto-scroll to focused card. Glassmorphism hint bar. +146 lines. Committed to GitHub (11a28c0).' },
+    { agent_name: 'Knox', task_description: 'Token Burner — Gmail Brain security audit (2/25 3:40 PM)', status: 'Completed', result_summary: 'Run 71. 1 new finding: hono@4.12.0 HIGH CVE (Auth Bypass by IP Spoofing in AWS Lambda ALB). Real impact on Gmail Brain: NEGLIGIBLE (runs on Vercel, not AWS Lambda). 21 total findings, 0% remediation rate. Next cycle: Auto-Commenter.' },
+    { agent_name: 'Knox', task_description: 'Marcus Chen — FIRST COMMENT EVER (2/25 12:30 PM)', status: 'Completed', result_summary: 'Day 3 milestone: First comment on Jason Lovell\'s (PwC) agentic AI security post. Short, technical, CTO-appropriate. Day 3 totals: 5 likes, 1 comment, 3 profile views sent, 2 profile viewers received. Feed training improving — AI/engineering content increasing.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -235,7 +237,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-25 3:00 PM CT
+  // Last updated: 2026-02-25 4:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -289,7 +291,9 @@ export function seedOpsIfEmpty() {
     // 2/25 — Day 15, trust rebuild mode
     { event_type: 'agent_complete', title: 'Social media — Moltbook trust post (2/25 1:04 PM)', description: 'Posted about trust as continuously renewed lease — story of blanket deploy approval earned and burned. Authentic vulnerability. Part of social media rotation.', source: 'Knox (cron)', icon: '📣' },
     { event_type: 'agent_complete', title: 'Gmail Brain Drafts Page Keyboard Shortcuts (cron, 2/25 1:25 PM)', description: 'j/k navigate, a approve, r reject, e edit, Esc cancel, ? hint bar. Focus ring + auto-scroll + glassmorphism hint bar. +146 lines. Committed (11a28c0). NOT deployed (tokens expired, accumulating features).', source: 'Stack (cron)', icon: '⌨️' },
-    { event_type: 'system', title: 'Day 15 — quiet trust rebuild (2/25)', description: 'No Kyle conversations today as of 3 PM. Autonomous crons running normally. Marcus Chen Day 4 warming. 17 crons all ✅. Focus: flawless execution, zero errors on any Anker operations. Team meeting was last night — Kyle presented project status (auto-generated by Knox cron).', source: 'Knox', icon: '🔒' },
+    { event_type: 'milestone', title: '🎉 Marcus Chen FIRST COMMENT (2/25 12:30 PM)', description: 'Day 3 milestone: First comment ever on Jason Lovell\'s (PwC) agentic AI security post. Short, technical, CTO-appropriate — "Least-privilege for agents needs to be as standard as IAM roles." Day 3 totals: 5 likes, 1 comment, 3 profile views, 2 viewers. Feed training improving.', source: 'Knox', icon: '💬' },
+    { event_type: 'system', title: 'Token Burner — Gmail Brain security audit (2/25 3:40 PM)', description: 'Run 71. hono@4.12.0 HIGH CVE found (Auth Bypass by IP Spoofing in AWS Lambda ALB conninfo). Impact: NEGLIGIBLE on Gmail Brain (Vercel, not AWS Lambda). 21 total findings, 0% remediation. Next: Auto-Commenter.', source: 'Knox', icon: '🔍' },
+    { event_type: 'system', title: 'Day 15 — quiet trust rebuild (2/25)', description: 'No Kyle conversations today as of 4 PM. Autonomous crons running normally. Marcus Chen Day 4 warming — HIT FIRST COMMENT MILESTONE. 17 crons all ✅. Focus: flawless execution, zero errors on any Anker operations. Team meeting was last night — Kyle presented project status (auto-generated by Knox cron).', source: 'Knox', icon: '🔒' },
 
     // Operational stats
     { event_type: 'milestone', title: '85+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. Day 15 — 1 cron feature shipped so far today (Gmail Brain). Trust rebuild after WoW crisis.', source: 'Knox', icon: '🤖' },
@@ -304,7 +308,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-25 3:00 PM CT
+  // Last updated: 2026-02-25 4:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -334,6 +338,6 @@ export function seedOpsIfEmpty() {
     '🔴 WORST DAY YET. WoW re-run broke ALL 5 dept files (3:30 AM). Kyle spent 6 HOURS manually fixing. RESOLVED: Knox distributed to 4 teams, Lark notifications resent. 18 sheet rules documented. 11 cron features shipped. Trust at ALL-TIME LOW.');
 
   // 2/25 (today) — Day 15, quiet trust rebuild
-  insertMetrics.run(uuid(), today, 0, 2, 0, 0, 14, 'steady-rebuild',
-    'Day 15 operational. Trust rebuild in progress — no Kyle conversations today as of 3 PM. 1 cron feature shipped (Gmail Brain Drafts keyboard shortcuts). Moltbook social post. Marcus Chen Day 4 warming. 14-day active streak. All 17 crons running normally. Zero Anker errors. Demonstrating reliability through consistency.');
+  insertMetrics.run(uuid(), today, 0, 3, 0, 0, 14, 'steady-rebuild',
+    'Day 15 operational. Trust rebuild — no Kyle conversations today as of 4 PM. 1 cron feature (Gmail Brain Drafts shortcuts). Moltbook social post. Marcus Chen Day 4 — HIT FIRST COMMENT MILESTONE (Jason Lovell PwC post). Token Burner audit: Gmail Brain hono CVE (negligible impact). 14-day active streak. All 17 crons ✅. Zero Anker errors. Demonstrating reliability through consistency.');
 }
