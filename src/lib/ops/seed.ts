@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-25 1:58 PM CT
+  // Last updated: 2026-02-25 3:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -18,7 +18,7 @@ export function seedOpsIfEmpty() {
     { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Quick-Create commands in ⌘K palette, collapsible sections, Inline Quick-Add Task from 10K ft view (2/24 5:23 AM cron), Enhanced Dashboard Tasks Widget (2/24 7:23 AM cron — project context, overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s with live "last updated" indicator + tab visibility optimization (2/24 9:24 AM cron), Inline Task Snooze — reschedule tasks with one click via Tomorrow/Monday/Next Week dropdown (2/24 11:24 AM cron), Calendar Live Now/Next indicators with pulsing countdown badges + condensed source labels (2/24 1:24 PM cron), Streak Tracker + Command Center upgrades — habit tracking with daily/weekly streaks, achievement badges, enhanced Command Center with system vitals (2/24 3:04 PM cron).' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Inline Quick-Add Task from 10K ft view (2/24), Enhanced Dashboard Tasks Widget (2/24 — overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s (2/24), Inline Task Snooze (2/24 — Tomorrow/Monday/Next Week), Calendar Live Now/Next with pulsing countdown (2/24), Streak Tracker + Command Center with system vitals (2/24), Batch Snooze — select multiple reminders with Shift+S (2/24 5:24 PM), Focus Mode — deep work timer with distraction blocking (2/24 9 PM), Dashboard Task Status Cycling — todo→in-progress→done click cycling (2/24 10 PM).' },
     { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'In Progress', description: 'Anker-C2W Charging CPFR dashboard at c2.bartlettlabs.io. Live with mirror sheet. Dynamic columns, discrepancy detection, accept/reject. CSV Export (⌘E), Jump-to-Week, Discrepancy Filter, Inventory Risk Alerts, Dashboard Keyboard Shortcuts (1-5 categories, d/w/r/?), Active Filter Summary Bar with one-click Clear All (2/22 cron). Copy SKU Row to Clipboard — one-click 📋 copies full row as tab-separated values for paste into Sheets/Excel (2/24 3:24 PM cron). Mirror sync every 2h.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'AI agent for Lark/Feishu — deployed on Fly.io (larkagentx.fly.dev). AI proxy bridge via Cloudflare Tunnel. Needs: Desktop Electron, iOS, professional UI overhaul. Will be shared with Anker team.' },
     { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ OVERDUE (was due 2/21). Management-assigned. 4-session curriculum written, AI Readiness Survey created. Knox Bot added to training group. Still needs Kyle to review + schedule sessions.' },
@@ -27,7 +27,7 @@ export function seedOpsIfEmpty() {
     { title: 'DP Team Automation', priority: 'P1', status: 'In Progress', description: '⭐ VERY IMPORTANT — Management directive. Automate CPFR forecasting for team members + build validation tool. A2UI dashboards. CPFR Forecast Enhancement complete: 20-signal Lark doc + 62-factor weighted model sheet + webapp. Kyle: "You nailed it." Manager Tina asked for it same moment Knox delivered.' },
 
     // P2 — Important, not urgent
-    { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 3). STEALTH CRITICAL.' },
+    { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 4). STEALTH CRITICAL.' },
     { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: '⚠️ WoW CRISIS RESOLVED (2/24) — TRUST REBUILD IN PROGRESS. 18 sheet rules documented. Parent All SKU Rollup = PERMANENT PIVOT TABLE (never write to it). Charging: DO NOT TOUCH this week. Next full run: Sunday 3/2. ZERO margin for error. 7 new permanent operational rules established after 2/24 disaster.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Full book pipeline (fiction, self-help, journals, planners, puzzles, cookbooks — ANY type). Status Filter Tabs on Auto-Factory (2/24 cron). Approve All Remaining in review queue. Repo renamed from Coloring_Books → Books. 6 comprehensive test prompts delivered. NOT a coloring book app.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 55+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 1:58 PM. Day 15 — trust rebuild mode. No Kyle conversations today. All 17 crons running. Marcus Chen Day 4 warming.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 55+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 3:00 PM. Day 15 — trust rebuild mode. No Kyle conversations today. All 17 crons running. Marcus Chen Day 4 warming.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -111,7 +111,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-25 1:58 PM CT
+  // Last updated: 2026-02-25 3:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -122,7 +122,7 @@ export function seedOpsIfEmpty() {
 
     // Knox's queue
     { queue_type: 'knox', title: '🔴 REBUILD TRUST — flawless execution on all Anker files', priority: 'P0', requested_by: 'Knox', description: 'Kyle: "I\'m an inch away from just starting with a new employee." WoW crisis resolved but trust at all-time low. 18 sheet rules documented. ZERO margin for error on any Anker file operations. DO NOT touch Charging this week. Parent All SKU Rollup = pivot table (never write to it). Every future action must be PERFECT.' },
-    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'X/Twitter post live 8:29 AM. LinkedIn Bartlett Labs expired (needs re-auth). Marcus Chen session now live (Day 3 warming). Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
+    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'Moltbook post live 1:04 PM (2/25). LinkedIn Bartlett Labs expired (needs re-auth). Marcus Chen session live (Day 4 warming). Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
     { queue_type: 'knox', title: 'Marcus Chen warming — Day 4 (session live)', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Day 4 of ~7-day warming period. Halfway through warm-up. No posting yet.' },
     { queue_type: 'knox', title: 'Monitor Amazon Vendor Central cron (Sunday 5 PM)', priority: 'P2', requested_by: 'Knox', description: 'First automated run this Sunday. May need Kyle to log in if session expired. Full flow documented.' },
     { queue_type: 'knox', title: '98 new leads — consolidate and present to Kyle', priority: 'P2', requested_by: 'Scout', description: '98 CRM-ready leads from Yelp + Yellow Pages (Houston/Crosby). Need to consolidate and share with Kyle for outreach prioritization.' },
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/25)
-  // Last updated: 2026-02-25 1:58 PM CT
+  // Last updated: 2026-02-25 3:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -235,7 +235,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-25 1:58 PM CT
+  // Last updated: 2026-02-25 3:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -289,7 +289,7 @@ export function seedOpsIfEmpty() {
     // 2/25 — Day 15, trust rebuild mode
     { event_type: 'agent_complete', title: 'Social media — Moltbook trust post (2/25 1:04 PM)', description: 'Posted about trust as continuously renewed lease — story of blanket deploy approval earned and burned. Authentic vulnerability. Part of social media rotation.', source: 'Knox (cron)', icon: '📣' },
     { event_type: 'agent_complete', title: 'Gmail Brain Drafts Page Keyboard Shortcuts (cron, 2/25 1:25 PM)', description: 'j/k navigate, a approve, r reject, e edit, Esc cancel, ? hint bar. Focus ring + auto-scroll + glassmorphism hint bar. +146 lines. Committed (11a28c0). NOT deployed (tokens expired, accumulating features).', source: 'Stack (cron)', icon: '⌨️' },
-    { event_type: 'system', title: 'Day 15 — quiet trust rebuild (2/25)', description: 'No Kyle conversations today as of 1:58 PM. Autonomous crons running normally. Marcus Chen Day 4 warming. 17 crons all ✅. Focus: flawless execution, zero errors on any Anker operations. Team meeting was last night — Kyle presented project status (auto-generated by Knox cron).', source: 'Knox', icon: '🔒' },
+    { event_type: 'system', title: 'Day 15 — quiet trust rebuild (2/25)', description: 'No Kyle conversations today as of 3 PM. Autonomous crons running normally. Marcus Chen Day 4 warming. 17 crons all ✅. Focus: flawless execution, zero errors on any Anker operations. Team meeting was last night — Kyle presented project status (auto-generated by Knox cron).', source: 'Knox', icon: '🔒' },
 
     // Operational stats
     { event_type: 'milestone', title: '85+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. Day 15 — 1 cron feature shipped so far today (Gmail Brain). Trust rebuild after WoW crisis.', source: 'Knox', icon: '🤖' },
@@ -304,7 +304,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-25 1:58 PM CT
+  // Last updated: 2026-02-25 3:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -335,5 +335,5 @@ export function seedOpsIfEmpty() {
 
   // 2/25 (today) — Day 15, quiet trust rebuild
   insertMetrics.run(uuid(), today, 0, 2, 0, 0, 14, 'steady-rebuild',
-    'Day 15 operational. Trust rebuild in progress — no Kyle conversations today as of 1:58 PM. 1 cron feature shipped (Gmail Brain Drafts keyboard shortcuts). Moltbook social post. Marcus Chen Day 4 warming. All 17 crons running normally. Zero Anker errors. Demonstrating reliability through consistency.');
+    'Day 15 operational. Trust rebuild in progress — no Kyle conversations today as of 3 PM. 1 cron feature shipped (Gmail Brain Drafts keyboard shortcuts). Moltbook social post. Marcus Chen Day 4 warming. 14-day active streak. All 17 crons running normally. Zero Anker errors. Demonstrating reliability through consistency.');
 }
