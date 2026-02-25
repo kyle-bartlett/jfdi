@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { OpsDashboardData } from '@/lib/ops/types';
 import { PriorityBadge } from '@/components/ops/PriorityBadge';
 import { agentColors, timeAgo } from '@/lib/ops/utils';
