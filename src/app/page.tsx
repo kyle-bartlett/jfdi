@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { PrioritiesWidget } from "@/components/dashboard-widgets/priorities-widget";
 import { TasksWidget } from "@/components/dashboard-widgets/tasks-widget";
+import { FocusMode } from "@/components/focus-mode";
 import { CalendarWidget } from "@/components/dashboard-widgets/calendar-widget";
 import { ProjectsWidget } from "@/components/dashboard-widgets/projects-widget";
 import { GoalsWidget } from "@/components/dashboard-widgets/goals-widget";
@@ -126,6 +127,7 @@ export default function Dashboard() {
   const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
 
+  const [focusMode, setFocusMode] = useState(false);
   const REFRESH_INTERVAL_MS = 60_000; // 60 seconds
 
   const loadData = useCallback(async (silent = false) => {
@@ -178,6 +180,22 @@ export default function Dashboard() {
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [loadData]);
+
+  // "F" key to open Focus Mode
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      if (e.key === "f" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        if (data?.tasks.items && data.tasks.items.length > 0) {
+          setFocusMode(true);
+        }
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [data]);
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -297,8 +315,43 @@ export default function Dashboard() {
     }
   };
 
+  const focusSnooze = async (id: string, newDate: string) => {
+    try {
+      await fetch(`/api/tasks?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ due_date: newDate }),
+      });
+      await loadData(true);
+    } catch {
+      toast("Failed to snooze task", "error");
+    }
+  };
+
+  const focusComplete = async (id: string) => {
+    try {
+      await fetch(`/api/tasks?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "done" }),
+      });
+      await loadData(true);
+    } catch {
+      toast("Failed to complete task", "error");
+    }
+  };
+
   return (
     <div>
+      {focusMode && data?.tasks.items && data.tasks.items.length > 0 && (
+        <FocusMode
+          tasks={data.tasks.items}
+          onComplete={focusComplete}
+          onSnooze={focusSnooze}
+          onClose={() => { setFocusMode(false); loadData(); }}
+        />
+      )}
+
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">Good {getTimeOfDay()}, Kyle</h1>
@@ -315,6 +368,17 @@ export default function Dashboard() {
                 <span>{formatLastRefresh(lastRefresh)}</span>
               )}
             </button>
+            {data?.tasks.items && data.tasks.items.length > 0 && (
+              <button
+                onClick={() => setFocusMode(true)}
+                className="inline-flex items-center gap-1 text-[11px] text-primary/70 hover:text-primary transition-colors"
+                title="Focus Mode (F) — work through tasks one at a time"
+              >
+                <span>◎</span>
+                <span>Focus</span>
+                <kbd className="hidden sm:inline text-[9px] text-muted-foreground/40 bg-muted px-1 py-0.5 rounded ml-0.5">F</kbd>
+              </button>
+            )}
           </div>
         </div>
         {data?.weather && <WeatherWidget weather={data.weather} />}
