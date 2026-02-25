@@ -10,9 +10,11 @@ import { QueueBoard } from '@/components/ops/QueueBoard';
 import { AgentTasks } from '@/components/ops/AgentTasks';
 import { ActivityTimeline } from '@/components/ops/ActivityTimeline';
 import { StreakTracker } from '@/components/ops/StreakTracker';
+import { RevenueTracker } from '@/components/ops/RevenueTracker';
 
 const TABS = [
   { id: 'command', label: '🏠 Command Center' },
+  { id: 'revenue', label: '💰 Revenue' },
   { id: 'timeline', label: '⏱️ Activity' },
   { id: 'streaks', label: '🔥 Streaks' },
   { id: 'projects', label: '📋 Projects' },
@@ -65,6 +67,7 @@ export default function OpsPage() {
       {/* Content */}
       <div>
         {activeTab === 'command' && <CommandCenter />}
+        {activeTab === 'revenue' && <RevenueTracker />}
         {activeTab === 'timeline' && <ActivityTimeline />}
         {activeTab === 'streaks' && <StreakTracker />}
         {activeTab === 'projects' && <ProjectsBoard />}

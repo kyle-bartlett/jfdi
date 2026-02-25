@@ -162,9 +162,30 @@ function initializeOpsDb(db: Database.Database) {
       created_at TEXT DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS revenue_entries (
+      id TEXT PRIMARY KEY,
+      amount REAL NOT NULL,
+      source TEXT NOT NULL CHECK(source IN ('consulting','contract','website','social_media','template','pod','kdp','custom_ai','agent','other')),
+      client_name TEXT DEFAULT '',
+      description TEXT DEFAULT '',
+      revenue_type TEXT DEFAULT 'one-time' CHECK(revenue_type IN ('recurring','one-time','project')),
+      revenue_date TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_revenue_date ON revenue_entries(revenue_date);
+    CREATE INDEX IF NOT EXISTS idx_revenue_source ON revenue_entries(source);
+
     CREATE INDEX IF NOT EXISTS idx_daily_habits_date ON daily_habits(habit_date);
     CREATE INDEX IF NOT EXISTS idx_daily_habits_key ON daily_habits(habit_key);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_daily_habits_unique ON daily_habits(habit_date, habit_key);
     CREATE INDEX IF NOT EXISTS idx_achievements_key ON achievements(badge_key);
   `);
+
+  // Migration: add daily_focus column to daily_metrics if it doesn't exist
+  const columns = db.prepare("PRAGMA table_info(daily_metrics)").all() as { name: string }[];
+  if (!columns.some(c => c.name === 'daily_focus')) {
+    db.exec("ALTER TABLE daily_metrics ADD COLUMN daily_focus TEXT DEFAULT '[]'");
+  }
 }

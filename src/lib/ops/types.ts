@@ -129,6 +129,27 @@ export interface OpsDashboardData {
   weeklyAgentDeploys: number;
 }
 
+export interface RevenueEntry {
+  id: string;
+  amount: number;
+  source: string;
+  client_name: string;
+  description: string;
+  revenue_type: string;
+  revenue_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RevenueSummary {
+  total_all_time: number;
+  total_this_month: number;
+  total_this_week: number;
+  total_today: number;
+  by_source: { source: string; total: number }[];
+  monthly_totals: { month: string; total: number }[];
+}
+
 export interface ActionQueueItem {
   id: string;
   title: string;

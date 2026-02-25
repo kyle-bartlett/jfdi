@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   const existing = db.prepare('SELECT * FROM daily_metrics WHERE metric_date = ?').get(today);
 
   if (existing) {
-    const fields = ['agents_deployed', 'tasks_completed', 'prospects_contacted', 'ideas_logged', 'revenue_closed', 'active_streak', 'mood', 'notes'];
+    const fields = ['agents_deployed', 'tasks_completed', 'prospects_contacted', 'ideas_logged', 'revenue_closed', 'active_streak', 'mood', 'notes', 'daily_focus'];
     const updates: string[] = [];
     const params: (string | number)[] = [];
     for (const f of fields) {
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 
   const id = uuid();
   db.prepare(
-    'INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, revenue_closed, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, revenue_closed, active_streak, mood, notes, daily_focus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   ).run(
     id, today,
     body.agents_deployed || 0,
@@ -69,7 +69,8 @@ export async function POST(req: NextRequest) {
     body.revenue_closed || 0,
     body.active_streak || 0,
     body.mood || 'grinding',
-    body.notes || ''
+    body.notes || '',
+    body.daily_focus || '[]'
   );
   const row = db.prepare('SELECT * FROM daily_metrics WHERE id = ?').get(id);
   return NextResponse.json(row, { status: 201 });

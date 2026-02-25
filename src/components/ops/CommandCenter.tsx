@@ -89,6 +89,165 @@ function StatTicker({ data }: { data: OpsDashboardData }) {
   );
 }
 
+// ─── Daily Focus Widget ────────────────────────────────────────────
+interface FocusItem {
+  text: string;
+  done: boolean;
+  estimate: string;
+}
+
+function DailyFocus() {
+  const [items, setItems] = useState<FocusItem[]>([
+    { text: '', done: false, estimate: '' },
+    { text: '', done: false, estimate: '' },
+    { text: '', done: false, estimate: '' },
+  ]);
+  const [loaded, setLoaded] = useState(false);
+  const [allDone, setAllDone] = useState(false);
+  const [justCompleted, setJustCompleted] = useState<number | null>(null);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const labels = ['🎯 Main Focus', '📌 Secondary', '🌟 Stretch Goal'];
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    fetch(`/api/ops/metrics?date=${today}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.daily_focus) {
+          try {
+            const parsed = JSON.parse(data.daily_focus);
+            if (Array.isArray(parsed) && parsed.length === 3) {
+              setItems(parsed);
+            }
+          } catch { /* ok */ }
+        }
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, []);
+
+  const saveItems = useCallback((newItems: FocusItem[]) => {
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      fetch('/api/ops/metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ daily_focus: JSON.stringify(newItems) }),
+      });
+    }, 500);
+  }, []);
+
+  const updateItem = (index: number, changes: Partial<FocusItem>) => {
+    const newItems = items.map((item, i) => i === index ? { ...item, ...changes } : item);
+    setItems(newItems);
+    saveItems(newItems);
+
+    if (changes.done === true) {
+      setJustCompleted(index);
+      setTimeout(() => setJustCompleted(null), 600);
+    }
+
+    // Check all done
+    const doneCount = newItems.filter(i => i.done).length;
+    if (doneCount === 3 && !allDone) {
+      setAllDone(true);
+      setTimeout(() => setAllDone(false), 3000);
+    }
+  };
+
+  const doneCount = items.filter(i => i.done).length;
+  const ringSize = 64;
+  const ringStroke = 6;
+  const ringRadius = (ringSize - ringStroke) / 2;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const ringPct = doneCount / 3;
+  const ringDash = ringPct * ringCircumference;
+  const ringColor = doneCount === 3 ? 'hsl(158, 100%, 43%)' : doneCount >= 2 ? 'hsl(38, 92%, 50%)' : doneCount >= 1 ? 'hsl(196, 100%, 44%)' : 'hsl(var(--border))';
+
+  if (!loaded) return null;
+
+  return (
+    <div className="widget relative overflow-hidden">
+      {allDone && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 animate-fadeIn">
+          <span className="text-6xl animate-bounce">🎉</span>
+        </div>
+      )}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="widget-title mb-0">🎯 Daily Focus</h3>
+        <div className="relative" style={{ width: ringSize, height: ringSize }}>
+          <svg width={ringSize} height={ringSize} viewBox={`0 0 ${ringSize} ${ringSize}`} className="transform -rotate-90">
+            <circle cx={ringSize/2} cy={ringSize/2} r={ringRadius} fill="none" stroke="hsl(var(--border))" strokeWidth={ringStroke} />
+            <circle
+              cx={ringSize/2} cy={ringSize/2} r={ringRadius}
+              fill="none" stroke={ringColor} strokeWidth={ringStroke}
+              strokeDasharray={`${ringDash} ${ringCircumference - ringDash}`}
+              strokeLinecap="round"
+              className="transition-all duration-700"
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-xs font-bold text-foreground">{doneCount}/3</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-300 ${
+              item.done
+                ? 'bg-accent/10 border-accent/30'
+                : 'bg-card border-border hover:border-muted-foreground/40'
+            }`}
+          >
+            {/* Checkbox */}
+            <button
+              onClick={() => updateItem(i, { done: !item.done })}
+              className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
+                item.done
+                  ? 'bg-accent border-accent'
+                  : 'border-muted-foreground/40 hover:border-primary'
+              } ${justCompleted === i ? 'scale-125' : ''}`}
+            >
+              {item.done && (
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </button>
+
+            {/* Label & Input */}
+            <div className="flex-1 min-w-0">
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{labels[i]}</span>
+              <input
+                type="text"
+                value={item.text}
+                onChange={e => updateItem(i, { text: e.target.value })}
+                placeholder="What's the focus?"
+                className={`w-full bg-transparent border-none outline-none text-sm mt-0.5 placeholder-muted-foreground/50 ${
+                  item.done ? 'text-muted-foreground line-through' : 'text-foreground'
+                }`}
+              />
+            </div>
+
+            {/* Time Estimate */}
+            <input
+              type="text"
+              value={item.estimate}
+              onChange={e => updateItem(i, { estimate: e.target.value })}
+              placeholder="1h"
+              className="w-12 text-center text-xs bg-secondary border border-border rounded px-1 py-1 text-muted-foreground focus:text-foreground focus:border-primary outline-none transition-colors"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Today's Wins ──────────────────────────────────────────────────
 function TodaysWins() {
   const [wins, setWins] = useState<{ id: string; title: string; created_at: string }[]>([]);
@@ -572,6 +731,9 @@ export function CommandCenter() {
           tabTarget="prompts"
         />
       </div>
+
+      {/* Daily Focus */}
+      <DailyFocus />
 
       {/* Today's Wins */}
       <TodaysWins />
