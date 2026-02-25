@@ -280,6 +280,21 @@ export default function Dashboard() {
     }
   };
 
+  const changeTaskStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`/api/tasks?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      const label = status === "in-progress" ? "started" : status === "done" ? "completed" : "reopened";
+      toast(`Task ${label}`);
+      await loadData();
+    } catch {
+      toast("Failed to update task", "error");
+    }
+  };
+
   const snoozeTask = async (id: string, newDate: string) => {
     try {
       await fetch(`/api/tasks?id=${id}`, {
@@ -408,6 +423,7 @@ export default function Dashboard() {
             onCompleteAll={completeAllTasks}
             onQuickAdd={quickAddTask}
             onSnooze={snoozeTask}
+            onStatusChange={changeTaskStatus}
           />
 
           <CalendarWidget events={data?.calendar || []} />
