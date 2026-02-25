@@ -56,11 +56,124 @@ const CREATE_COMMANDS: Record<
   },
 };
 
-function detectCreateCommand(q: string): { cmd: (typeof CREATE_COMMANDS)[string]; text: string } | null {
+// Smart natural language date + priority parser for quick-create commands
+// Examples: "/reminder Call John tomorrow p1" → { title: "Call John", due: tomorrow, priority: "high" }
+//           "/task Fix bug in 3 days" → { title: "Fix bug", due: 3 days from now }
+//           "/reminder Review data friday high" → { title: "Review data", due: next friday, priority: "high" }
+interface ParsedCreate {
+  title: string;
+  due_date?: string;
+  priority?: string;
+  dateLabel?: string; // Human-readable label for the parsed date
+}
+
+function parseNaturalInput(text: string): ParsedCreate {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let remaining = text.trim();
+  let due_date: string | undefined;
+  let priority: string | undefined;
+  let dateLabel: string | undefined;
+
+  // Extract priority indicators (at end or anywhere)
+  const priorityPatterns: [RegExp, string, string][] = [
+    [/\b(?:p0|urgent|critical)\b/i, "high", "🔴"],
+    [/\b(?:p1|high)\b/i, "high", "🔴"],
+    [/\b(?:p2|medium|med)\b/i, "medium", "🟡"],
+    [/\b(?:p3|low)\b/i, "low", "🔵"],
+  ];
+
+  for (const [pattern, prio] of priorityPatterns) {
+    if (pattern.test(remaining)) {
+      priority = prio;
+      remaining = remaining.replace(pattern, "").trim();
+      break;
+    }
+  }
+
+  // Day-of-week mapping
+  const dayNames: Record<string, number> = {
+    sunday: 0, sun: 0, monday: 1, mon: 1, tuesday: 2, tue: 2, tues: 2,
+    wednesday: 3, wed: 3, thursday: 4, thu: 4, thurs: 4,
+    friday: 5, fri: 5, saturday: 6, sat: 6,
+  };
+
+  // Try relative date patterns (order matters — most specific first)
+  const datePatterns: [RegExp, () => Date, string][] = [
+    [/\b(?:in\s+)?(\d+)\s+days?\b/i, () => {
+      const m = remaining.match(/\b(?:in\s+)?(\d+)\s+days?\b/i);
+      const d = new Date(today);
+      d.setDate(d.getDate() + parseInt(m![1]));
+      return d;
+    }, ""],
+    [/\b(?:in\s+)?(\d+)\s+weeks?\b/i, () => {
+      const m = remaining.match(/\b(?:in\s+)?(\d+)\s+weeks?\b/i);
+      const d = new Date(today);
+      d.setDate(d.getDate() + parseInt(m![1]) * 7);
+      return d;
+    }, ""],
+    [/\btoday\b/i, () => new Date(today), "Today"],
+    [/\btomorrow\b/i, () => {
+      const d = new Date(today);
+      d.setDate(d.getDate() + 1);
+      return d;
+    }, "Tomorrow"],
+    [/\bnext\s+week\b/i, () => {
+      const d = new Date(today);
+      const daysUntilMon = (8 - d.getDay()) % 7 || 7;
+      d.setDate(d.getDate() + daysUntilMon);
+      return d;
+    }, "Next Monday"],
+    [/\bend\s+of\s+week\b|eow\b/i, () => {
+      const d = new Date(today);
+      const daysUntilFri = (5 - d.getDay() + 7) % 7 || 7;
+      d.setDate(d.getDate() + daysUntilFri);
+      return d;
+    }, "Friday"],
+  ];
+
+  // Check day-of-week patterns: "monday", "next tuesday", "this friday"
+  const dayMatch = remaining.match(/\b(?:next\s+|this\s+)?(sunday|sun|monday|mon|tuesday|tue|tues|wednesday|wed|thursday|thu|thurs|friday|fri|saturday|sat)\b/i);
+
+  let matched = false;
+  for (const [pattern, getDate, label] of datePatterns) {
+    if (pattern.test(remaining)) {
+      const d = getDate();
+      due_date = d.toISOString();
+      dateLabel = label || d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      remaining = remaining.replace(pattern, "").trim();
+      matched = true;
+      break;
+    }
+  }
+
+  if (!matched && dayMatch) {
+    const dayTarget = dayNames[dayMatch[1].toLowerCase()];
+    if (dayTarget !== undefined) {
+      const d = new Date(today);
+      let diff = dayTarget - d.getDay();
+      if (diff <= 0) diff += 7; // Always target the next occurrence
+      d.setDate(d.getDate() + diff);
+      due_date = d.toISOString();
+      dateLabel = d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+      remaining = remaining.replace(dayMatch[0], "").trim();
+    }
+  }
+
+  // Clean up extra whitespace from removals
+  const title = remaining.replace(/\s{2,}/g, " ").replace(/^[\s,]+|[\s,]+$/g, "").trim();
+
+  return { title: title || text.trim(), due_date, priority, dateLabel };
+}
+
+function detectCreateCommand(q: string): { cmd: (typeof CREATE_COMMANDS)[string]; text: string; parsed?: ParsedCreate } | null {
   const lower = q.toLowerCase();
   for (const [prefix, cmd] of Object.entries(CREATE_COMMANDS)) {
     if (lower.startsWith(prefix + " ") && q.length > prefix.length + 1) {
-      return { cmd, text: q.slice(prefix.length + 1).trim() };
+      const rawText = q.slice(prefix.length + 1).trim();
+      // Only parse dates/priority for tasks and reminders (not notes)
+      const parsed = (prefix === "/task" || prefix === "/reminder") ? parseNaturalInput(rawText) : undefined;
+      return { cmd, text: rawText, parsed };
     }
   }
   return null;
@@ -202,13 +315,23 @@ export function CommandPalette() {
     if (!match || !match.text) return;
     setCreating(true);
     try {
-      const body: Record<string, string> = { [match.cmd.bodyKey]: match.text };
-      // Add sensible defaults
+      const body: Record<string, string> = {};
+
+      // Use parsed title (with date/priority extracted) for tasks and reminders
+      if (match.parsed) {
+        body[match.cmd.bodyKey] = match.parsed.title;
+        if (match.parsed.due_date) body.due_date = match.parsed.due_date;
+        if (match.parsed.priority) body.priority = match.parsed.priority;
+      } else {
+        body[match.cmd.bodyKey] = match.text;
+      }
+
+      // Add sensible defaults (only if not already set by parser)
       if (match.cmd.endpoint === "/api/tasks") {
-        body.priority = "medium";
+        if (!body.priority) body.priority = "medium";
         body.status = "todo";
       } else if (match.cmd.endpoint === "/api/reminders") {
-        body.priority = "medium";
+        if (!body.priority) body.priority = "medium";
         body.category = "personal";
       }
       const res = await fetch(match.cmd.endpoint, {
@@ -312,13 +435,28 @@ export function CommandPalette() {
           {(() => {
             const match = detectCreateCommand(query);
             if (!match) return null;
+            const p = match.parsed;
             return (
               <div className="px-4 py-3 border-b border-border bg-primary/5">
                 <div className="flex items-center gap-2">
                   <span className="text-base">{match.cmd.icon}</span>
                   <span className="text-xs font-medium text-primary">{match.cmd.label}</span>
                   <span className="text-xs text-muted-foreground">→</span>
-                  <span className="text-sm font-medium truncate">{match.text}</span>
+                  <span className="text-sm font-medium truncate">{p ? p.title : match.text}</span>
+                  {p?.dateLabel && (
+                    <span className="flex-shrink-0 text-[10px] font-medium bg-blue-500/15 text-blue-400 px-1.5 py-0.5 rounded">
+                      📅 {p.dateLabel}
+                    </span>
+                  )}
+                  {p?.priority && (
+                    <span className={`flex-shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                      p.priority === "high" ? "bg-red-500/15 text-red-400" :
+                      p.priority === "medium" ? "bg-yellow-500/15 text-yellow-400" :
+                      "bg-blue-500/15 text-blue-400"
+                    }`}>
+                      {p.priority === "high" ? "🔴" : p.priority === "medium" ? "🟡" : "🔵"} {p.priority}
+                    </span>
+                  )}
                   <span className="ml-auto">
                     {creating ? (
                       <span className="text-xs text-muted-foreground animate-pulse">Creating...</span>
@@ -389,7 +527,7 @@ export function CommandPalette() {
             <span>↑↓ Navigate</span>
             <span>↵ Open</span>
             <span>ESC Close</span>
-            <span className="border-l border-border/50 pl-4">/task · /reminder · /note to quick-create</span>
+            <span className="border-l border-border/50 pl-4">/task · /reminder · /note — add &quot;tomorrow&quot; &quot;friday&quot; &quot;p1&quot; for smart dates &amp; priority</span>
           </div>
         </div>
       </div>
