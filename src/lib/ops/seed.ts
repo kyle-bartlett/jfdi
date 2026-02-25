@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-24 5:00 PM CT
+  // Last updated: 2026-02-24 6:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -18,7 +18,7 @@ export function seedOpsIfEmpty() {
     { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Quick-Create commands in ⌘K palette, collapsible sections, Inline Quick-Add Task from 10K ft view (2/24 5:23 AM cron), Enhanced Dashboard Tasks Widget (2/24 7:23 AM cron — project context, overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s with live "last updated" indicator + tab visibility optimization (2/24 9:24 AM cron), Inline Task Snooze — reschedule tasks with one click via Tomorrow/Monday/Next Week dropdown (2/24 11:24 AM cron), Calendar Live Now/Next indicators with pulsing countdown badges + condensed source labels (2/24 1:24 PM cron), Streak Tracker + Command Center upgrades — habit tracking with daily/weekly streaks, achievement badges, enhanced Command Center with system vitals (2/24 3:04 PM cron).' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Quick-Create commands in ⌘K palette, collapsible sections, Inline Quick-Add Task from 10K ft view (2/24 5:23 AM cron), Enhanced Dashboard Tasks Widget (2/24 7:23 AM cron — project context, overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s with live "last updated" indicator + tab visibility optimization (2/24 9:24 AM cron), Inline Task Snooze — reschedule tasks with one click via Tomorrow/Monday/Next Week dropdown (2/24 11:24 AM cron), Calendar Live Now/Next indicators with pulsing countdown badges + condensed source labels (2/24 1:24 PM cron), Streak Tracker + Command Center upgrades — habit tracking with daily/weekly streaks, achievement badges, enhanced Command Center with system vitals (2/24 3:04 PM cron), Batch Snooze — select multiple reminders and snooze all at once with Shift+S shortcut (2/24 5:24 PM cron).' },
     { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'In Progress', description: 'Anker-C2W Charging CPFR dashboard at c2.bartlettlabs.io. Live with mirror sheet. Dynamic columns, discrepancy detection, accept/reject. CSV Export (⌘E), Jump-to-Week, Discrepancy Filter, Inventory Risk Alerts, Dashboard Keyboard Shortcuts (1-5 categories, d/w/r/?), Active Filter Summary Bar with one-click Clear All (2/22 cron). Copy SKU Row to Clipboard — one-click 📋 copies full row as tab-separated values for paste into Sheets/Excel (2/24 3:24 PM cron). Mirror sync every 2h.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'AI agent for Lark/Feishu — deployed on Fly.io (larkagentx.fly.dev). AI proxy bridge via Cloudflare Tunnel. Needs: Desktop Electron, iOS, professional UI overhaul. Will be shared with Anker team.' },
     { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ OVERDUE (was due 2/21). Management-assigned. 4-session curriculum written, AI Readiness Survey created. Knox Bot added to training group. Still needs Kyle to review + schedule sessions.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Streak Tracker with habit tracking + achievement badges (2/24 3:04 PM cron). Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 50+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 5:00 PM. WoW crisis resolved, trust rebuild mode active. Kyle at Anker work (afternoon block 3-8 PM, team meeting tonight for project status presentation).' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker (12th tab), Pomodoro Timer (13th tab), Agent Performance Dashboard with per-agent success rate rings. Streak Tracker with habit tracking + achievement badges (2/24 3:04 PM cron). Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 50+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/24 6:00 PM. WoW crisis resolved, trust rebuild mode active. 9 cron features shipped today. Kyle at Anker work (team meeting tonight for project status presentation).' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -65,7 +65,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-24 5:00 PM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-24 6:00 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -111,7 +111,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-24 5:00 PM CT
+  // Last updated: 2026-02-24 6:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -136,7 +136,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/24)
-  // Last updated: 2026-02-24 5:00 PM CT
+  // Last updated: 2026-02-24 6:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -208,6 +208,7 @@ export function seedOpsIfEmpty() {
     // 2/24 afternoon cron features (3:04 PM + 3:24 PM)
     { agent_name: 'Stack', task_description: 'JFDI Streak Tracker + Command Center Upgrades (cron, 2/24 3:04 PM)', status: 'Completed', result_summary: 'Streak Tracker: habit tracking with daily/weekly streaks, achievement badges, streak history. Command Center: system vitals, enhanced layout. +1,142 lines across 7 files. Deployed to Vercel.' },
     { agent_name: 'Stack', task_description: 'C2 CPFR Copy SKU Row to Clipboard (cron, 2/24 3:24 PM)', status: 'Completed', result_summary: '📋 icon on row hover, one-click copies full row as tab-separated values (header + data). Paste into Sheets/Excel. Success toast. Deployed to Vercel.' },
+    { agent_name: 'Stack', task_description: 'JFDI Batch Snooze for Reminders (cron, 2/24 5:24 PM)', status: 'Completed', result_summary: 'Batch snooze button in toolbar when reminders selected. Same options as individual snooze (1hr, later today, tomorrow, next week). Shift+S shortcut. Deployed to Vercel.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -231,7 +232,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-24 5:00 PM CT
+  // Last updated: 2026-02-24 6:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -282,6 +283,9 @@ export function seedOpsIfEmpty() {
     { event_type: 'agent_complete', title: 'JFDI Streak Tracker + Command Center Upgrades (cron, 2/24 3:04 PM)', description: 'Habit tracking with daily/weekly streaks, achievement badges, streak history. Enhanced Command Center with system vitals. +1,142 lines across 7 files.', source: 'Stack (cron)', icon: '🔥' },
     { event_type: 'agent_complete', title: 'C2 CPFR Copy SKU Row to Clipboard (cron, 2/24 3:24 PM)', description: '📋 hover icon copies full row as tab-separated values. Paste into Sheets/Excel. Success/error toast. Deployed to c2.bartlettlabs.io.', source: 'Stack (cron)', icon: '📋' },
 
+    // 2/24 5:24 PM cron feature
+    { event_type: 'agent_complete', title: 'JFDI Batch Snooze for Reminders (cron, 2/24 5:24 PM)', description: 'Select multiple overdue reminders, snooze all at once. Shift+S keyboard shortcut. Same snooze options as individual snooze. Saves significant time when triaging overdue pile.', source: 'Stack (cron)', icon: '⏰' },
+
     // Operational stats
     { event_type: 'milestone', title: '84+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. 9 cron features shipped today (2/24). WoW crisis resolved but trust at all-time low.', source: 'Knox', icon: '🤖' },
     { event_type: 'milestone', title: '14 days operational — trust crisis', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW crisis (2/24) = worst day yet. Kyle spent 6 hours fixing Knox\'s mistakes. "I\'m an inch away from starting with a new employee." Must rebuild trust through flawless execution.', source: 'Knox', icon: '🏆' },
@@ -295,7 +299,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-24 5:00 PM CT
+  // Last updated: 2026-02-24 6:00 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
