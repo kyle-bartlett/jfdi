@@ -20,6 +20,7 @@ interface Props {
   onCompleteAll?: (ids: string[]) => Promise<void>;
   onQuickAdd?: (title: string) => Promise<void>;
   onSnooze?: (id: string, newDate: string) => void;
+  onStatusChange?: (id: string, status: string) => void;
 }
 
 function getSnoozeDate(option: 'tomorrow' | 'next-monday' | 'next-week'): string {
@@ -79,6 +80,31 @@ function SnoozeButton({ taskId, onSnooze }: { taskId: string; onSnooze: (id: str
   );
 }
 
+const STATUS_CYCLE: Record<string, string> = {
+  "todo": "in-progress",
+  "in-progress": "done",
+  "done": "todo",
+};
+
+const STATUS_ICONS: Record<string, { icon: string; color: string; title: string }> = {
+  "todo": { icon: "", color: "border-border hover:border-primary hover:bg-primary/10", title: "To Do — click to start" },
+  "in-progress": { icon: "◐", color: "border-primary bg-primary/10 text-primary", title: "In Progress — click to complete" },
+  "done": { icon: "✓", color: "border-accent bg-accent/10 text-accent", title: "Done — click to reopen" },
+};
+
+function StatusCycleButton({ status, onClick }: { status: string; onClick: () => void }) {
+  const config = STATUS_ICONS[status] || STATUS_ICONS["todo"];
+  return (
+    <button
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center text-[8px] transition-all mt-0.5 ${config.color}`}
+      title={config.title}
+    >
+      {config.icon}
+    </button>
+  );
+}
+
 function isOverdue(dateStr: string | null): boolean {
   if (!dateStr) return false;
   const d = new Date(dateStr);
@@ -89,7 +115,7 @@ function isOverdue(dateStr: string | null): boolean {
   return taskDate < today;
 }
 
-export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd, onSnooze }: Props) {
+export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd, onSnooze, onStatusChange }: Props) {
   const [adding, setAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -176,7 +202,15 @@ export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQu
             const overdue = isOverdue(t.due_date);
             return (
               <div key={t.id} className="flex items-start gap-2 text-sm group">
-                {onComplete && (
+                {onStatusChange ? (
+                  <StatusCycleButton
+                    status={t.status}
+                    onClick={() => {
+                      const next = STATUS_CYCLE[t.status] || "in-progress";
+                      onStatusChange(t.id, next);
+                    }}
+                  />
+                ) : onComplete && (
                   <button
                     onClick={() => onComplete(t.id)}
                     className="w-4 h-4 rounded border border-border hover:border-accent hover:bg-accent/10 flex-shrink-0 flex items-center justify-center text-[8px] text-transparent hover:text-accent mt-0.5"
@@ -195,7 +229,10 @@ export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQu
                   }`}
                 />
                 <div className="flex-1 min-w-0">
-                  <span className={`truncate block ${overdue ? "text-destructive" : ""}`}>
+                  <span className={`truncate block ${
+                    overdue ? "text-destructive" :
+                    t.status === "done" ? "line-through text-muted-foreground" : ""
+                  }`}>
                     {t.title}
                   </span>
                   {t.project_name && (
