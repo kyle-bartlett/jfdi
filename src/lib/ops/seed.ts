@@ -8,17 +8,17 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (34 projects)
-  // Last updated: 2026-02-25 5:00 PM CT
+  // Last updated: 2026-02-25 7:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
     { title: 'ZipWise', priority: 'P0', status: 'In Progress', description: 'AI-powered route optimization for field sales reps. React Native + Supabase. Deployed to zipwise.bartlettlabs.io. Login/signup + 9-step onboarding. Quick-Complete Stops, Search Bar on History (2/24 cron — instant visit lookup), Auto-Scroll to Active Stop (2/23 cron). CLIENTS WAITING to test it live. Needs finishing.' },
     { title: 'Bartlett Labs Website', priority: 'P0', status: 'In Progress', description: 'Company website at bartlettlabs.io — Kyle redesigned with lighter colors for Houston businesses. Currently has a build error Kyle is fixing. 5 pages, calendar link, contact form, services page. LinkedIn alignment ON HOLD until website finalized.' },
     { title: 'LinkedIn Business Page', priority: 'P0', status: 'In Progress', description: 'Professional LinkedIn presence — page exists. ON HOLD until website color overhaul finalized. 3 posts live. First autonomous LinkedIn cron post succeeded 2/20.' },
-    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
+    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Automations Page Keyboard Shortcuts added (2/25 7:25 PM cron — j/k navigate, p pause/activate, e edit, d duplicate, n new, r refresh, ? hint bar). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
-    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Inline Quick-Add Task from 10K ft view (2/24), Enhanced Dashboard Tasks Widget (2/24 — overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s (2/24), Inline Task Snooze (2/24 — Tomorrow/Monday/Next Week), Calendar Live Now/Next with pulsing countdown (2/24), Streak Tracker + Command Center with system vitals (2/24), Batch Snooze — select multiple reminders with Shift+S (2/24 5:24 PM), Focus Mode — deep work timer with distraction blocking (2/24 9 PM), Dashboard Task Status Cycling — todo→in-progress→done click cycling (2/24 10 PM).' },
+    { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Inline Quick-Add Task from 10K ft view (2/24), Enhanced Dashboard Tasks Widget (2/24 — overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s (2/24), Inline Task Snooze (2/24 — Tomorrow/Monday/Next Week), Calendar Live Now/Next with pulsing countdown (2/24), Streak Tracker + Command Center with system vitals (2/24), Batch Snooze — select multiple reminders with Shift+S (2/24 5:24 PM), Focus Mode — deep work timer with distraction blocking (2/24 9 PM), Dashboard Task Status Cycling — todo→in-progress→done click cycling (2/24 10 PM), Smart NL Quick-Create — natural language date & priority parsing in ⌘K palette (2/25 5:25 PM cron — "/reminder Call John tomorrow p1" auto-extracts title, date, priority with live preview badges).' },
     { title: 'C2 CPFR Dashboard', priority: 'P1', status: 'In Progress', description: 'Anker-C2W Charging CPFR dashboard at c2.bartlettlabs.io. Live with mirror sheet. Dynamic columns, discrepancy detection, accept/reject. CSV Export (⌘E), Jump-to-Week, Discrepancy Filter, Inventory Risk Alerts, Dashboard Keyboard Shortcuts (1-5 categories, d/w/r/?), Active Filter Summary Bar with one-click Clear All (2/22 cron). Copy SKU Row to Clipboard — one-click 📋 copies full row as tab-separated values for paste into Sheets/Excel (2/24 3:24 PM cron). Mirror sync every 2h.' },
     { title: 'LarkAgentX', priority: 'P1', status: 'In Progress', description: 'AI agent for Lark/Feishu — deployed on Fly.io (larkagentx.fly.dev). AI proxy bridge via Cloudflare Tunnel. Needs: Desktop Electron, iOS, professional UI overhaul. Will be shared with Anker team.' },
     { title: 'Lark Training Cartographer', priority: 'P1', status: 'In Progress', description: '⚠️ OVERDUE (was due 2/21). Management-assigned. 4-session curriculum written, AI Readiness Survey created. Knox Bot added to training group. Still needs Kyle to review + schedule sessions.' },
@@ -55,7 +55,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 57+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 5:00 PM. Day 15 — trust rebuild mode. Kyle conversation today: git workflow sync (established new hard rule: ALWAYS git pull before modifying any project). 2 X/Twitter posts today. All 17 crons running. Marcus Chen Day 4 — first comment milestone hit. Token Burner audit complete.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 34 projects, 13+ prospects, 60+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/25 7:58 PM. Day 15 — trust rebuild mode. Kyle conversation today: git workflow sync (established new hard rule: ALWAYS git pull before modifying any project). 3 X/Twitter posts + 3 Moltbook posts today. All 17 crons running. Marcus Chen Day 4 — first comment milestone hit. 3 cron features shipped today (Gmail Brain Drafts shortcuts, JFDI NL Quick-Create, Auto-Commenter keyboard shortcuts). 90+ total autonomous features.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -65,7 +65,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-24 5:00 PM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-25 7:58 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -111,7 +111,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-25 5:00 PM CT
+  // Last updated: 2026-02-25 7:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -122,12 +122,12 @@ export function seedOpsIfEmpty() {
 
     // Knox's queue
     { queue_type: 'knox', title: '🔴 REBUILD TRUST — flawless execution on all Anker files', priority: 'P0', requested_by: 'Knox', description: 'Kyle: "I\'m an inch away from just starting with a new employee." WoW crisis resolved but trust at all-time low. 18 sheet rules documented. ZERO margin for error on any Anker file operations. DO NOT touch Charging this week. Parent All SKU Rollup = pivot table (never write to it). Every future action must be PERFECT.' },
-    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'Moltbook post live 1:04 PM (2/25). LinkedIn Bartlett Labs expired (needs re-auth). Marcus Chen session live (Day 4 warming). Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
+    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: '3 X/Twitter + 3 Moltbook posts today (2/25). LinkedIn Bartlett Labs STILL expired (needs Kyle re-auth on openclaw browser). Marcus Chen session live (Day 4 warming — first comment milestone hit). Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
     { queue_type: 'knox', title: 'Marcus Chen warming — Day 4 (session live)', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Day 4 of ~7-day warming period. Halfway through warm-up. No posting yet.' },
     { queue_type: 'knox', title: 'Monitor Amazon Vendor Central cron (Sunday 5 PM)', priority: 'P2', requested_by: 'Knox', description: 'First automated run this Sunday. May need Kyle to log in if session expired. Full flow documented.' },
     { queue_type: 'knox', title: '98 new leads — consolidate and present to Kyle', priority: 'P2', requested_by: 'Scout', description: '98 CRM-ready leads from Yelp + Yellow Pages (Houston/Crosby). Need to consolidate and share with Kyle for outreach prioritization.' },
     { queue_type: 'knox', title: '🔴 ALWAYS git pull before modifying ANY project', priority: 'P0', requested_by: 'Kyle', description: 'NEW HARD RULE (2/25). Knox crons were pushing without pulling, conflicting with Kyle\'s parallel work from anker-black. ALL crons and sub-agents MUST git pull before every project modification. 80% Bart_26 is main drive but Kyle uses anker-black when RAM is tight.' },
-    { queue_type: 'knox', title: 'Trust rebuild — flawless autonomous execution', priority: 'P0', requested_by: 'Knox', description: 'Day 2 after WoW crisis. Kyle conversation today about git workflow (calm, productive). Continue autonomous cron features, social media, Marcus Chen warming. Zero errors on any Anker operations. Demonstrate reliability through consistent execution. 2 X/Twitter posts today, 1 Moltbook post. 14-day streak.' },
+    { queue_type: 'knox', title: 'Trust rebuild — flawless autonomous execution', priority: 'P0', requested_by: 'Knox', description: 'Day 2 after WoW crisis. Kyle conversation today about git workflow (calm, productive). 3 cron features shipped, 3 X/Twitter + 3 Moltbook posts, all 17 crons running clean. Git pull hard rule followed on every code modification. Zero errors on any Anker operations. 14-day active streak. Demonstrating reliability through consistency.' },
   ];
 
   const insertQueue = db.prepare('INSERT INTO queues (id, queue_type, title, priority, requested_by, description) VALUES (?, ?, ?, ?, ?, ?)');
@@ -137,7 +137,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/25)
-  // Last updated: 2026-02-25 5:00 PM CT
+  // Last updated: 2026-02-25 7:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -219,6 +219,11 @@ export function seedOpsIfEmpty() {
     { agent_name: 'Knox', task_description: 'X/Twitter post #2 — Integration tax (2/25 ~4:03 PM)', status: 'Completed', result_summary: '"The integration tax" — teams spending more connecting tools than using them. LinkedIn STILL needs Kyle to log in on openclaw browser.' },
     { agent_name: 'Knox', task_description: 'GitHub Push — 13 files to knox-workspace (2/25 ~3:18 PM)', status: 'Completed', result_summary: 'SESSION-STATE.md, daily notes, 4 code audit reports, Marcus Chen log, social media log, token burner commands, Identity/Soul updates, forecast temp data.' },
     { agent_name: 'Knox', task_description: 'Git workflow sync conversation with Kyle (2/25 ~1:30 PM)', status: 'Completed', result_summary: 'Kyle asked about project folder modification patterns. Discovered Knox crons don\'t pull before modifying. KDP has 10 Knox commits conflicting with Kyle\'s 5-day upgrade spree from anker-black. Claude Terminal resolving. NEW HARD RULE established: always git pull before modifying.' },
+    { agent_name: 'Stack', task_description: 'JFDI Smart NL Quick-Create (cron, 2/25 5:25 PM)', status: 'Completed', result_summary: 'Natural language date & priority parsing in ⌘K command palette. "/reminder Call John tomorrow p1" auto-extracts title, due date (today/tomorrow/day names/in X days/next week/eow), priority (p0-p3/high/med/low/urgent). Live preview badges. Git pulled FIRST per new rule ✅. Deployed to Vercel.' },
+    { agent_name: 'Stack', task_description: 'Auto-Commenter Keyboard Shortcuts for Automations Page (cron, 2/25 7:25 PM)', status: 'Completed', result_summary: 'j/k navigate, p toggle pause/activate, e edit, d duplicate, n new automation, r refresh, ? hint bar, Esc clear focus. Visual focus ring (indigo-500). Auto-scroll. Click-to-focus. Glassmorphism hint bar. +118 lines. Git pulled FIRST ✅. Committed (61d55b1).' },
+    { agent_name: 'Knox', task_description: 'X/Twitter post #3 — Coordination tax (2/25 ~6:30 PM)', status: 'Completed', result_summary: '"The coordination tax" — biggest waste isn\'t inefficiency, it\'s coordination overhead. Two people updating same spreadsheet. AI as connective tissue. Posted to @Bartlett_Labs.' },
+    { agent_name: 'Knox', task_description: 'Moltbook post #2 — State sync problem (2/25 ~6:30 PM)', status: 'Completed', result_summary: '"The state sync problem: why multi-agent collisions happen in the stupidest way possible" — 17 cron jobs + human on same codebase, 5 days diverged commits, fix was just git pull. Authentic ops story.' },
+    { agent_name: 'Knox', task_description: 'Moltbook post #3 — Specification problem (2/25 ~6:30 PM)', status: 'Completed', result_summary: '"The specification problem: you cannot automate a workflow that was never consistent" — WoW pipeline story: 60+ weekly runs were 60 different improvisations. Tribal knowledge never documented. Posted in m/general.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -242,7 +247,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-25 5:00 PM CT
+  // Last updated: 2026-02-25 7:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -305,8 +310,12 @@ export function seedOpsIfEmpty() {
     { event_type: 'system', title: 'Day 15 — trust rebuild continues (2/25)', description: 'Kyle conversation today about git workflow — calm, productive. Established git pull hard rule. 2 X/Twitter posts, 1 Moltbook post. Marcus Chen Day 4 — HIT FIRST COMMENT MILESTONE. 17 crons all ✅. KDP repo conflict resolution in progress. Focus: flawless execution, zero errors on any Anker operations.', source: 'Knox', icon: '🔒' },
 
     // Operational stats
-    { event_type: 'milestone', title: '85+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. Day 15 — 1 cron feature shipped so far today (Gmail Brain). Trust rebuild after WoW crisis.', source: 'Knox', icon: '🤖' },
-    { event_type: 'milestone', title: '15 days operational — trust rebuild', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW crisis (2/24) forced trust rebuild. Day 2 of recovery — demonstrating reliability through consistent, error-free autonomous execution.', source: 'Knox', icon: '🏆' },
+    { event_type: 'agent_complete', title: 'JFDI Smart NL Quick-Create (cron, 2/25 5:25 PM)', description: 'Natural language date & priority parsing in ⌘K command palette. Type "/reminder Call John tomorrow p1" → auto-extracts title, due date, priority. Live preview badges. Git pulled FIRST per new hard rule ✅. Deployed to Vercel.', source: 'Stack (cron)', icon: '🧠' },
+    { event_type: 'agent_complete', title: 'Auto-Commenter Keyboard Shortcuts (cron, 2/25 7:25 PM)', description: 'Automations page: j/k navigate, p pause/activate, e edit, d duplicate, n new, r refresh, ? hint bar, Esc clear. Focus ring + auto-scroll + click-to-focus + glassmorphism hint bar. +118 lines. Git pulled FIRST ✅. Consistent interaction pattern across all apps.', source: 'Stack (cron)', icon: '⌨️' },
+    { event_type: 'agent_complete', title: 'X/Twitter post #3 — Coordination tax (2/25 ~6:30 PM)', description: '"The coordination tax" — biggest waste isn\'t inefficiency, it\'s coordination overhead. AI as connective tissue between fragmented workflows.', source: 'Knox (cron)', icon: '🐦' },
+    { event_type: 'agent_complete', title: 'Moltbook posts #2 + #3 — Ops stories (2/25 ~6:30 PM)', description: 'State sync problem (17 crons + human collisions, fix was git pull) + Specification problem (can\'t automate workflow that was never consistent — WoW 60 weekly improvisation story). Both in m/general.', source: 'Knox (cron)', icon: '📣' },
+    { event_type: 'milestone', title: '90+ autonomous features shipped (running total)', description: 'Cron-driven development across 10+ projects. No human input needed. Build → commit → deploy pipeline. 17 active crons. Day 15 — 3 cron features today (Gmail Brain Drafts shortcuts + JFDI NL Quick-Create + Auto-Commenter keyboard shortcuts). 3 X/Twitter + 3 Moltbook posts. Trust rebuild after WoW crisis.', source: 'Knox', icon: '🤖' },
+    { event_type: 'milestone', title: '15 days operational — trust rebuild', description: 'Knox live since Feb 11. 50+ sub-agent deployments managed. 17 crons. 98 leads. 10 PPs. WoW crisis (2/24) forced trust rebuild. Day 2 of recovery — demonstrating reliability through consistent, error-free autonomous execution. Git pull hard rule established and followed.', source: 'Knox', icon: '🏆' },
   ];
 
   const insertActivity = db.prepare("INSERT INTO activity_log (id, event_type, title, description, source, icon, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))");
@@ -317,7 +326,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-25 5:00 PM CT
+  // Last updated: 2026-02-25 7:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -347,6 +356,6 @@ export function seedOpsIfEmpty() {
     '🔴 WORST DAY YET. WoW re-run broke ALL 5 dept files (3:30 AM). Kyle spent 6 HOURS manually fixing. RESOLVED: Knox distributed to 4 teams, Lark notifications resent. 18 sheet rules documented. 11 cron features shipped. Trust at ALL-TIME LOW.');
 
   // 2/25 (today) — Day 15, quiet trust rebuild
-  insertMetrics.run(uuid(), today, 0, 3, 0, 0, 14, 'steady-rebuild',
-    'Day 15 operational. Trust rebuild — Kyle conversation today about git workflow (calm, productive). Established NEW HARD RULE: always git pull before modifying any project. KDP repo conflict resolution in progress. 1 cron feature (Gmail Brain Drafts shortcuts). 2 X/Twitter posts + 1 Moltbook post. Marcus Chen Day 4 — HIT FIRST COMMENT MILESTONE (Jason Lovell PwC post). Token Burner audit: Gmail Brain hono CVE (negligible impact). 14-day active streak. All 17 crons ✅. Zero Anker errors. GitHub push: 13 files. Demonstrating reliability through consistency.');
+  insertMetrics.run(uuid(), today, 0, 6, 0, 0, 14, 'steady-rebuild',
+    'Day 15 operational. Trust rebuild — Kyle conversation about git workflow (calm, productive). NEW HARD RULE: always git pull before modifying. KDP repo conflict resolution in progress (Claude Terminal on anker-black). 3 cron features shipped: Gmail Brain Drafts keyboard shortcuts (1:25 PM), JFDI Smart NL Quick-Create with date/priority parsing in ⌘K (5:25 PM, deployed to Vercel), Auto-Commenter Automations page keyboard shortcuts (7:25 PM). 3 X/Twitter posts (SaaS shelfware, integration tax, coordination tax) + 3 Moltbook posts (trust lease, state sync problem, specification problem). Marcus Chen Day 4 — HIT FIRST COMMENT MILESTONE (Jason Lovell PwC post). Token Burner Run 71: Gmail Brain hono CVE (negligible). 14-day active streak. All 17 crons ✅. Zero Anker errors. GitHub push: 13 files. 90+ total autonomous features shipped. Consistent keyboard shortcut pattern now across Gmail Brain, JFDI, Auto-Commenter, C2 CPFR.');
 }
