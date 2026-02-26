@@ -57,6 +57,99 @@ const emptyTaskForm = {
   due_date: "",
 };
 
+const STATUS_LABELS: Record<string, { label: string; icon: string }> = {
+  "active-focus": { label: "Active Focus", icon: "🔥" },
+  "on-deck": { label: "On Deck", icon: "📋" },
+  "growing": { label: "Growing", icon: "🌱" },
+  "on-hold": { label: "On Hold", icon: "⏸" },
+  "completed": { label: "Completed", icon: "✅" },
+};
+
+// Inline status selector — change project status without opening edit modal
+function InlineStatusSelect({
+  projectId,
+  currentStatus,
+  onChanged,
+}: {
+  projectId: string;
+  currentStatus: string;
+  onChanged: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const changeStatus = async (newStatus: string) => {
+    if (newStatus === currentStatus) { setOpen(false); return; }
+    setUpdating(true);
+    try {
+      await fetch(`/api/projects?id=${projectId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      setOpen(false);
+      onChanged();
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const current = STATUS_LABELS[currentStatus] || { label: currentStatus, icon: "📁" };
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
+        className={`text-[10px] px-1.5 py-0.5 rounded border transition-colors flex items-center gap-1 ${
+          updating
+            ? "opacity-50 cursor-wait border-border text-muted-foreground"
+            : open
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+        }`}
+        title={`Status: ${current.label} — click to change`}
+        disabled={updating}
+      >
+        <span>{current.icon}</span>
+        <span className="hidden sm:inline">{current.label}</span>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-6 z-50 bg-popover border border-border rounded-md shadow-lg py-1 min-w-[140px]">
+          {STATUSES.map((s) => {
+            const cfg = STATUS_LABELS[s] || { label: s, icon: "📁" };
+            const isCurrent = s === currentStatus;
+            return (
+              <button
+                key={s}
+                onClick={(e) => { e.stopPropagation(); changeStatus(s); }}
+                className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors ${
+                  isCurrent
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "hover:bg-muted text-foreground"
+                }`}
+              >
+                <span>{cfg.icon}</span>
+                <span>{cfg.label}</span>
+                {isCurrent && <span className="ml-auto text-[10px]">•</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Inline quick-add component for 10K ft view
 function InlineTaskAdd({ projectId, onAdded }: { projectId: string; onAdded: () => void }) {
   const [title, setTitle] = useState("");
@@ -566,6 +659,11 @@ export default function ProjectsPage() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
+                            <InlineStatusSelect
+                              projectId={project.id}
+                              currentStatus={project.status}
+                              onChanged={loadProjects}
+                            />
                             <span className="badge badge-primary">{project.space === "bartlett-labs" ? "BL" : project.space.slice(0, 3)}</span>
                             <span className={`badge ${getPriorityBadge(project.priority)}`}>{project.priority}</span>
                             <div className="flex items-center gap-1.5">
