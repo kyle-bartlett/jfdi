@@ -54,8 +54,11 @@ export default function RemindersPage() {
   const [snoozeOpenId, setSnoozeOpenId] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [batchSnoozeOpen, setBatchSnoozeOpen] = useState(false);
+  const [sweepOpen, setSweepOpen] = useState(false);
+  const [sweeping, setSweeping] = useState(false);
   const snoozeRef = useRef<HTMLDivElement>(null);
   const batchSnoozeRef = useRef<HTMLDivElement>(null);
+  const sweepRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -85,6 +88,11 @@ export default function RemindersPage() {
   }, []);
 
   const filteredReminders = filterReminders(reminders, activeTab);
+
+  // All overdue reminders (used by sweep and keyboard shortcut)
+  const overdueReminders = reminders.filter(
+    (r) => r.status !== "completed" && r.due_date && new Date(r.due_date) < new Date()
+  );
 
   // Keyboard shortcuts for power-user navigation
   useEffect(() => {
@@ -184,9 +192,18 @@ export default function RemindersPage() {
             setBatchSnoozeOpen(!batchSnoozeOpen);
           }
           break;
+        case "A": // Sweep all overdue → tomorrow (Shift+A)
+          if (overdueReminders.length > 0) {
+            e.preventDefault();
+            const tom = new Date();
+            tom.setDate(tom.getDate() + 1);
+            tom.setHours(9, 0, 0, 0);
+            sweepOverdue(tom);
+          }
+          break;
         case "?": // Show keyboard shortcut hints
           e.preventDefault();
-          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • S Batch Snooze • Esc Clear");
+          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • S Batch Snooze • A Sweep Overdue • Esc Clear");
           break;
       }
     };
@@ -200,7 +217,7 @@ export default function RemindersPage() {
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [filteredReminders, focusedIndex, showForm, editingReminder, deleteTarget, snoozeOpenId, selectedIds, batchSnoozeOpen]);
+  }, [filteredReminders, focusedIndex, showForm, editingReminder, deleteTarget, snoozeOpenId, selectedIds, batchSnoozeOpen, reminders]);
 
   // Reset focus when tab changes
   useEffect(() => {
@@ -346,6 +363,43 @@ export default function RemindersPage() {
     }
   };
 
+  // Close sweep dropdown on outside click
+  useEffect(() => {
+    if (!sweepOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (sweepRef.current && !sweepRef.current.contains(e.target as Node)) {
+        setSweepOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [sweepOpen]);
+
+  // Sweep all overdue reminders to a given date
+  const sweepOverdue = async (snoozedUntil: Date) => {
+    if (overdueReminders.length === 0) return;
+    const count = overdueReminders.length;
+    setSweeping(true);
+    try {
+      await Promise.all(
+        overdueReminders.map((r) =>
+          fetch(`/api/reminders?id=${r.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "snoozed", snoozed_until: snoozedUntil.toISOString() }),
+          })
+        )
+      );
+      setSweepOpen(false);
+      toast(`Swept ${count} overdue reminder${count !== 1 ? "s" : ""} → ${formatRelativeTime(snoozedUntil.toISOString())}`);
+      loadReminders();
+    } catch {
+      toast("Failed to sweep overdue reminders", "error");
+    } finally {
+      setSweeping(false);
+    }
+  };
+
   const openEdit = (reminder: Reminder) => {
     setFormData({
       title: reminder.title,
@@ -403,6 +457,34 @@ export default function RemindersPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Reminders</h1>
         <div className="flex gap-2">
+          {overdueReminders.length > 0 && selectedIds.size === 0 && (
+            <div className="relative" ref={sweepRef}>
+              <button
+                onClick={() => setSweepOpen(!sweepOpen)}
+                disabled={sweeping}
+                className="btn btn-secondary text-sm"
+                title={`Snooze all ${overdueReminders.length} overdue reminders (Shift+A for tomorrow)`}
+              >
+                {sweeping ? "Sweeping..." : `🧹 Sweep Overdue (${overdueReminders.length})`}
+              </button>
+              {sweepOpen && (
+                <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-lg py-1 min-w-[200px]">
+                  <div className="px-3 py-1.5 text-[10px] text-muted-foreground/60 uppercase tracking-wide">
+                    Snooze all {overdueReminders.length} overdue to:
+                  </div>
+                  {getSnoozeOptions().map((opt) => (
+                    <button
+                      key={opt.label}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors"
+                      onClick={() => sweepOverdue(opt.date)}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
           {selectedIds.size > 0 && (
             <>
               <button onClick={batchComplete} className="btn btn-secondary text-sm">
