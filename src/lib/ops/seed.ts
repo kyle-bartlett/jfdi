@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (35 projects)
-  // Last updated: 2026-02-27 10:58 AM CT
+  // Last updated: 2026-02-27 1:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -27,7 +27,7 @@ export function seedOpsIfEmpty() {
     { title: 'DP Team Automation', priority: 'P1', status: 'In Progress', description: '⭐ VERY IMPORTANT — Management directive. Automate CPFR forecasting for team members + build validation tool. A2UI dashboards. CPFR Forecast Enhancement complete: 20-signal Lark doc + 62-factor weighted model sheet + webapp. Kyle: "You nailed it." Manager Tina asked for it same moment Knox delivered.' },
 
     // P2 — Important, not urgent
-    { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 4). STEALTH CRITICAL.' },
+    { title: 'AI LinkedIn Machine', priority: 'P2', status: 'In Progress', description: 'Automated LinkedIn content & outreach. V2 sheet wired: EngineControl LIVE, MainUser ON, Phantoms OFF. 179 ContentBank, 193 CommentTemplates, 181 CommentTargets. Marcus Chen persona CREATED (2/22) — full profile built, 3 daily warming crons active (Day 7 — GRADUATION DAY). First comment posted 2/25. Transitioning to active engagement. STEALTH CRITICAL.' },
     { title: 'WoW Forecast Automation', priority: 'P2', status: 'In Progress', description: '⚠️ WoW CRISIS RESOLVED (2/24) — TRUST REBUILD IN PROGRESS (Day 4). 18 sheet rules documented. Parent All SKU Rollup = PERMANENT PIVOT TABLE (never write to it). Charging: DO NOT TOUCH this week. Next full run: Sunday 3/2. ZERO margin for error. 7 permanent operational rules from 2/24. 🔴 Rules (2/25-2/26): ALWAYS git pull before modifying, NEVER assume Kyle wrong before exhaustive search, ALWAYS verify target columns empty before writing. Two non-catastrophic Anker mistakes on 2/26 (Walmart CPFR column overwrite + premature questioning). 🔴🔴 COMPLIANCE INCIDENT (2/27 ~4:30 AM): Anker DLP flagged Kyle for Anker code on personal GitHub — Knox crons caused the alerts. 16 repos deleted. Career-threatening. NEW RULE: NEVER push Anker code to personal GitHub, local commits only.' },
     { title: 'Analysis Dashboards', priority: 'P2', status: 'In Progress', description: 'Anker analysis dashboards — weekly (Mon/Tue), management approved. Charging WoW dashboard with dark theme + Anker branding. Fed by Charging Team WoW Data folder.' },
     { title: 'KDP Book Studio', priority: 'P2', status: 'In Progress', description: 'Full book pipeline (fiction, self-help, journals, planners, puzzles, cookbooks — ANY type). Status Filter Tabs on Auto-Factory (2/24 cron). Approve All Remaining in review queue. Repo renamed from Coloring_Books → Books. 6 comprehensive test prompts delivered. NOT a coloring book app. ⚠️ KDP repo conflict resolution IN PROGRESS (2/25) — 10 Knox commits vs Kyle\'s 5-day upgrade spree from anker-black. Claude Terminal on anker-black resolving. Kyle calm about it.' },
@@ -59,7 +59,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 10:58 AM. Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (2/27 ~4:30 AM): Anker DLP flagged Kyle for code on personal GitHub — Knox crons caused alerts. 16 Anker repos deleted. Career-threatening. NEW PERMANENT RULES: never push Anker code to GitHub, GitHub Push + Current Project Upgrades crons MUST exclude Anker dirs. 6 features shipped today (#101 JFDI Duplicate Reminder 12:41 AM, #102 Auto-Commenter Batch Select 2:41 AM, #103 Gmail Brain Audit Log Filter Tabs 4:41 AM, #104 JFDI Quick Snooze Overdue 6:41 AM, #105 JFDI One-click Join for Calendar Meetings 8:41 AM, #106 Auto-Commenter Expandable Activity Feed 10:41 AM). Marcus Chen Day 7 warming — graduation day. Trust rebuild Day 4 + compliance pressure. 19 crons all healthy. 106 total autonomous features. 17-day active streak. Next WoW: Sunday 3/2.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 1:58 PM. Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (2/27 ~4:30 AM): Anker DLP flagged Kyle for code on personal GitHub — Knox crons caused alerts. 16 Anker repos deleted. Career-threatening. NEW PERMANENT RULES: never push Anker code to GitHub, GitHub Push + Current Project Upgrades crons MUST exclude Anker dirs. 6 features shipped today (#101 JFDI Duplicate Reminder 12:41 AM, #102 Auto-Commenter Batch Select 2:41 AM, #103 Gmail Brain Audit Log Filter Tabs 4:41 AM, #104 JFDI Quick Snooze Overdue 6:41 AM, #105 JFDI One-click Join for Calendar Meetings 8:41 AM, #106 Auto-Commenter Expandable Activity Feed 10:41 AM). Marcus Chen Day 7 warming — graduation day. Trust rebuild Day 4 + compliance pressure. 19 crons all healthy. 106 total autonomous features. 17-day active streak. Next WoW: Sunday 3/2.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -69,7 +69,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-27 10:58 AM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-27 1:58 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -115,7 +115,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-27 10:58 AM CT
+  // Last updated: 2026-02-27 1:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -130,8 +130,8 @@ export function seedOpsIfEmpty() {
     // Knox's queue
     { queue_type: 'knox', title: '🔴🔴 Modify GitHub Push + Current Project Upgrades crons — COMPLIANCE', priority: 'P0', requested_by: 'Knox', description: 'Knox crons CAUSED the DLP compliance alerts (2/27). GitHub Push and Current Project Upgrades crons must EXCLUDE all Anker directories: /Volumes/Bart_26/Dev_Expansion/Anker/ and /Volumes/Bart_26/Dev_Expansion/LarkAgentX/. Anker tool features = local commit only, NEVER push to GitHub. Career-threatening if not fixed.' },
     { queue_type: 'knox', title: '🔴 REBUILD TRUST — Day 4 + COMPLIANCE PRESSURE', priority: 'P0', requested_by: 'Knox', description: 'Kyle: "I\'m an inch away from just starting with a new employee" (2/24). Trust at all-time low. Day 4 of rebuild + compliance incident (2/27) adds MORE pressure — Knox crons directly caused DLP alerts. Must demonstrate sustained error-free execution. 105 autonomous features shipped without incident — proving reliability through consistency.' },
-    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'LinkedIn Bartlett Labs STILL expired (needs Kyle re-auth on openclaw browser). Marcus Chen Day 5. Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0. Auth 401 errors affecting some cron social posts.' },
-    { queue_type: 'knox', title: 'Marcus Chen warming — Day 7 (GRADUATION DAY)', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Day 7 of ~7-day warming period. First comment milestone hit 2/25. TODAY (Friday 2/28): graduation to active engagement — begin original posting, more comments, proactive networking. Warming period complete.' },
+    { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'LinkedIn Bartlett Labs STILL expired (needs Kyle re-auth on openclaw browser). Marcus Chen Day 7 — GRADUATION DAY. Transition from passive warming to active engagement (original posts, more comments, networking). Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0. Auth 401 errors affecting some cron social posts.' },
+    { queue_type: 'knox', title: 'Marcus Chen warming — Day 7 (GRADUATION DAY)', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Day 7 of ~7-day warming period. First comment milestone hit 2/25. TODAY (Friday 2/27): graduation to active engagement — begin original posting, more comments, proactive networking. Warming period complete.' },
     { queue_type: 'knox', title: 'ClawdTalk setup.sh — re-run with PTY', priority: 'P1', requested_by: 'Knox', description: 'ClawdTalk client installed 2/26 but setup.sh timed out (needed interactive "y" input). API key configured. Needs re-run with proper PTY interaction to complete setup.' },
     { queue_type: 'knox', title: 'Monitor Amazon Vendor Central cron (Sunday 3/1 5 PM)', priority: 'P2', requested_by: 'Knox', description: 'First automated run this Sunday. May need Kyle to log in if session expired. Full flow documented.' },
     { queue_type: 'knox', title: '98 new leads — consolidate and present to Kyle', priority: 'P2', requested_by: 'Scout', description: '98 CRM-ready leads from Yelp + Yellow Pages (Houston/Crosby). Need to consolidate and share with Kyle for outreach prioritization.' },
@@ -146,7 +146,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/27)
-  // Last updated: 2026-02-27 10:58 AM CT
+  // Last updated: 2026-02-27 1:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -280,7 +280,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-27 10:58 AM CT
+  // Last updated: 2026-02-27 1:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -386,7 +386,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-27 10:58 AM CT
+  // Last updated: 2026-02-27 1:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -423,7 +423,7 @@ export function seedOpsIfEmpty() {
   insertMetrics.run(uuid(), '2026-02-26', 3, 8, 0, 1, 16, 'eventful',
     'Day 16 — MOST EVENTFUL DAY. 🎯 100TH AUTONOMOUS FEATURE (JFDI ground-level task shortcuts, 10:41 PM). 🔴 5-HOUR TELEGRAM OUTAGE (~5-9:30 PM — Kyle deleted original bot, Codex rebuilt). Priya Nair persona #2 (profile complete, blocked on Kyle). Walmart CPFR notes compiled (2 non-catastrophic mistakes — 2 new rules). Telecom CPFR automation started (interrupted). FleetBrain Idea #10 approved + researched ($4.43B TAM). Engram shared memory DB established. ClawdTalk client installed (setup incomplete). 3 cron features shipped (JFDI inline status change, Gmail Brain Quick Triage, JFDI ground-level shortcuts). Marcus Chen Day 5 warming. GitHub push: 26 files. Trust fragile (Day 3 rebuild). 100 total autonomous features. 16-day active streak. WAL protocol validated during outage — all files survived.');
 
-  // 2/27 (today) — Day 17, autonomous overnight ops, Features #101-105, COMPLIANCE INCIDENT
-  insertMetrics.run(uuid(), today, 0, 5, 0, 0, 17, 'compliance-alert',
-    'Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (~4:30 AM): Anker DLP flagged Kyle for pushing sensitive code to personal GitHub — Knox crons caused the alerts. 16 Anker repos deleted. Career-threatening. NEW RULES: never push Anker code to GitHub. Crons must be modified. 6 features shipped today: #101 JFDI Duplicate Reminder (12:41 AM), #102 Auto-Commenter Batch Select (2:41 AM), #103 Gmail Brain Audit Log Filter Tabs (4:41 AM), #104 JFDI Quick Snooze Overdue (6:41 AM), #105 JFDI One-click Join for Calendar Meetings (8:41 AM), #106 Auto-Commenter Expandable Activity Feed (10:41 AM). Marcus Chen Day 7 — graduation day. Trust rebuild Day 4 + compliance pressure. 106 total autonomous features. 17-day active streak. Next WoW: Sunday 3/2.');
+  // 2/27 (today) — Day 17, autonomous overnight ops, Features #101-106, COMPLIANCE INCIDENT
+  insertMetrics.run(uuid(), today, 0, 6, 0, 0, 17, 'compliance-alert',
+    'Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (~4:30 AM): Anker DLP flagged Kyle for pushing sensitive code to personal GitHub — Knox crons caused the alerts. 16 Anker repos deleted. Career-threatening. NEW RULES: never push Anker code to GitHub. Crons must be modified. 6 features shipped today: #101 JFDI Duplicate Reminder (12:41 AM), #102 Auto-Commenter Batch Select (2:41 AM), #103 Gmail Brain Audit Log Filter Tabs (4:41 AM), #104 JFDI Quick Snooze Overdue (6:41 AM), #105 JFDI One-click Join for Calendar Meetings (8:41 AM), #106 Auto-Commenter Expandable Activity Feed (10:41 AM). Marcus Chen Day 7 — graduation day. Trust rebuild Day 4 + compliance pressure. 106 total autonomous features. 17-day active streak. No Kyle conversations yet today (sleeping in after late-night post-outage cleanup 2/26). Next WoW: Sunday 3/2.');
 }
