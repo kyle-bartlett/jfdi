@@ -324,6 +324,13 @@ export default function ProjectsPage() {
             setDeleteTaskTarget(tasks[focusedTaskIndex]);
           }
           break;
+        case "y": // Duplicate focused task
+          if (focusedTaskIndex >= 0 && focusedTaskIndex < tasks.length) {
+            e.preventDefault();
+            const src = tasks[focusedTaskIndex];
+            duplicateTask(src);
+          }
+          break;
         case "a": // Add new task
           e.preventDefault();
           setShowTaskForm(true);
@@ -334,7 +341,7 @@ export default function ProjectsPage() {
           break;
         case "?": // Show keyboard shortcut help
           e.preventDefault();
-          toast("Keys: ↑↓/jk Navigate • c Cycle Status • e Edit • d Delete • a Add Task • Esc Clear");
+          toast("Keys: ↑↓/jk Navigate • c Cycle Status • e Edit • d Delete • y Duplicate • a Add Task • Esc Clear");
           break;
       }
     };
@@ -469,6 +476,38 @@ export default function ProjectsPage() {
       loadProjects();
     } catch {
       toast("Failed to delete task", "error");
+    }
+  };
+
+  const duplicateTask = async (task: Task) => {
+    if (!selectedProject) return;
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: task.title,
+          description: task.description || null,
+          project_id: selectedProject.id,
+          priority: task.priority,
+          status: "todo",
+        }),
+      });
+      const created = await res.json();
+      toast("Task duplicated");
+      // Reload tasks, then focus the new task and open inline edit
+      const tasksRes = await fetch(`/api/tasks?project_id=${selectedProject.id}`);
+      const updatedTasks: Task[] = await tasksRes.json();
+      setSelectedProject({ ...selectedProject, tasks: updatedTasks });
+      const newIdx = updatedTasks.findIndex((t) => t.id === created.id);
+      if (newIdx >= 0) {
+        setFocusedTaskIndex(newIdx);
+        setEditingTaskId(created.id);
+        setEditingTaskTitle(created.title);
+      }
+      loadProjects(); // Refresh progress
+    } catch {
+      toast("Failed to duplicate task", "error");
     }
   };
 
@@ -674,7 +713,7 @@ export default function ProjectsPage() {
                 key={task.id}
                 data-task-item
                 onClick={() => setFocusedTaskIndex(taskIndex)}
-                className={`card flex items-center gap-3 transition-all ${
+                className={`card flex items-center gap-3 transition-all group ${
                   focusedTaskIndex === taskIndex ? "ring-2 ring-primary/50 bg-primary/5" : ""
                 }`}
               >
@@ -710,6 +749,14 @@ export default function ProjectsPage() {
                 )}
                 <span className={`badge ${getPriorityBadge(task.priority)}`}>{task.priority}</span>
                 {task.due_date && <span className="text-xs text-muted-foreground">{new Date(task.due_date).toLocaleDateString()}</span>}
+                <button
+                  onClick={(e) => { e.stopPropagation(); duplicateTask(task); }}
+                  className="text-xs text-muted-foreground hover:text-primary px-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Duplicate task"
+                  title="Duplicate task (y)"
+                >
+                  ⧉
+                </button>
                 <button
                   onClick={() => setDeleteTaskTarget(task)}
                   className="text-xs text-muted-foreground hover:text-destructive px-1"
