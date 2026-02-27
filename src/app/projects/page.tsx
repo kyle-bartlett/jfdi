@@ -221,7 +221,9 @@ export default function ProjectsPage() {
   const [taskFormData, setTaskFormData] = useState(emptyTaskForm);
   const [searchQuery, setSearchQuery] = useState("");
   const [inlineAddProjectId, setInlineAddProjectId] = useState<string | null>(null);
+  const [focusedTaskIndex, setFocusedTaskIndex] = useState<number>(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const taskListRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   const loadProjects = useCallback(async () => {
@@ -257,6 +259,96 @@ export default function ProjectsPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Task status cycle order
+  const TASK_STATUS_CYCLE = ["todo", "in-progress", "done"] as const;
+
+  // Reset focused task when leaving ground view or changing project
+  useEffect(() => {
+    setFocusedTaskIndex(-1);
+  }, [viewLevel, selectedProject?.id]);
+
+  // Keyboard shortcuts for Ground-level task navigation
+  useEffect(() => {
+    if (viewLevel !== "now" || !selectedProject?.tasks) return;
+
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target as HTMLElement).isContentEditable) return;
+      if (showTaskForm || editingTaskId || deleteTaskTarget) return;
+
+      const tasks = selectedProject.tasks || [];
+      if (tasks.length === 0 && e.key !== "a" && e.key !== "?") return;
+
+      switch (e.key) {
+        case "j":
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedTaskIndex((prev) => {
+            const next = Math.min(prev + 1, tasks.length - 1);
+            scrollTaskIntoView(next);
+            return next;
+          });
+          break;
+        case "k":
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedTaskIndex((prev) => {
+            const next = Math.max(prev - 1, 0);
+            scrollTaskIntoView(next);
+            return next;
+          });
+          break;
+        case "c": // Cycle task status: todo → in-progress → done → todo
+          if (focusedTaskIndex >= 0 && focusedTaskIndex < tasks.length) {
+            e.preventDefault();
+            const task = tasks[focusedTaskIndex];
+            const currentIdx = TASK_STATUS_CYCLE.indexOf(task.status as typeof TASK_STATUS_CYCLE[number]);
+            const nextStatus = TASK_STATUS_CYCLE[(currentIdx + 1) % TASK_STATUS_CYCLE.length];
+            updateTaskStatus(task.id, nextStatus);
+            toast(`${nextStatus === "done" ? "✓" : nextStatus === "in-progress" ? "▶" : "○"} ${nextStatus.replace("-", " ")}`, "success");
+          }
+          break;
+        case "e":
+        case "Enter": // Edit focused task title
+          if (focusedTaskIndex >= 0 && focusedTaskIndex < tasks.length) {
+            e.preventDefault();
+            const task = tasks[focusedTaskIndex];
+            setEditingTaskId(task.id);
+            setEditingTaskTitle(task.title);
+          }
+          break;
+        case "d": // Delete focused task
+          if (focusedTaskIndex >= 0 && focusedTaskIndex < tasks.length) {
+            e.preventDefault();
+            setDeleteTaskTarget(tasks[focusedTaskIndex]);
+          }
+          break;
+        case "a": // Add new task
+          e.preventDefault();
+          setShowTaskForm(true);
+          break;
+        case "Escape":
+          e.preventDefault();
+          setFocusedTaskIndex(-1);
+          break;
+        case "?": // Show keyboard shortcut help
+          e.preventDefault();
+          toast("Keys: ↑↓/jk Navigate • c Cycle Status • e Edit • d Delete • a Add Task • Esc Clear");
+          break;
+      }
+    };
+
+    const scrollTaskIntoView = (index: number) => {
+      if (taskListRef.current) {
+        const items = taskListRef.current.querySelectorAll("[data-task-item]");
+        items[index]?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [viewLevel, selectedProject, focusedTaskIndex, showTaskForm, editingTaskId, deleteTaskTarget, toast]);
 
   const parseTags = (tagsStr: string | null): string[] => {
     if (!tagsStr) return [];
@@ -576,9 +668,16 @@ export default function ProjectsPage() {
             </form>
           )}
 
-          <div className="space-y-2">
-            {(selectedProject.tasks || []).map((task) => (
-              <div key={task.id} className="card flex items-center gap-3">
+          <div className="space-y-2" ref={taskListRef}>
+            {(selectedProject.tasks || []).map((task, taskIndex) => (
+              <div
+                key={task.id}
+                data-task-item
+                onClick={() => setFocusedTaskIndex(taskIndex)}
+                className={`card flex items-center gap-3 transition-all ${
+                  focusedTaskIndex === taskIndex ? "ring-2 ring-primary/50 bg-primary/5" : ""
+                }`}
+              >
                 <select
                   className="text-xs bg-transparent border border-border rounded px-1 py-0.5"
                   value={task.status}
@@ -624,6 +723,15 @@ export default function ProjectsPage() {
               <EmptyState icon="📋" title="No tasks yet" description="Add your first task to get started." action={{ label: "+ Add Task", onClick: () => setShowTaskForm(true) }} />
             )}
           </div>
+
+          {/* Task keyboard shortcut hint */}
+          {selectedProject.tasks && selectedProject.tasks.length > 0 && (
+            <div className="mt-3 text-center">
+              <span className="text-[10px] text-muted-foreground/40">
+                Press <kbd className="px-1 py-0.5 rounded bg-muted text-muted-foreground/60 text-[9px]">?</kbd> for keyboard shortcuts
+              </span>
+            </div>
+          )}
         </div>
       )}
 
