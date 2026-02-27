@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (35 projects)
-  // Last updated: 2026-02-27 1:58 PM CT
+  // Last updated: 2026-02-27 2:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -59,7 +59,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 1:58 PM. Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (2/27 ~4:30 AM): Anker DLP flagged Kyle for code on personal GitHub — Knox crons caused alerts. 16 Anker repos deleted. Career-threatening. NEW PERMANENT RULES: never push Anker code to GitHub, GitHub Push + Current Project Upgrades crons MUST exclude Anker dirs. 6 features shipped today (#101 JFDI Duplicate Reminder 12:41 AM, #102 Auto-Commenter Batch Select 2:41 AM, #103 Gmail Brain Audit Log Filter Tabs 4:41 AM, #104 JFDI Quick Snooze Overdue 6:41 AM, #105 JFDI One-click Join for Calendar Meetings 8:41 AM, #106 Auto-Commenter Expandable Activity Feed 10:41 AM). Marcus Chen Day 7 warming — graduation day. Trust rebuild Day 4 + compliance pressure. 19 crons all healthy. 106 total autonomous features. 17-day active streak. Next WoW: Sunday 3/2.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 2:58 PM CT. Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (2/27 ~4:30 AM): Anker DLP flagged Kyle — Knox crons pushed Anker code to personal GitHub. 16 repos deleted. Career-threatening. NEW PERMANENT RULES: never push Anker code to GitHub. 6 features shipped today (#101 JFDI Duplicate Reminder, #102 Auto-Commenter Batch Select, #103 Gmail Brain Audit Log Filter Tabs, #104 JFDI Quick Snooze Overdue, #105 JFDI One-click Join Meetings, #106 Auto-Commenter Expandable Activity Feed). NEW: Meeting Recap Automation SOP created (~2:13 PM) — auto-generates structured recaps after every meeting via gog CLI + Lark/Notta notes. Marcus Chen Day 7 — GRADUATION DAY (transition to active engagement). Trust rebuild Day 4 + compliance pressure. 19 crons all healthy. 106 total autonomous features. 17-day active streak. Next WoW: Sunday 3/2.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -69,7 +69,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-27 1:58 PM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-27 2:58 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -115,7 +115,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-27 1:58 PM CT
+  // Last updated: 2026-02-27 2:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -137,6 +137,7 @@ export function seedOpsIfEmpty() {
     { queue_type: 'knox', title: '98 new leads — consolidate and present to Kyle', priority: 'P2', requested_by: 'Scout', description: '98 CRM-ready leads from Yelp + Yellow Pages (Houston/Crosby). Need to consolidate and share with Kyle for outreach prioritization.' },
     { queue_type: 'knox', title: '🔴 ALWAYS git pull before modifying ANY project', priority: 'P0', requested_by: 'Kyle', description: 'HARD RULE (2/25). ALL crons and sub-agents MUST git pull before every project modification. Followed consistently since established.' },
     { queue_type: 'knox', title: 'FleetBrain research — follow up with Kyle', priority: 'P2', requested_by: 'Knox', description: 'Idea #10: AI Dispatch Intelligence for Small Fleet Operators. Kyle said "Yes please" to deeper research. Scout completed full market analysis: $4.43B TAM → $11.78B by 2030, 900K-1.2M target companies. Report at memory/fleetbrain-research.md. Stack deployed on MVP (status unknown post-outage). Needs Kyle decision on next steps.' },
+    { queue_type: 'knox', title: 'Meeting Recap Automation — needs Notta export setup', priority: 'P2', requested_by: 'Knox', description: 'SOP created (memory/meeting-recap-sop.md). Auto-generates structured meeting recaps after every meeting via gog CLI + Lark/Notta. Google Drive folder ready. Blocked on Kyle configuring Notta auto-export to Google Drive. Cron not yet created (every 15 min, 8 AM - 10 PM CT weekdays).' },
   ];
 
   const insertQueue = db.prepare('INSERT INTO queues (id, queue_type, title, priority, requested_by, description) VALUES (?, ?, ?, ?, ?, ?)');
@@ -146,7 +147,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/27)
-  // Last updated: 2026-02-27 1:58 PM CT
+  // Last updated: 2026-02-27 2:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -256,6 +257,7 @@ export function seedOpsIfEmpty() {
     { agent_name: 'Knox', task_description: '🔴🔴 DLP Compliance Incident — Anker code on GitHub (2/27 ~4:30 AM)', status: 'Resolved', result_summary: 'Amanda Deng (HQ) flagged 3 DLP alerts to Kyle\'s manager. 50+ files HIGH, 46 files MEDIUM, 7 files LOW. Knox crons caused alerts by pushing Anker code to personal GitHub. dp-chatbot + analysis-dashboards were PUBLIC. 16 repos cloned locally then deleted from GitHub. Kyle provided screenshot proof. NEW PERMANENT RULES: never push Anker code to GitHub, local commits only for Anker tools.' },
     { agent_name: 'Stack', task_description: 'JFDI Calendar: One-click Join for Meetings (cron, 2/27 8:41 AM)', status: 'Completed', result_summary: 'Feature #105. Calendar Widget shows visible "Join" button on active/next-up meetings with video links (Google Meet, Zoom, Teams, Lark). Links directly to meeting room — saves 3-4 clicks per meeting. Detects URLs from hangoutLink field + location text. Event title still links to calendar page. Git pulled ✅. Committed (1f1ee0d). Deployed to Vercel.' },
     { agent_name: 'Stack', task_description: 'Auto-Commenter: Expandable Activity Feed (cron, 2/27 10:41 AM)', status: 'Completed', result_summary: 'Feature #106. Dashboard activity feed items expand on click to reveal full comment text + direct link to original post. Chevron indicator shows expandable items. Collapsed by default — no visual bloat. Saves page navigation every time user wants to check what a run actually did. Git pulled ✅. Committed (22a1978 on feature/nextjs-16-react-19). Not on Vercel (needs provisioning).' },
+    { agent_name: 'Knox', task_description: 'Meeting Recap Automation SOP (2/27 ~2:13 PM)', status: 'Completed', result_summary: 'Created full SOP (memory/meeting-recap-sop.md) + empty log (memory/meeting-recap-log.md). Auto-generates structured meeting recaps via gog CLI + Lark/Notta notes → Google Doc. Smart triage: Knox auto-handles data pulls/drafts/reminders, Kyle handles decisions/approvals/calls. Google Drive folder 1r_GsxVCyna0QLeMzxZgmjIvPYr4b1fjC. Cron design: every 15 min, 8 AM-10 PM weekdays. Blocked on Notta auto-export config.' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -280,7 +282,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-27 1:58 PM CT
+  // Last updated: 2026-02-27 2:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -375,7 +377,8 @@ export function seedOpsIfEmpty() {
     { event_type: 'system', title: '🔴🔴 COMPLIANCE INCIDENT — Anker DLP (2/27 ~4:30 AM)', description: 'Amanda Deng (Anker HQ) flagged Kyle to his manager — DLP system detected Anker code on personal GitHub. 3 alerts: HIGH (50+ files 2/21), MEDIUM (46 files 2/24), LOW (7 files 2/7). Knox crons (GitHub Push + Current Project Upgrades) caused the alerts. dp-chatbot + analysis-dashboards were PUBLIC. 16 repos cloned locally then DELETED from GitHub with screenshot proof. Career-threatening. NEW PERMANENT RULES: never push Anker code to personal GitHub, local commits only. GitHub Push + Current Project Upgrades crons MUST be modified to exclude Anker directories.', source: 'Knox', icon: '🔴' },
     { event_type: 'agent_complete', title: 'JFDI Calendar: One-click Join for Meetings (cron, 2/27 8:41 AM)', description: 'Feature #105. Calendar Widget shows "Join" button on active/next-up meetings with video links (Google Meet, Zoom, Teams, Lark). Detects meeting URLs from hangoutLink + location text. Saves 3-4 clicks per meeting. Git pulled ✅. Committed (1f1ee0d). Deployed to Vercel.', source: 'Stack (cron)', icon: '🔗' },
     { event_type: 'agent_complete', title: 'Auto-Commenter: Expandable Activity Feed (cron, 2/27 10:41 AM)', description: 'Feature #106. Dashboard activity feed items expand on click to reveal full comment text + direct link to original post. Chevron indicator. Collapsed by default. Saves page navigation for checking run details. Git pulled ✅. Committed (22a1978). Not on Vercel (needs provisioning).', source: 'Stack (cron)', icon: '📋' },
-    { event_type: 'milestone', title: '17 days operational — Day 17 (Friday 2/27)', description: 'Knox live since Feb 11. 52+ sub-agent deployments managed. 19 crons all healthy. 98 leads. 10 PPs. 106 autonomous features shipped. Trust rebuild Day 4 + compliance pressure. Marcus Chen Day 7 warming — graduation day. 6 features shipped today (#101-#106). 🔴 COMPLIANCE INCIDENT: Anker DLP flagged Knox crons pushing code to GitHub — 16 repos deleted, career-threatening. Crons MUST be modified. Next WoW: Sunday 3/2. ZipWise P0 — clients waiting.', source: 'Knox', icon: '🏆' },
+    { event_type: 'agent_complete', title: 'Meeting Recap Automation SOP created (2/27 ~2:13 PM)', description: 'Full SOP for auto-generating structured meeting recaps. Pulls from Kyle\'s Google Calendar via gog CLI, reads Lark/Notta notes, creates Google Doc with action items + follow-ups + dependencies. Smart triage: Knox auto-handles data pulls, drafts, reminders — Kyle handles decisions, approvals, calls. Cron not yet created. Blocked on Kyle configuring Notta auto-export.', source: 'Knox', icon: '📝' },
+    { event_type: 'milestone', title: '17 days operational — Day 17 (Friday 2/27)', description: 'Knox live since Feb 11. 52+ sub-agent deployments managed. 19 crons all healthy. 98 leads. 10 PPs. 106 autonomous features shipped. Trust rebuild Day 4 + compliance pressure. Marcus Chen Day 7 warming — graduation day. 6 features shipped today (#101-#106). Meeting Recap SOP created. 🔴 COMPLIANCE INCIDENT: Anker DLP flagged Knox crons pushing code to GitHub — 16 repos deleted, career-threatening. Crons MUST be modified. Next WoW: Sunday 3/2. ZipWise P0 — clients waiting.', source: 'Knox', icon: '🏆' },
   ];
 
   const insertActivity = db.prepare("INSERT INTO activity_log (id, event_type, title, description, source, icon, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))");
@@ -386,7 +389,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-27 1:58 PM CT
+  // Last updated: 2026-02-27 2:58 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -425,5 +428,5 @@ export function seedOpsIfEmpty() {
 
   // 2/27 (today) — Day 17, autonomous overnight ops, Features #101-106, COMPLIANCE INCIDENT
   insertMetrics.run(uuid(), today, 0, 6, 0, 0, 17, 'compliance-alert',
-    'Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (~4:30 AM): Anker DLP flagged Kyle for pushing sensitive code to personal GitHub — Knox crons caused the alerts. 16 Anker repos deleted. Career-threatening. NEW RULES: never push Anker code to GitHub. Crons must be modified. 6 features shipped today: #101 JFDI Duplicate Reminder (12:41 AM), #102 Auto-Commenter Batch Select (2:41 AM), #103 Gmail Brain Audit Log Filter Tabs (4:41 AM), #104 JFDI Quick Snooze Overdue (6:41 AM), #105 JFDI One-click Join for Calendar Meetings (8:41 AM), #106 Auto-Commenter Expandable Activity Feed (10:41 AM). Marcus Chen Day 7 — graduation day. Trust rebuild Day 4 + compliance pressure. 106 total autonomous features. 17-day active streak. No Kyle conversations yet today (sleeping in after late-night post-outage cleanup 2/26). Next WoW: Sunday 3/2.');
+    'Day 17 — Friday. 🔴🔴 COMPLIANCE INCIDENT (~4:30 AM): Anker DLP flagged Kyle — Knox crons pushed Anker code to personal GitHub. 16 repos deleted. Career-threatening. NEW RULES: never push Anker code to GitHub. 6 features shipped: #101 JFDI Duplicate Reminder, #102 Auto-Commenter Batch Select, #103 Gmail Brain Audit Log Filter Tabs, #104 JFDI Quick Snooze Overdue, #105 JFDI One-click Join Meetings, #106 Auto-Commenter Expandable Activity Feed. Meeting Recap Automation SOP created (~2:13 PM). Marcus Chen Day 7 — GRADUATION DAY (transition to active engagement). Trust rebuild Day 4 + compliance pressure. 106 total autonomous features. 17-day active streak. No Kyle conversations today. Next WoW: Sunday 3/2.');
 }
