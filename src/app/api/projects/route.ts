@@ -1,11 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { projects } from "@/lib/schema";
-import { eq } from "drizzle-orm";
+import { projects, tasks } from "@/lib/schema";
+import { eq, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
 export async function GET() {
-  const all = await db.select().from(projects).orderBy(projects.name).all();
+  // Fetch all projects with task summary counts in a single query
+  const all = await db
+    .select({
+      id: projects.id,
+      name: projects.name,
+      description: projects.description,
+      space: projects.space,
+      status: projects.status,
+      priority: projects.priority,
+      progress: projects.progress,
+      tags: projects.tags,
+      created_at: projects.created_at,
+      updated_at: projects.updated_at,
+      task_total: sql<number>`COALESCE((SELECT COUNT(*) FROM tasks WHERE tasks.project_id = ${projects.id}), 0)`,
+      task_done: sql<number>`COALESCE((SELECT COUNT(*) FROM tasks WHERE tasks.project_id = ${projects.id} AND tasks.status = 'done'), 0)`,
+      task_in_progress: sql<number>`COALESCE((SELECT COUNT(*) FROM tasks WHERE tasks.project_id = ${projects.id} AND tasks.status = 'in-progress'), 0)`,
+      task_overdue: sql<number>`COALESCE((SELECT COUNT(*) FROM tasks WHERE tasks.project_id = ${projects.id} AND tasks.status != 'done' AND tasks.due_date IS NOT NULL AND tasks.due_date < datetime('now')), 0)`,
+    })
+    .from(projects)
+    .orderBy(projects.name)
+    .all();
   return NextResponse.json(all);
 }
 

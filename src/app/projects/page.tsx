@@ -31,6 +31,11 @@ interface Project {
   created_at: string;
   updated_at: string;
   tasks?: Task[];
+  // Task summary counts (from API join)
+  task_total?: number;
+  task_done?: number;
+  task_in_progress?: number;
+  task_overdue?: number;
 }
 
 type ViewLevel = "life" | "projects" | "now";
@@ -801,7 +806,25 @@ export default function ProjectsPage() {
                       <div key={project.id} className="card cursor-pointer" onClick={() => loadProjectTasks(project)}>
                         <div className="flex items-center justify-between">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium">{project.name}</h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-medium">{project.name}</h3>
+                              {/* Inline task summary */}
+                              {(project.task_total ?? 0) > 0 && (
+                                <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70">
+                                  <span className={project.task_overdue ? "text-destructive font-medium" : ""}>
+                                    {project.task_overdue ? `${project.task_overdue} overdue · ` : ""}
+                                  </span>
+                                  <span>
+                                    {project.task_done}/{project.task_total} done
+                                  </span>
+                                  {(project.task_in_progress ?? 0) > 0 && (
+                                    <span className="text-primary">
+                                      · {project.task_in_progress} active
+                                    </span>
+                                  )}
+                                </span>
+                              )}
+                            </div>
                             {project.description && (
                               <p className="text-xs text-muted-foreground mt-1 truncate max-w-md">{project.description}</p>
                             )}
@@ -888,8 +911,20 @@ export default function ProjectsPage() {
                 <div className="space-y-2">
                   {spaceProjects.slice(0, 5).map((p) => (
                     <div key={p.id} className="flex items-center justify-between">
-                      <span className="text-sm truncate flex-1">{p.name}</span>
-                      <div className="flex items-center gap-1.5 ml-2">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                        <span className="text-sm truncate">{p.name}</span>
+                        {(p.task_overdue ?? 0) > 0 && (
+                          <span className="text-[9px] font-medium text-destructive bg-destructive/10 px-1 py-0.5 rounded-full flex-shrink-0">
+                            {p.task_overdue}!
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 ml-2 flex-shrink-0">
+                        {(p.task_total ?? 0) > 0 && (
+                          <span className="text-[10px] text-muted-foreground/60">
+                            {p.task_done}/{p.task_total}
+                          </span>
+                        )}
                         <div className="w-12 bg-secondary rounded-full h-1">
                           <div className="bg-primary h-1 rounded-full" style={{ width: `${p.progress}%` }} />
                         </div>
