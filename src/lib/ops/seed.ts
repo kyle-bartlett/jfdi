@@ -8,14 +8,14 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (35 projects)
-  // Last updated: 2026-02-27 1:58 AM CT
+  // Last updated: 2026-02-27 2:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
     { title: 'ZipWise', priority: 'P0', status: 'In Progress', description: 'AI-powered route optimization for field sales reps. React Native + Supabase. Deployed to zipwise.bartlettlabs.io. Login/signup + 9-step onboarding. Quick-Complete Stops, Search Bar on History (2/24 cron — instant visit lookup), Auto-Scroll to Active Stop (2/23 cron). CLIENTS WAITING to test it live. Needs finishing.' },
     { title: 'Bartlett Labs Website', priority: 'P0', status: 'In Progress', description: 'Company website at bartlettlabs.io — Kyle redesigned with lighter colors for Houston businesses. Currently has a build error Kyle is fixing. 5 pages, calendar link, contact form, services page. LinkedIn alignment ON HOLD until website finalized.' },
     { title: 'LinkedIn Business Page', priority: 'P0', status: 'In Progress', description: 'Professional LinkedIn presence — page exists. ON HOLD until website color overhaul finalized. 3 posts live. First autonomous LinkedIn cron post succeeded 2/20.' },
-    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Automations Page Keyboard Shortcuts added (2/25 7:25 PM cron — j/k navigate, p pause/activate, e edit, d duplicate, n new, r refresh, ? hint bar). Activity Page Text Search added (2/25 9:25 PM cron — instant filtering by title/description/status/platform, contextual empty state, auto-resets pagination). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
+    { title: 'TuneUp / Auto-Commenter Platform', priority: 'P0', status: 'In Progress', description: 'Automated social media commenting/engagement platform. Merged from TuneUp. Code quality 10/10. Clerk auth. Duplicate Automation + Automation Templates (8 pre-built across 6 platforms, 2/22 cron). Automations Page Keyboard Shortcuts added (2/25 7:25 PM cron — j/k navigate, p pause/activate, e edit, d duplicate, n new, r refresh, ? hint bar). Activity Page Text Search added (2/25 9:25 PM cron — instant filtering by title/description/status/platform, contextual empty state, auto-resets pagination). Batch Select + Mark All Contacted added (2/27 2:41 AM cron — checkboxes on uncontacted leads, Select All toggle, floating action bar, one-click batch mark contacted — Feature #102). Needs Action/Contacted filter on leads page. Competitors exist — MUST launch ASAP.' },
 
     // P1 — High priority active projects
     { title: 'JFDI', priority: 'P1', status: 'In Progress', description: 'Personal productivity command center at jfdi.bartlettlabs.io. ✅ DEPLOYED to Vercel. Merged with Ops Dashboard. 12+ pages. Features: Quick-Add, Command Palette (⌘K), Reminders Shortcuts, Inline Task Expansion, Queue Status Cycling, Clickable/Draggable Progress Bars for Goals (2/23 cron), Inline Quick-Add Task from 10K ft view (2/24), Enhanced Dashboard Tasks Widget (2/24 — overdue highlighting, Complete All), Dashboard Auto-Refresh every 60s (2/24), Inline Task Snooze (2/24 — Tomorrow/Monday/Next Week), Calendar Live Now/Next with pulsing countdown (2/24), Streak Tracker + Command Center with system vitals (2/24), Batch Snooze — select multiple reminders with Shift+S (2/24 5:24 PM), Focus Mode — deep work timer with distraction blocking (2/24 9 PM), Dashboard Task Status Cycling — todo→in-progress→done click cycling (2/24 10 PM), Smart NL Quick-Create — natural language date & priority parsing in ⌘K palette (2/25 5:25 PM cron), 🧹 Sweep Overdue — one-click snooze all overdue reminders (2/25 11:25 PM cron), Inline Status Change on Project Cards — click status emoji to change without modal (2/26 1:25 AM cron), Ground-Level Task Keyboard Shortcuts — j/k navigate, c cycle status, e edit, d delete, a add, ? help (2/26 10:41 PM cron — 🎯 100th autonomous feature), Duplicate Reminder — one-click clone with tomorrow 9 AM due date + r keyboard shortcut (2/27 12:41 AM cron — Feature #101). Deployed to Vercel.' },
@@ -59,7 +59,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 1:58 AM. Day 17 — Friday, autonomous overnight operations continuing. Feature #101 shipped (JFDI Duplicate Reminder, 12:41 AM). Kyle asleep (went to bed ~11 PM 2/26 after post-outage cleanup grind). Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7, Saturday 2/28). Trust rebuild Day 4 — sustained error-free execution, zero incidents since WoW crisis. 19 active crons all healthy post-Telegram-rebuild. All carry-forward items unchanged. Key pending: Telecom CPFR automation (Kyle walkthrough needed), Priya Nair persona (blocked on Kyle — email + headshot), auth 401 fix (Kyle approval needed), ClawdTalk setup (re-run needed), ZipWise P0 (clients waiting). 101 total autonomous features. 17-day active streak. Next WoW full run: Sunday 3/2.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 35 projects, 13+ prospects, 70+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/27 2:58 AM. Day 17 — Friday, autonomous overnight operations continuing. Features #101-102 shipped overnight (JFDI Duplicate Reminder 12:41 AM, Auto-Commenter Batch Select + Mark Contacted 2:41 AM). Kyle asleep (went to bed ~11 PM 2/26 after post-outage cleanup grind). Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7, Saturday 2/28). Trust rebuild Day 4 — sustained error-free execution, zero incidents since WoW crisis. 19 active crons all healthy post-Telegram-rebuild. All carry-forward items unchanged. Key pending: Telecom CPFR automation (Kyle walkthrough needed), Priya Nair persona (blocked on Kyle — email + headshot), auth 401 fix (Kyle approval needed), ClawdTalk setup (re-run needed), ZipWise P0 (clients waiting). 102 total autonomous features. 17-day active streak. Next WoW full run: Sunday 3/2.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -69,7 +69,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-27 1:58 AM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-27 2:58 AM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -115,7 +115,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-27 1:58 AM CT
+  // Last updated: 2026-02-27 2:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -128,7 +128,7 @@ export function seedOpsIfEmpty() {
     { queue_type: 'kyle', title: 'Verify gateway bind — loopback vs LAN', priority: 'P2', requested_by: 'Knox', description: 'After Codex rebuild (2/26 outage), gateway bind switched to loopback (127.0.0.1). Black computer (192.168.68.64) may no longer connect via WebSocket. May need to switch back to LAN binding.' },
 
     // Knox's queue
-    { queue_type: 'knox', title: '🔴 REBUILD TRUST — Day 4', priority: 'P0', requested_by: 'Knox', description: 'Kyle: "I\'m an inch away from just starting with a new employee" (2/24). Trust at all-time low. Day 4 of rebuild. Last mistakes: 2/26 Walmart CPFR (non-catastrophic). Must demonstrate sustained error-free execution. 101 autonomous features shipped without incident — proving reliability through consistency.' },
+    { queue_type: 'knox', title: '🔴 REBUILD TRUST — Day 4', priority: 'P0', requested_by: 'Knox', description: 'Kyle: "I\'m an inch away from just starting with a new employee" (2/24). Trust at all-time low. Day 4 of rebuild. Last mistakes: 2/26 Walmart CPFR (non-catastrophic). Must demonstrate sustained error-free execution. 102 autonomous features shipped without incident — proving reliability through consistency.' },
     { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'LinkedIn Bartlett Labs STILL expired (needs Kyle re-auth on openclaw browser). Marcus Chen Day 5. Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0. Auth 401 errors affecting some cron social posts.' },
     { queue_type: 'knox', title: 'Marcus Chen warming — Day 6 (~1 day to graduation)', priority: 'P1', requested_by: 'Knox', description: '3 crons active: 8 AM browse, 12:30 PM scroll/like, 8 PM light touch. Day 6 of ~7-day warming period. First comment milestone hit 2/25. Day 7 target (TOMORROW): begin original posting. Graduation imminent.' },
     { queue_type: 'knox', title: 'ClawdTalk setup.sh — re-run with PTY', priority: 'P1', requested_by: 'Knox', description: 'ClawdTalk client installed 2/26 but setup.sh timed out (needed interactive "y" input). API key configured. Needs re-run with proper PTY interaction to complete setup.' },
@@ -145,7 +145,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/27)
-  // Last updated: 2026-02-27 1:58 AM CT
+  // Last updated: 2026-02-27 2:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -248,6 +248,7 @@ export function seedOpsIfEmpty() {
 
     // 2/27 — Day 17
     { agent_name: 'Stack', task_description: 'JFDI Reminders: Duplicate Reminder (cron, 2/27 12:41 AM)', status: 'Completed', result_summary: 'Feature #101. One-click duplicate reminder — 📋 button + r keyboard shortcut clones reminder with tomorrow 9 AM due date. Copies title, description, priority, category. No form fill needed. Git pulled ✅. Committed (8df4841). Deployed to Vercel.' },
+    { agent_name: 'Stack', task_description: 'Auto-Commenter: Batch Select + Mark All Contacted (cron, 2/27 2:41 AM)', status: 'Completed', result_summary: 'Feature #102. Checkboxes on uncontacted lead cards. Select All toggle. Floating action bar with "Mark All Contacted" — processes all selected in one click. Selection clears on filter/page change. Eliminates N individual clicks per batch. +154 lines. Git pulled ✅. Committed (0d77c32). Not on Vercel yet (needs provisioning).' },
   ];
 
   const insertAgent = db.prepare('INSERT INTO agent_tasks (id, agent_name, task_description, status, result_summary) VALUES (?, ?, ?, ?, ?)');
@@ -272,7 +273,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-27 1:58 AM CT
+  // Last updated: 2026-02-27 2:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -361,7 +362,8 @@ export function seedOpsIfEmpty() {
 
     // 2/27 — Day 17
     { event_type: 'agent_complete', title: 'JFDI Reminders: Duplicate Reminder (cron, 2/27 12:41 AM)', description: 'Feature #101. One-click 📋 button + r keyboard shortcut duplicates a reminder with tomorrow 9 AM due date. Copies title, description, priority, category. No form fill. Git pulled ✅. Committed (8df4841). Deployed to Vercel.', source: 'Stack (cron)', icon: '📋' },
-    { event_type: 'milestone', title: '17 days operational — Day 17 (Friday 2/27)', description: 'Knox live since Feb 11. 52+ sub-agent deployments managed. 19 crons all healthy. 98 leads. 10 PPs. 101 autonomous features shipped. Trust rebuild Day 4 — zero errors since WoW crisis (2/24). Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7, Sat 2/28). Kyle asleep after post-outage cleanup grind. Crons running autonomously overnight. Feature #101 (JFDI Duplicate Reminder) shipped at 12:41 AM. Next WoW full run: Sunday 3/2. All carry-forward items stable. ZipWise remains P0 — clients waiting.', source: 'Knox', icon: '🏆' },
+    { event_type: 'agent_complete', title: 'Auto-Commenter: Batch Select + Mark All Contacted (cron, 2/27 2:41 AM)', description: 'Feature #102. Checkboxes on uncontacted leads + Select All toggle + floating action bar with "Mark All Contacted". One-click batch processing eliminates N individual clicks per batch. +154 lines. Git pulled ✅. Committed (0d77c32). Not on Vercel yet (needs provisioning).', source: 'Stack (cron)', icon: '✅' },
+    { event_type: 'milestone', title: '17 days operational — Day 17 (Friday 2/27)', description: 'Knox live since Feb 11. 52+ sub-agent deployments managed. 19 crons all healthy. 98 leads. 10 PPs. 102 autonomous features shipped. Trust rebuild Day 4 — zero errors since WoW crisis (2/24). Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7, Sat 2/28). Kyle asleep after post-outage cleanup grind. Crons running autonomously overnight. Features #101-102 shipped overnight (JFDI Duplicate Reminder 12:41 AM, Auto-Commenter Batch Select 2:41 AM). Next WoW full run: Sunday 3/2. All carry-forward items stable. ZipWise remains P0 — clients waiting.', source: 'Knox', icon: '🏆' },
   ];
 
   const insertActivity = db.prepare("INSERT INTO activity_log (id, event_type, title, description, source, icon, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now', ?))");
@@ -372,7 +374,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-27 1:58 AM CT
+  // Last updated: 2026-02-27 2:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -409,7 +411,7 @@ export function seedOpsIfEmpty() {
   insertMetrics.run(uuid(), '2026-02-26', 3, 8, 0, 1, 16, 'eventful',
     'Day 16 — MOST EVENTFUL DAY. 🎯 100TH AUTONOMOUS FEATURE (JFDI ground-level task shortcuts, 10:41 PM). 🔴 5-HOUR TELEGRAM OUTAGE (~5-9:30 PM — Kyle deleted original bot, Codex rebuilt). Priya Nair persona #2 (profile complete, blocked on Kyle). Walmart CPFR notes compiled (2 non-catastrophic mistakes — 2 new rules). Telecom CPFR automation started (interrupted). FleetBrain Idea #10 approved + researched ($4.43B TAM). Engram shared memory DB established. ClawdTalk client installed (setup incomplete). 3 cron features shipped (JFDI inline status change, Gmail Brain Quick Triage, JFDI ground-level shortcuts). Marcus Chen Day 5 warming. GitHub push: 26 files. Trust fragile (Day 3 rebuild). 100 total autonomous features. 16-day active streak. WAL protocol validated during outage — all files survived.');
 
-  // 2/27 (today) — Day 17, autonomous overnight operations, Feature #101
-  insertMetrics.run(uuid(), today, 0, 1, 0, 0, 17, 'steady-rebuild',
-    'Day 17 — Friday. Autonomous overnight operations. Feature #101 shipped at 12:41 AM (JFDI Duplicate Reminder — one-click clone with tomorrow 9 AM due date). Kyle asleep after post-outage cleanup grind (went to bed ~11 PM 2/26). All 19 crons healthy post-Telegram-rebuild. Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7). Trust rebuild Day 4 — sustained error-free execution since WoW crisis. Zero Anker errors. All carry-forward items unchanged. Key pending: ZipWise P0 (clients waiting), Telecom CPFR automation (Kyle walkthrough), Priya Nair (blocked on Kyle), auth 401 fix (Kyle approval). Next WoW: Sunday 3/2. 101 total autonomous features. 17-day active streak.');
+  // 2/27 (today) — Day 17, autonomous overnight operations, Features #101-102
+  insertMetrics.run(uuid(), today, 0, 2, 0, 0, 17, 'steady-rebuild',
+    'Day 17 — Friday. Autonomous overnight operations. Feature #101 shipped at 12:41 AM (JFDI Duplicate Reminder). Feature #102 shipped at 2:41 AM (Auto-Commenter Batch Select + Mark All Contacted — checkboxes + floating action bar for batch lead processing). Kyle asleep after post-outage cleanup grind (went to bed ~11 PM 2/26). All 19 crons healthy post-Telegram-rebuild. Marcus Chen Day 6 warming — graduation to active posting tomorrow (Day 7). Trust rebuild Day 4 — sustained error-free execution since WoW crisis. Zero Anker errors. All carry-forward items unchanged. Key pending: ZipWise P0 (clients waiting), Telecom CPFR automation (Kyle walkthrough), Priya Nair (blocked on Kyle), auth 401 fix (Kyle approval). Next WoW: Sunday 3/2. 102 total autonomous features. 17-day active streak.');
 }
