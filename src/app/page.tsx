@@ -248,6 +248,20 @@ export default function Dashboard() {
     }
   };
 
+  const snoozeReminder = async (id: string, until: string) => {
+    try {
+      await fetch(`/api/reminders?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "snoozed", snoozed_until: until }),
+      });
+      toast("Snoozed → tomorrow 9 AM");
+      await loadData();
+    } catch {
+      toast("Failed to snooze reminder", "error");
+    }
+  };
+
   const completeTask = async (id: string) => {
     try {
       await fetch(`/api/tasks?id=${id}`, {
@@ -414,6 +428,7 @@ export default function Dashboard() {
             pending={data?.reminders.pending ?? 0}
             onComplete={completeReminder}
             onQuickAdd={quickAddReminder}
+            onSnooze={snoozeReminder}
           />
 
           <TasksWidget

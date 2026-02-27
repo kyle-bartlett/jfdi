@@ -18,6 +18,7 @@ interface Props {
   pending: number;
   onComplete?: (id: string) => void;
   onQuickAdd?: (title: string) => Promise<void>;
+  onSnooze?: (id: string, until: string) => void;
 }
 
 export function PrioritiesWidget({
@@ -27,6 +28,7 @@ export function PrioritiesWidget({
   pending,
   onComplete,
   onQuickAdd,
+  onSnooze,
 }: Props) {
   const [adding, setAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
@@ -96,6 +98,21 @@ export function PrioritiesWidget({
               >
                 {r.title}
               </Link>
+              {onSnooze && r._urgency === "overdue" && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const tom = new Date();
+                    tom.setDate(tom.getDate() + 1);
+                    tom.setHours(9, 0, 0, 0);
+                    onSnooze(r.id, tom.toISOString());
+                  }}
+                  className="text-[10px] text-muted-foreground hover:text-primary px-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                  title="Snooze → tomorrow 9 AM"
+                >
+                  → Tom
+                </button>
+              )}
               <span
                 className={`badge text-[10px] ${
                   r.priority === "high"
