@@ -170,6 +170,15 @@ export default function RemindersPage() {
             }
           }
           break;
+        case "r": // Duplicate focused reminder
+          if (focusedIndex >= 0 && focusedIndex < items.length) {
+            const item = items[focusedIndex];
+            if (item.status !== "completed") {
+              e.preventDefault();
+              duplicateReminder(item);
+            }
+          }
+          break;
         case "x": // Toggle select focused reminder
         case " ": // Space to select
           if (focusedIndex >= 0 && focusedIndex < items.length) {
@@ -203,7 +212,7 @@ export default function RemindersPage() {
           break;
         case "?": // Show keyboard shortcut hints
           e.preventDefault();
-          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • x Select • S Batch Snooze • A Sweep Overdue • Esc Clear");
+          toast("Keys: ↑↓/jk Navigate • n New • c Complete • e Edit • d Delete • s Snooze • r Duplicate • x Select • S Batch Snooze • A Sweep Overdue • Esc Clear");
           break;
       }
     };
@@ -397,6 +406,29 @@ export default function RemindersPage() {
       toast("Failed to sweep overdue reminders", "error");
     } finally {
       setSweeping(false);
+    }
+  };
+
+  const duplicateReminder = async (reminder: Reminder) => {
+    try {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(9, 0, 0, 0);
+      await fetch("/api/reminders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: reminder.title,
+          description: reminder.description || "",
+          due_date: tomorrow.toISOString().slice(0, 16),
+          priority: reminder.priority,
+          category: reminder.category,
+        }),
+      });
+      toast("Reminder duplicated → tomorrow 9 AM");
+      loadReminders();
+    } catch {
+      toast("Failed to duplicate reminder", "error");
     }
   };
 
@@ -609,6 +641,16 @@ export default function RemindersPage() {
                 <span className={`badge ${getPriorityBadge(reminder.priority)}`}>
                   {reminder.priority}
                 </span>
+                {/* Duplicate */}
+                {reminder.status !== "completed" && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); duplicateReminder(reminder); }}
+                    className="text-xs text-muted-foreground hover:text-foreground px-1"
+                    title="Duplicate → tomorrow 9 AM"
+                  >
+                    📋
+                  </button>
+                )}
                 {/* Snooze dropdown */}
                 {reminder.status !== "completed" && (
                   <div className="dropdown" ref={snoozeOpenId === reminder.id ? snoozeRef : undefined}>
