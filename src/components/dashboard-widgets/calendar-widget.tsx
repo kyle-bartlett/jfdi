@@ -74,6 +74,21 @@ function classifyEvents(events: CalendarEvent[], now: Date): Map<string, EventSt
   return statusMap;
 }
 
+function getMeetingLink(event: CalendarEvent): string | null {
+  // Prioritize direct meeting join links over calendar page links
+  if (event.hangoutLink) return event.hangoutLink;
+  // Check location for Lark/Zoom/Teams meeting URLs
+  if (event.location) {
+    const urlMatch = event.location.match(/https?:\/\/\S*(meet|zoom|teams|lark|feishu)\S*/i);
+    if (urlMatch) return urlMatch[0];
+  }
+  return null;
+}
+
+function getCalendarLink(event: CalendarEvent): string | null {
+  return event.htmlLink || null;
+}
+
 export function CalendarWidget({ events }: Props) {
   const [now, setNow] = useState(() => new Date());
 
@@ -91,7 +106,8 @@ export function CalendarWidget({ events }: Props) {
       {events.length > 0 ? (
         <div className="space-y-1">
           {events.slice(0, 8).map((event) => {
-            const link = event.htmlLink || event.hangoutLink;
+            const calLink = getCalendarLink(event);
+            const meetLink = getMeetingLink(event);
             const status = statusMap.get(event.id) || "upcoming";
             const start = new Date(event.start);
             const end = new Date(event.end);
@@ -99,6 +115,8 @@ export function CalendarWidget({ events }: Props) {
             const isNow = status === "now";
             const isNext = status === "next";
             const isPast = status === "past";
+
+            const showJoin = meetLink && (isNow || isNext);
 
             const content = (
               <div
@@ -122,19 +140,41 @@ export function CalendarWidget({ events }: Props) {
                 {/* Title */}
                 <span className={`truncate flex-1 ${
                   isNow ? "font-medium" : ""
-                } ${isPast ? "line-through" : ""} ${link ? "group-hover:text-primary" : ""}`}>
+                } ${isPast ? "line-through" : ""} ${calLink ? "group-hover:text-primary" : ""}`}>
                   {event.title}
                 </span>
 
-                {/* Status badges */}
+                {/* Status badges + Join button */}
                 <div className="flex items-center gap-1.5 flex-shrink-0">
+                  {showJoin && (
+                    <a
+                      href={meetLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full transition-colors ${
+                        isNow
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                          : "bg-accent/20 text-accent hover:bg-accent/30"
+                      }`}
+                      title="Join meeting directly"
+                    >
+                      <span>▶</span>
+                      <span>Join</span>
+                    </a>
+                  )}
                   {isNow && (
                     <span className="badge badge-primary text-[10px] whitespace-nowrap animate-pulse">
                       {formatTimeRemaining(end.getTime() - now.getTime())}
                     </span>
                   )}
-                  {isNext && (
+                  {isNext && !showJoin && (
                     <span className="badge badge-accent text-[10px] whitespace-nowrap">
+                      {formatTimeUntil(start.getTime() - now.getTime())}
+                    </span>
+                  )}
+                  {isNext && showJoin && (
+                    <span className="text-[10px] text-muted-foreground whitespace-nowrap">
                       {formatTimeUntil(start.getTime() - now.getTime())}
                     </span>
                   )}
@@ -151,16 +191,16 @@ export function CalendarWidget({ events }: Props) {
               </div>
             );
 
-            return link ? (
+            return calLink ? (
               <a
                 key={event.id}
-                href={link}
+                href={calLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block group"
               >
                 {content}
-                {event.location && (
+                {event.location && !getMeetingLink(event) && (
                   <div className="text-[10px] text-muted-foreground ml-[4.5rem] truncate px-2">
                     {event.location}
                   </div>
@@ -169,7 +209,7 @@ export function CalendarWidget({ events }: Props) {
             ) : (
               <div key={event.id}>
                 {content}
-                {event.location && (
+                {event.location && !getMeetingLink(event) && (
                   <div className="text-[10px] text-muted-foreground ml-[4.5rem] truncate px-2">
                     {event.location}
                   </div>
