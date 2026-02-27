@@ -490,3 +490,90 @@ textarea.input {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* ============================================
+   WEATHER WIDGET ANIMATIONS
+   ============================================ */
+
+.animate-pulse-slow {
+  animation: pulseSlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+.animate-drift {
+  animation: drift 4s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+.animate-rain {
+  animation: rain 1.5s ease-in-out infinite;
+}
+
+@keyframes rain {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+
+.animate-flash {
+  animation: flash 2s ease-in-out infinite;
+}
+
+@keyframes flash {
+  0%, 90%, 100% { opacity: 1; }
+  95% { opacity: 0.5; }
+}
+
+.animate-snow {
+  animation: snow 3s ease-in-out infinite;
+}
+
+@keyframes snow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(1px) rotate(5deg); }
+  50% { transform: translateY(2px) rotate(0deg); }
+  75% { transform: translateY(1px) rotate(-5deg); }
+}
+
+/* Expand animation */
+.animate-in {
+  animation: animateIn 0.2s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.slide-in-from-top-2 {
+  animation: slideFromTop 0.2s ease-out;
+}
+
+@keyframes slideFromTop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scratch pad fade out */
+.animate-fade-out > * {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* ============================================
+   SCRATCH PAD
+   ============================================ */
+
+.scratch-note-enter {
+  animation: noteEnter 0.2s ease-out;
+}
+
+@keyframes noteEnter {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

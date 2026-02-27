@@ -12,6 +12,7 @@ import { MeetingsWidget } from "@/components/dashboard-widgets/meetings-widget";
 import { EmailWidget } from "@/components/dashboard-widgets/email-widget";
 import { WeatherWidget } from "@/components/dashboard-widgets/weather-widget";
 import { LarkWidget } from "@/components/dashboard-widgets/lark-widget";
+import { ScratchPad } from "@/components/dashboard-widgets/scratch-pad";
 import { useToast } from "@/components/ui/toast";
 
 interface ReminderItem {
@@ -475,6 +476,8 @@ export default function Dashboard() {
           />
 
           {data?.larkMessages && <LarkWidget messages={data.larkMessages} />}
+
+          <ScratchPad />
         </div>
       )}
     </div>
