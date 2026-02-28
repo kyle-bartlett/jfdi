@@ -19,6 +19,7 @@ interface Props {
   onComplete?: (id: string) => void;
   onQuickAdd?: (title: string) => Promise<void>;
   onSnooze?: (id: string, until: string) => void;
+  onSnoozeAllOverdue?: () => Promise<void>;
 }
 
 export function PrioritiesWidget({
@@ -29,10 +30,12 @@ export function PrioritiesWidget({
   onComplete,
   onQuickAdd,
   onSnooze,
+  onSnoozeAllOverdue,
 }: Props) {
   const [adding, setAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [snoozingAll, setSnoozingAll] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -52,11 +55,33 @@ export function PrioritiesWidget({
     }
   };
 
+  const handleSnoozeAll = async () => {
+    if (!onSnoozeAllOverdue || snoozingAll) return;
+    setSnoozingAll(true);
+    try {
+      await onSnoozeAllOverdue();
+    } finally {
+      setSnoozingAll(false);
+    }
+  };
+
+  const overdueItems = items.filter((r) => r._urgency === "overdue");
+
   return (
     <div className="widget">
       <div className="flex items-center justify-between mb-3">
         <h2 className="widget-title mb-0">Priorities</h2>
         <div className="flex items-center gap-2">
+          {onSnoozeAllOverdue && overdueItems.length >= 2 && (
+            <button
+              onClick={handleSnoozeAll}
+              disabled={snoozingAll}
+              className="text-[10px] text-warning hover:text-warning/80 font-medium transition-colors disabled:opacity-50"
+              title={`Snooze all ${overdueItems.length} overdue → tomorrow 9 AM`}
+            >
+              {snoozingAll ? "..." : `⏭ Snooze ${overdueItems.length} overdue`}
+            </button>
+          )}
           {onQuickAdd && !adding && (
             <button
               onClick={() => setAdding(true)}

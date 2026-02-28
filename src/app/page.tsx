@@ -263,6 +263,30 @@ export default function Dashboard() {
     }
   };
 
+  const snoozeAllOverdue = async () => {
+    const overdueItems = data?.reminders.items.filter((r) => r._urgency === "overdue") || [];
+    if (overdueItems.length === 0) return;
+    const tom = new Date();
+    tom.setDate(tom.getDate() + 1);
+    tom.setHours(9, 0, 0, 0);
+    const until = tom.toISOString();
+    try {
+      await Promise.all(
+        overdueItems.map((r) =>
+          fetch(`/api/reminders?id=${r.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "snoozed", snoozed_until: until }),
+          })
+        )
+      );
+      toast(`${overdueItems.length} overdue snoozed → tomorrow 9 AM`);
+      await loadData();
+    } catch {
+      toast("Failed to snooze reminders", "error");
+    }
+  };
+
   const completeTask = async (id: string) => {
     try {
       await fetch(`/api/tasks?id=${id}`, {
@@ -430,6 +454,7 @@ export default function Dashboard() {
             onComplete={completeReminder}
             onQuickAdd={quickAddReminder}
             onSnooze={snoozeReminder}
+            onSnoozeAllOverdue={snoozeAllOverdue}
           />
 
           <TasksWidget
