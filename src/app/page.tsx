@@ -395,6 +395,36 @@ export default function Dashboard() {
     }
   };
 
+  const snoozeAllOverdueTasks = async () => {
+    const overdueTasks = (data?.tasks.items || []).filter((t) => {
+      if (!t.due_date || t.status === "done") return false;
+      const taskDate = new Date(t.due_date);
+      const today = new Date();
+      return new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate()) <
+        new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    });
+    if (overdueTasks.length === 0) return;
+    const tom = new Date();
+    tom.setDate(tom.getDate() + 1);
+    tom.setHours(9, 0, 0, 0);
+    const newDate = tom.toISOString();
+    try {
+      await Promise.all(
+        overdueTasks.map((t) =>
+          fetch(`/api/tasks?id=${t.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ due_date: newDate }),
+          })
+        )
+      );
+      toast(`${overdueTasks.length} overdue task${overdueTasks.length !== 1 ? "s" : ""} → tomorrow`);
+      await loadData();
+    } catch {
+      toast("Failed to reschedule tasks", "error");
+    }
+  };
+
   return (
     <div>
       {focusMode && data?.tasks.items && data.tasks.items.length > 0 && (
@@ -465,6 +495,7 @@ export default function Dashboard() {
             onQuickAdd={quickAddTask}
             onSnooze={snoozeTask}
             onStatusChange={changeTaskStatus}
+            onSnoozeAllOverdue={snoozeAllOverdueTasks}
           />
 
           <CalendarWidget events={data?.calendar || []} />

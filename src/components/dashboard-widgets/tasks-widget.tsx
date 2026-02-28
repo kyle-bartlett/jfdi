@@ -21,6 +21,7 @@ interface Props {
   onQuickAdd?: (title: string) => Promise<void>;
   onSnooze?: (id: string, newDate: string) => void;
   onStatusChange?: (id: string, status: string) => void;
+  onSnoozeAllOverdue?: () => Promise<void>;
 }
 
 function getSnoozeDate(option: 'tomorrow' | 'next-monday' | 'next-week'): string {
@@ -115,11 +116,12 @@ function isOverdue(dateStr: string | null): boolean {
   return taskDate < today;
 }
 
-export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd, onSnooze, onStatusChange }: Props) {
+export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQuickAdd, onSnooze, onStatusChange, onSnoozeAllOverdue }: Props) {
   const [adding, setAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [completingAll, setCompletingAll] = useState(false);
+  const [snoozingAll, setSnoozingAll] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -149,6 +151,16 @@ export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQu
     }
   };
 
+  const handleSnoozeAllOverdue = async () => {
+    if (!onSnoozeAllOverdue) return;
+    setSnoozingAll(true);
+    try {
+      await onSnoozeAllOverdue();
+    } finally {
+      setSnoozingAll(false);
+    }
+  };
+
   // Sort: overdue first, then high priority, then the rest
   const sorted = [...items].sort((a, b) => {
     const aOverdue = isOverdue(a.due_date) ? 0 : 1;
@@ -166,9 +178,21 @@ export function TasksWidget({ items, todayCount, onComplete, onCompleteAll, onQu
         <div className="flex items-center gap-2">
           <h2 className="widget-title mb-0">Today&apos;s Tasks</h2>
           {overdueCount > 0 && (
-            <span className="text-[10px] font-medium text-destructive bg-destructive/10 px-1.5 py-0.5 rounded-full">
-              {overdueCount} overdue
-            </span>
+            <>
+              <span className="text-[10px] font-medium text-destructive bg-destructive/10 px-1.5 py-0.5 rounded-full">
+                {overdueCount} overdue
+              </span>
+              {onSnoozeAllOverdue && (
+                <button
+                  onClick={handleSnoozeAllOverdue}
+                  disabled={snoozingAll}
+                  className="text-[10px] text-muted-foreground hover:text-primary font-medium transition-colors disabled:opacity-50"
+                  title="Reschedule all overdue tasks to tomorrow"
+                >
+                  {snoozingAll ? "..." : "→ Tomorrow"}
+                </button>
+              )}
+            </>
           )}
         </div>
         <div className="flex items-center gap-2">
