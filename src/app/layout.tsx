@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "@/components/sidebar";
 import ChatPanel from "@/components/chat-panel";
 import { CommandPalette } from "@/components/command-palette";
+import { GoToNavigation } from "@/components/go-to-navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/ui/toast";
 
@@ -27,6 +28,7 @@ export default function RootLayout({
             </main>
             <ChatPanel />
             <CommandPalette />
+            <GoToNavigation />
           </ToastProvider>
         </ThemeProvider>
       </body>
