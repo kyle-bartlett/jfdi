@@ -17,6 +17,7 @@ interface Reminder {
   priority: string;
   category: string;
   snoozed_until: string | null;
+  recurrence: string;
   created_at: string;
   updated_at: string;
 }
@@ -25,6 +26,22 @@ type FilterTab = "all" | "overdue" | "today" | "next3" | "thisWeek" | "later" | 
 
 const CATEGORIES = ["work", "personal", "follow-up", "errands", "learning"] as const;
 const PRIORITIES = ["high", "medium", "low"] as const;
+const RECURRENCES = ["none", "daily", "weekdays", "weekly", "monthly"] as const;
+
+const RECURRENCE_LABELS: Record<string, string> = {
+  none: "None",
+  daily: "Daily",
+  weekdays: "Weekdays",
+  weekly: "Weekly",
+  monthly: "Monthly",
+};
+
+const RECURRENCE_ICONS: Record<string, string> = {
+  daily: "🔄",
+  weekdays: "📅",
+  weekly: "🗓️",
+  monthly: "📆",
+};
 
 const CATEGORY_ICONS: Record<string, string> = {
   work: "💼",
@@ -40,6 +57,7 @@ const emptyForm = {
   due_date: "",
   priority: "medium",
   category: "personal",
+  recurrence: "none",
 };
 
 export default function RemindersPage() {
@@ -269,11 +287,18 @@ export default function RemindersPage() {
 
   const completeReminder = async (id: string) => {
     try {
-      await fetch(`/api/reminders?id=${id}`, {
+      const res = await fetch(`/api/reminders?id=${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "completed" }),
       });
+      const data = await res.json();
+      if (data.nextReminder) {
+        const nextDue = data.nextReminder.due_date
+          ? formatRelativeTime(data.nextReminder.due_date)
+          : "soon";
+        toast(`✅ Done! Next occurrence ${nextDue}`);
+      }
       loadReminders();
     } catch {
       toast("Failed to complete reminder", "error");
@@ -423,6 +448,7 @@ export default function RemindersPage() {
           due_date: tomorrow.toISOString().slice(0, 16),
           priority: reminder.priority,
           category: reminder.category,
+          recurrence: reminder.recurrence || "none",
         }),
       });
       toast("Reminder duplicated → tomorrow 9 AM");
@@ -439,6 +465,7 @@ export default function RemindersPage() {
       due_date: reminder.due_date ? reminder.due_date.slice(0, 16) : "",
       priority: reminder.priority,
       category: reminder.category,
+      recurrence: reminder.recurrence || "none",
     });
     setEditingReminder(reminder);
   };
@@ -638,6 +665,14 @@ export default function RemindersPage() {
                 <span className="text-base" title={reminder.category}>
                   {CATEGORY_ICONS[reminder.category] || "📌"}
                 </span>
+                {reminder.recurrence && reminder.recurrence !== "none" && (
+                  <span
+                    className="text-xs text-muted-foreground/70"
+                    title={`Repeats ${RECURRENCE_LABELS[reminder.recurrence] || reminder.recurrence}`}
+                  >
+                    {RECURRENCE_ICONS[reminder.recurrence] || "🔄"}
+                  </span>
+                )}
                 <span className={`badge ${getPriorityBadge(reminder.priority)}`}>
                   {reminder.priority}
                 </span>
@@ -720,7 +755,7 @@ export default function RemindersPage() {
               rows={2}
             />
           </FormField>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <FormField label="Due Date">
               <input
                 type="datetime-local"
@@ -748,6 +783,17 @@ export default function RemindersPage() {
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>{CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                ))}
+              </select>
+            </FormField>
+            <FormField label="Repeat">
+              <select
+                className="input"
+                value={formData.recurrence}
+                onChange={(e) => setFormData({ ...formData, recurrence: e.target.value })}
+              >
+                {RECURRENCES.map((r) => (
+                  <option key={r} value={r}>{RECURRENCE_LABELS[r]}</option>
                 ))}
               </select>
             </FormField>
@@ -779,7 +825,7 @@ export default function RemindersPage() {
               rows={2}
             />
           </FormField>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <FormField label="Due Date">
               <input
                 type="datetime-local"
@@ -807,6 +853,17 @@ export default function RemindersPage() {
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>{CATEGORY_ICONS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                ))}
+              </select>
+            </FormField>
+            <FormField label="Repeat">
+              <select
+                className="input"
+                value={formData.recurrence}
+                onChange={(e) => setFormData({ ...formData, recurrence: e.target.value })}
+              >
+                {RECURRENCES.map((r) => (
+                  <option key={r} value={r}>{RECURRENCE_LABELS[r]}</option>
                 ))}
               </select>
             </FormField>

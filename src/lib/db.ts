@@ -21,6 +21,7 @@ export async function initializeDatabase() {
       priority TEXT DEFAULT 'medium',
       category TEXT DEFAULT 'personal',
       snoozed_until TEXT,
+      recurrence TEXT DEFAULT 'none',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -145,5 +146,14 @@ export async function initializeDatabase() {
   `);
 }
 
+// Migrate: add recurrence column to existing reminders table
+async function migrateRecurrence() {
+  try {
+    await client.execute("ALTER TABLE reminders ADD COLUMN recurrence TEXT DEFAULT 'none'");
+  } catch {
+    // Column already exists — ignore
+  }
+}
+
 // Auto-init on import
-initializeDatabase().catch(console.error);
+initializeDatabase().then(() => migrateRecurrence()).catch(console.error);

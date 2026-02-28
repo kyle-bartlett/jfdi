@@ -10,6 +10,7 @@ export const reminders = sqliteTable("reminders", {
   priority: text("priority", { enum: ["high", "medium", "low"] }).default("medium"),
   category: text("category", { enum: ["work", "personal", "follow-up", "errands", "learning"] }).default("personal"),
   snoozed_until: text("snoozed_until"),
+  recurrence: text("recurrence", { enum: ["none", "daily", "weekdays", "weekly", "monthly"] }).default("none"),
   created_at: text("created_at").notNull().default(sql`(datetime('now'))`),
   updated_at: text("updated_at").notNull().default(sql`(datetime('now'))`),
 });
