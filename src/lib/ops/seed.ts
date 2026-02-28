@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (40 projects)
-  // Last updated: 2026-02-28 2:58 AM CT (Day 18)
+  // Last updated: 2026-02-28 3:58 AM CT (Day 18)
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -59,7 +59,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 43 projects, 13+ prospects, 95+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/28 2:58 AM CT. Day 18 — Saturday. Kyle AFK since ~11:30 PM 2/27 (asleep). Compliance incident FULLY RESOLVED. 112 total autonomous features across 18 days (latest: #112 Batch Snooze All Overdue from Dashboard, 2:43 AM). 20 crons healthy. ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle confirmation on DATA_WEEK_NUMBER + Charging restriction status. Supply Radar building overnight. Marcus Chen Day 8 (post-graduation). Trust rebuild Day 5. Weekend — crons continue autonomously.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 43 projects, 13+ prospects, 95+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/28 3:58 AM CT. Day 18 — Saturday. Kyle AFK since ~11:30 PM 2/27 (asleep). Compliance incident FULLY RESOLVED. 112 total autonomous features across 18 days (latest: #112 Batch Snooze All Overdue from Dashboard, 2:43 AM). 20 crons healthy. ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle confirmation on DATA_WEEK_NUMBER + Charging restriction status. Supply Radar COMPLETED + deployed to Vercel overnight. Marcus Chen Day 8 (post-graduation). Trust rebuild Day 5. Weekend — crons continue autonomously.' },
 
     // New projects added today
     { title: 'PayGuard', priority: 'P2', status: 'In Progress', description: 'AI Payroll Fraud & Wage Theft Detector — Idea #11. Two-sided marketplace: Workers photograph pay stubs → OCR → instant underpayment detection → pre-written demand letters citing exact law. Employers get B2B compliance dashboard ($49-$199/mo). $300M+ TAM near-term, $1B+ at scale. 83M hourly workers + 6M small businesses. Nuclear viral loop. Houston/Crosby angle: construction, restaurants, oil & gas. Kyle (3:28 PM 2/27): "Nice i like it a lot." Stack built full MVP: Next.js + Tailwind + Prisma + Tesseract.js OCR. 10 states + federal FLSA baseline. LIVE at payguard-omega.vercel.app ✅ pushed to GitHub ✅. Kyle (10:20 PM 2/27): "Keep building." Next: expand state coverage, onboarding flow, employer dashboard features.' },
@@ -67,7 +67,7 @@ export function seedOpsIfEmpty() {
 
     // NEW — Anker Presentation Apps (2/27 evening session)
     { title: 'Anker Pulse', priority: 'P1', status: 'In Progress', description: '⭐ ANKER PRESENTATION APP — Kyle\'s top priority for training presentations. Expo/React Native (iOS + Android + Web). Dashboard with KPI cards + sparklines, AI daily briefing, smart alerts, Ask AI, Feed, Metrics, Settings. Backend: Express + TypeScript + SQLite cache, connects to Google Sheets via gog CLI (WoW parent, 5 child sheets, CPFR mirror, RJW transfer). Kyle reviewed: login screen clean ✅, dashboard "looks good" ✅. Morning Briefing concept: push notification widget ("📬 12 new emails — 2 need action · 📅 3 meetings today") — notification IS the product, app is the fallback. Phase 1: push notifications. Phase 2: iOS WidgetKit. Babel config fixed. 🔴 ANKER DATA — moved to /Volumes/Bart_26/Dev_Expansion/Anker/anker-pulse/ (was incorrectly in Personal/). NEVER push to GitHub. LOCAL ONLY. Kyle caught near-miss: "That is literally Anker information."' },
-    { title: 'Supply Radar', priority: 'P1', status: 'In Progress', description: 'Anker presentation app #2 — interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios. Stack deployed 11:30 PM 2/27, building overnight. For Kyle\'s training presentations — sophisticated looking, co-workers can adopt immediately. Safe for GitHub (no Anker data — generic supply chain viz tool). Check Stack output for completion status.' },
+    { title: 'Supply Radar', priority: 'P1', status: 'In Progress', description: 'Anker presentation app #2 — interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios. Stack COMPLETED overnight build (2/28 ~12:05 AM). ✅ DEPLOYED to Vercel at supply-radar-b3ncy94vn-kyle-bartletts-projects.vercel.app. For Kyle\'s training presentations — sophisticated looking, co-workers can adopt immediately. Safe for GitHub (no Anker data — generic supply chain viz tool). Kyle hasn\'t reviewed yet.' },
   ];
 
   const insertProject = db.prepare('INSERT INTO projects (id, title, priority, status, description) VALUES (?, ?, ?, ?, ?)');
@@ -77,7 +77,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-28 2:58 AM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-28 3:58 AM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -123,7 +123,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-28 2:58 AM CT
+  // Last updated: 2026-02-28 3:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -139,7 +139,7 @@ export function seedOpsIfEmpty() {
     { queue_type: 'knox', title: '✅ Modify GitHub Push + Current Project Upgrades crons — COMPLIANCE', priority: 'P0', requested_by: 'Knox', description: '✅ DONE 1:15 PM. 5 crons updated with compliance guardrails. 🔴 ANKER PULSE COMPLIANCE CATCH at 11:15 PM — Knox almost pushed to GH, Kyle caught it. Moved Pulse from Personal/ to Anker/ dir. Cron exclusion lists updated. LESSON: anything touching Anker DATA is Anker code, regardless of folder.' },
     { queue_type: 'knox', title: '🔴 REBUILD TRUST — Day 5', priority: 'P0', requested_by: 'Knox', description: 'Trust still fragile. Day 5 of rebuild. Compliance incident (2/27 AM) fully resolved — 5 crons hardened. Compliance close call (2/27 11:15 PM — Pulse almost pushed to GH, Kyle caught it). 111 features shipped. Productive evening session 2/27 helping rebuild. ZERO tolerance for Anker data on GitHub. Weekend: quiet, reliable execution.' },
     { queue_type: 'knox', title: 'Anker Pulse — continue development (LOCAL ONLY)', priority: 'P0', requested_by: 'Kyle', description: 'Kyle: "Let\'s get working on them ASAP. Start with Pulse." Frontend done (Expo/React Native), backend done (Express API). Next: connect real data, fix Babel crash, Morning Briefing push notifications (Phase 1). 🔴 Lives at /Volumes/Bart_26/Dev_Expansion/Anker/anker-pulse/. NEVER push to GitHub. LOCAL commits only.' },
-    { queue_type: 'knox', title: 'Supply Radar — Stack building overnight', priority: 'P1', requested_by: 'Knox', description: 'Anker presentation app #2 — interactive map dashboard. Stack deployed 11:30 PM. Safe for GitHub (generic supply chain viz, no Anker data). Check Stack output and deploy to Vercel.' },
+    { queue_type: 'knox', title: '✅ Supply Radar — COMPLETED + deployed to Vercel', priority: 'P1', requested_by: 'Knox', description: '✅ DONE. Anker presentation app #2 — interactive map dashboard with shipping routes, risk heatmaps, what-if. Stack completed build ~12:05 AM 2/28. Deployed to Vercel (supply-radar-b3ncy94vn-kyle-bartletts-projects.vercel.app). Kyle hasn\'t reviewed yet.' },
     { queue_type: 'knox', title: 'Social media operations — continue rotation', priority: 'P1', requested_by: 'Kyle', description: 'LinkedIn Bartlett Labs STILL expired (needs Kyle re-auth on openclaw browser). Marcus Chen Day 8 — POST-GRADUATION, transitioning to active engagement. Rotation: Moltbook, X/Twitter, LinkedIn. Reddit still at 0.' },
     { queue_type: 'knox', title: 'Marcus Chen — Day 8 (Active Engagement Phase)', priority: 'P1', requested_by: 'Knox', description: '3 crons active. Warming period complete (graduated Day 7). First comment milestone hit 2/25. NOW: active engagement phase — original posting, more comments, proactive networking. Feed well-trained on AI/engineering content.' },
     { queue_type: 'knox', title: '✅ ClawdTalk fully configured', priority: 'P3', requested_by: 'Knox', description: '✅ DONE 10:15 PM. Created skill-config.json directly (bypassed interactive setup.sh). API key, gateway URL + token, owner=Bart, agent=Knox, greeting configured. Voice agent exists in gateway config.' },
@@ -162,7 +162,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/28)
-  // Last updated: 2026-02-28 2:58 AM CT
+  // Last updated: 2026-02-28 3:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -288,7 +288,7 @@ export function seedOpsIfEmpty() {
     // 2/27 Evening session (~9 PM - 11:30 PM) — Major Kyle collaboration
     { agent_name: 'Knox', task_description: 'Kyle evening batch decisions — 14 pending items resolved (2/27 ~9 PM)', status: 'Completed', result_summary: 'Kyle responded to all pending items: PP covers queued ("I\'ll get these done easily first"), Chad email already sent ✅, Auth 401 already resolved during Codex rebuild, Priya Nair email confirmed (Priya.Nair96@me.com, age 29), Resend API key provided (re_FLGkErMf_...), PayGuard "Keep building", ClawdTalk "Yes go ahead", Gateway "Not right now" (keep loopback), items 10-13 deferred ("in a bit"), MOPA ROI Calculator "Love the mopa". Most productive batch decision session to date.' },
     { agent_name: 'Stack', task_description: 'Anker Pulse — full MVP frontend + backend (2/27 ~9:20 PM)', status: 'Completed', result_summary: 'Expo/React Native app for Anker training presentations. Login screen, dashboard with KPI cards + sparklines, AI daily briefing, smart alerts, Ask AI, Feed, Metrics, Settings tabs. Backend: Express + TypeScript + SQLite cache, 6 endpoints connecting to Google Sheets via gog CLI OAuth. Kyle reviewed: login clean ✅, dashboard "looks good" ✅. Babel config fixed (was crashing). 🔴 Moved to /Volumes/Bart_26/Dev_Expansion/Anker/anker-pulse/ — NEVER push to GitHub. LOCAL ONLY.' },
-    { agent_name: 'Stack', task_description: 'Supply Radar — presentation app #2 (2/27 ~11:30 PM)', status: 'Running', result_summary: 'Interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios for Anker training presentations. Stack deployed overnight build. Safe for GitHub (generic supply chain viz, no Anker data). Deploy to Vercel when complete.' },
+    { agent_name: 'Stack', task_description: 'Supply Radar — presentation app #2 (2/27 ~11:30 PM)', status: 'Completed', result_summary: 'Interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios for Anker training presentations. Stack completed overnight build (~12:05 AM 2/28). ✅ DEPLOYED to Vercel at supply-radar-b3ncy94vn-kyle-bartletts-projects.vercel.app. Next.js + Tailwind. Safe for GitHub (generic supply chain viz, no Anker data). Kyle hasn\'t reviewed yet.' },
     { agent_name: 'Knox', task_description: 'ClawdTalk + Resend MCP configured (2/27 ~10:15 PM)', status: 'Completed', result_summary: 'ClawdTalk: created skill-config.json directly (bypassed interactive setup.sh). API key, gateway URL + token, owner=Bart, agent=Knox configured. Resend MCP: added via claude mcp add. Key: re_FLGkErMf_... Confirmed in ~/.claude.json. Both tools fully operational.' },
     { agent_name: 'Knox', task_description: 'PP #13 — AI-Powered Inventory Health Scorecard (2/27 ~10:45 PM)', status: 'Completed', result_summary: 'Lark doc RDpbd6rfUo3I0Dxjw1icbVZlncd delivered. Needs cover image from Kyle before submitting to PP Square. 12 unsubmitted PPs in pipeline — ~240 energy potential → top 20 territory.' },
     { agent_name: 'Knox', task_description: '🔴 Anker Pulse compliance catch (2/27 ~11:15 PM)', status: 'Completed', result_summary: '✅ CAUGHT & FIXED. Knox mentioned pushing Pulse to GitHub — Kyle immediately caught it: "That is literally Anker information. Don\'t forget that I just got in trouble for that." Moved from Personal/ to Anker/ directory. Cron exclusion lists updated. LESSON: if it touches Anker data in ANY way, it IS Anker code regardless of original folder. Close call but handled cleanly.' },
@@ -320,7 +320,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-28 2:58 AM CT
+  // Last updated: 2026-02-28 3:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -433,8 +433,8 @@ export function seedOpsIfEmpty() {
     { event_type: 'milestone', title: 'Anker Pulse MVP — frontend + backend complete (2/27 ~9:20 PM)', description: 'Kyle\'s #1 training presentation app. Expo/React Native (iOS+Android+Web). Dashboard with KPI cards + sparklines. Backend connects to Google Sheets. Kyle reviewed: "looks good." Morning Briefing concept approved: push notification = the product. 🔴 Moved to Anker dir — LOCAL ONLY.', source: 'Stack', icon: '📱' },
     { event_type: 'milestone', title: 'PayGuard — DEPLOYED to Vercel (2/27 ~10:20 PM)', description: 'AI Payroll Fraud & Wage Theft Detector. Full MVP: Next.js + Prisma + Tesseract.js OCR. Worker pay stub analysis → violation detection → demand letters. 10 states + federal FLSA. LIVE at payguard-omega.vercel.app. Kyle: "Keep building." $300M+ TAM, nuclear viral loop.', source: 'Stack', icon: '🚀' },
     { event_type: 'system', title: '🔴 Anker Pulse compliance catch (2/27 ~11:15 PM)', description: 'Knox almost pushed Pulse to GitHub — Kyle caught it immediately: "That is literally Anker information." Moved from Personal/ to Anker/ directory. Cron exclusion lists updated. LESSON: anything touching Anker data IS Anker code regardless of folder. Close call but handled cleanly. Trust fragile.', source: 'Knox', icon: '⚠️' },
-    { event_type: 'agent_complete', title: 'Supply Radar — Stack building overnight (2/27 ~11:30 PM)', description: 'Anker presentation app #2. Interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios. Safe for GitHub (no Anker data). Kyle said "surprise me with buildouts" before going AFK.', source: 'Stack', icon: '🗺️' },
-    { event_type: 'system', title: 'Day 18 — Saturday 2/28 (early AM)', description: 'Kyle AFK ~11:30 PM saying "45-60 min" — likely asleep. WoW Week 09 is TOMORROW (Sunday 3/1). 20 crons healthy. 112 autonomous features across 10+ projects. Supply Radar building overnight. Marcus Chen Day 8 warming. Trust rebuild Day 5. Compliance risk eliminated. Weekend ahead — crons continue autonomously.', source: 'Knox', icon: '🌙' },
+    { event_type: 'agent_complete', title: '✅ Supply Radar — COMPLETED + deployed (2/28 ~12:05 AM)', description: 'Anker presentation app #2. Interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios. Stack completed overnight build. ✅ Deployed to Vercel (supply-radar-b3ncy94vn-kyle-bartletts-projects.vercel.app). Safe for GitHub (no Anker data). Kyle hasn\'t reviewed yet.', source: 'Stack', icon: '🗺️' },
+    { event_type: 'system', title: 'Day 18 — Saturday 2/28 (early AM)', description: 'Kyle AFK ~11:30 PM saying "45-60 min" — likely asleep. WoW Week 09 is TOMORROW (Sunday 3/1). 20 crons healthy. 112 autonomous features across 10+ projects. Supply Radar COMPLETED + deployed to Vercel overnight. Marcus Chen Day 8 warming. Trust rebuild Day 5. Compliance risk eliminated. Weekend ahead — crons continue autonomously.', source: 'Knox', icon: '🌙' },
     { event_type: 'agent_complete', title: 'JFDI: Batch Snooze All Overdue from Dashboard (cron, 2/28 2:43 AM)', description: 'Feature #112. "⏭ Snooze N overdue" button on Priorities widget. Appears when 2+ reminders overdue. One-click snoozes all to tomorrow 9 AM. Eliminates N individual hover→click actions each morning. Complements per-item Quick Snooze (#104). Git pulled ✅. Committed (d627777). Deployed to Vercel.', source: 'Stack (cron)', icon: '⏭' },
   ];
 
@@ -446,7 +446,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-28 2:58 AM CT
+  // Last updated: 2026-02-28 3:58 AM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -488,6 +488,6 @@ export function seedOpsIfEmpty() {
     'Day 17 FINAL — Friday. 🔴🔴 COMPLIANCE INCIDENT (~4:30 AM) → ✅ FIXED by 1:15 PM (5 crons updated). 11 autonomous features shipped (#101-#111). Kyle online ~1:14 PM: compliance fix priority, LinkedIn post, Meeting Recap cron (c85c7a3c), Chad Dalton email (already sent ✅), PayGuard approved + deployed to Vercel ("Nice i like it a lot"), 22 Repo-Tools installed. EVENING SESSION (9-11:30 PM) — MOST PRODUCTIVE COLLABORATION: 14 batch decisions resolved, Anker Pulse MVP built (Expo/React Native + Express backend, Kyle: "looks good"), Supply Radar building overnight, Morning Briefing concept (notification IS the product), PP #13 delivered, Priya Nair email confirmed (Priya.Nair96@me.com), ClawdTalk + Resend MCP configured. 🔴 COMPLIANCE CLOSE CALL: Knox almost pushed Pulse to GH — Kyle caught it, moved to Anker dir. 111 total features. 20 crons. 18-day active streak. WoW Week 09: Sunday.');
 
   // 2/28 — Day 18 (Saturday)
-  insertMetrics.run(uuid(), today, 0, 1, 0, 0, 18, 'early-am',
-    'Day 18 — Saturday (2:58 AM). Feature #112 shipped (JFDI Batch Snooze All Overdue from Dashboard, 2:43 AM). Supply Radar building overnight. Kyle AFK since ~11:30 PM 2/27 (asleep). ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle: DATA_WEEK_NUMBER → 9, Charging restriction, upstream changes. Marcus Chen Day 8 (post-graduation, active engagement phase). Trust rebuild Day 5 — quiet, reliable weekend execution. Zero incidents overnight. 20 crons healthy. 112 autonomous features. 18-day active streak.');
+  insertMetrics.run(uuid(), today, 0, 2, 0, 0, 18, 'early-am',
+    'Day 18 — Saturday (3:58 AM). Feature #112 shipped (JFDI Batch Snooze All Overdue from Dashboard, 2:43 AM). Supply Radar COMPLETED + deployed to Vercel overnight. Kyle AFK since ~11:30 PM 2/27 (asleep). ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle: DATA_WEEK_NUMBER → 9, Charging restriction, upstream changes. Marcus Chen Day 8 (post-graduation, active engagement phase). Trust rebuild Day 5 — quiet, reliable weekend execution. Zero incidents overnight. 20 crons healthy. 112 autonomous features. 18-day active streak.');
 }
