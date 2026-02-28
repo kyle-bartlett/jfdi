@@ -353,6 +353,20 @@ export default function Dashboard() {
     }
   };
 
+  const updateGoalProgress = async (id: string, value: number) => {
+    try {
+      await fetch(`/api/goals?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current_percentage: value }),
+      });
+      toast(`Goal progress updated to ${value}%`);
+      await loadData();
+    } catch {
+      toast("Failed to update goal", "error");
+    }
+  };
+
   const markContacted = async (id: string) => {
     try {
       await fetch(`/api/relationships?id=${id}`, {
@@ -510,6 +524,7 @@ export default function Dashboard() {
             items={data?.goals.items || []}
             onTrack={data?.goals.onTrack ?? 0}
             total={data?.goals.total ?? 0}
+            onUpdateProgress={updateGoalProgress}
           />
 
           <RelationshipsWidget

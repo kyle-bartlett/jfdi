@@ -16,6 +16,7 @@ const sections = [
       { href: "/knowledge", label: "Knowledge", icon: "🧠" },
       { href: "/spark", label: "Spark", icon: "⚡" },
       { href: "/goals", label: "Goals", icon: "🎯" },
+      { href: "/weekly-review", label: "Weekly Review", icon: "📈" },
       { href: "/chat", label: "Chat", icon: "💬" },
     ],
   },
