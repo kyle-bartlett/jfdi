@@ -48,7 +48,12 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export function ScratchPad() {
+interface ScratchPadProps {
+  onConvertToTask?: (text: string) => Promise<void>;
+  onConvertToReminder?: (text: string) => Promise<void>;
+}
+
+export function ScratchPad({ onConvertToTask, onConvertToReminder }: ScratchPadProps = {}) {
   const [notes, setNotes] = useState<ScratchNote[]>([]);
   const [newText, setNewText] = useState("");
   const [expanded, setExpanded] = useState(true);
@@ -57,9 +62,12 @@ export function ScratchPad() {
   const [selectedColor, setSelectedColor] = useState("default");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [clearAnimation, setClearAnimation] = useState(false);
+  const [convertMenuId, setConvertMenuId] = useState<string | null>(null);
+  const [converting, setConverting] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const editRef = useRef<HTMLTextAreaElement>(null);
   const colorRef = useRef<HTMLDivElement>(null);
+  const convertRef = useRef<HTMLDivElement>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -92,6 +100,38 @@ export function ScratchPad() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [showColorPicker]);
+
+  // Close convert menu on outside click
+  useEffect(() => {
+    if (!convertMenuId) return;
+    const handler = (e: MouseEvent) => {
+      if (convertRef.current && !convertRef.current.contains(e.target as Node)) {
+        setConvertMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [convertMenuId]);
+
+  const convertNote = useCallback(async (noteId: string, type: "task" | "reminder") => {
+    const note = notes.find((n) => n.id === noteId);
+    if (!note) return;
+    setConverting(true);
+    try {
+      if (type === "task" && onConvertToTask) {
+        await onConvertToTask(note.text);
+      } else if (type === "reminder" && onConvertToReminder) {
+        await onConvertToReminder(note.text);
+      }
+      // Remove the note after successful conversion
+      setNotes((prev) => prev.filter((n) => n.id !== noteId));
+      setConvertMenuId(null);
+    } catch {
+      // Keep note if conversion failed
+    } finally {
+      setConverting(false);
+    }
+  }, [notes, onConvertToTask, onConvertToReminder]);
 
   const addNote = useCallback(() => {
     const text = newText.trim();
@@ -299,6 +339,44 @@ export function ScratchPad() {
                         {timeAgo(note.createdAt)}
                       </span>
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {(onConvertToTask || onConvertToReminder) && (
+                          <div ref={convertMenuId === note.id ? convertRef : undefined} className="relative">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setConvertMenuId(convertMenuId === note.id ? null : note.id);
+                              }}
+                              className="w-5 h-5 rounded flex items-center justify-center text-[11px] text-muted-foreground/40 hover:text-primary transition-colors"
+                              title="Convert to task or reminder"
+                            >
+                              ⤴
+                            </button>
+                            {convertMenuId === note.id && (
+                              <div className="absolute right-0 bottom-6 z-50 bg-popover border border-border rounded-md shadow-md py-1 min-w-[140px]">
+                                {onConvertToTask && (
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); convertNote(note.id, "task"); }}
+                                    disabled={converting}
+                                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-muted transition-colors flex items-center gap-2 disabled:opacity-50"
+                                  >
+                                    <span>✏️</span>
+                                    <span>{converting ? "Converting..." : "Convert to Task"}</span>
+                                  </button>
+                                )}
+                                {onConvertToReminder && (
+                                  <button
+                                    onClick={(e) => { e.stopPropagation(); convertNote(note.id, "reminder"); }}
+                                    disabled={converting}
+                                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-muted transition-colors flex items-center gap-2 disabled:opacity-50"
+                                  >
+                                    <span>🔔</span>
+                                    <span>{converting ? "Converting..." : "Convert to Reminder"}</span>
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();

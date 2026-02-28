@@ -502,7 +502,14 @@ export default function Dashboard() {
 
           {data?.larkMessages && <LarkWidget messages={data.larkMessages} />}
 
-          <ScratchPad />
+          <ScratchPad
+            onConvertToTask={async (text: string) => {
+              await quickAddTask(text);
+            }}
+            onConvertToReminder={async (text: string) => {
+              await quickAddReminder(text);
+            }}
+          />
         </div>
       )}
     </div>
