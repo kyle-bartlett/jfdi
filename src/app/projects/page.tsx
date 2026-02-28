@@ -70,6 +70,107 @@ const STATUS_LABELS: Record<string, { label: string; icon: string }> = {
   "completed": { label: "Completed", icon: "✅" },
 };
 
+// Project switcher — jump between projects at ground level without going back
+function ProjectSwitcher({
+  projects,
+  currentId,
+  onSwitch,
+  externalOpen,
+  onOpenChange,
+}: {
+  projects: Project[];
+  currentId: string;
+  onSwitch: (project: Project) => void;
+  externalOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = (v: boolean) => {
+    setInternalOpen(v);
+    onOpenChange?.(v);
+  };
+  const [filter, setFilter] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync external open trigger
+  useEffect(() => {
+    if (externalOpen !== undefined) setInternalOpen(externalOpen);
+  }, [externalOpen]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) { setOpen(false); setFilter(""); }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [open]);
+
+  const others = projects
+    .filter((p) => p.id !== currentId && p.status !== "completed")
+    .filter((p) => !filter || p.name.toLowerCase().includes(filter.toLowerCase()));
+
+  return (
+    <div ref={ref} className="relative inline-block">
+      <button
+        onClick={() => setOpen(!open)}
+        className="text-xs text-muted-foreground/60 hover:text-primary transition-colors ml-1.5"
+        title="Switch project (Tab)"
+      >
+        ⇆
+      </button>
+      {open && (
+        <div className="absolute left-0 top-6 z-50 bg-popover border border-border rounded-md shadow-lg min-w-[220px] max-w-[300px]">
+          <div className="px-2 pt-2 pb-1">
+            <input
+              ref={inputRef}
+              type="text"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              placeholder="Filter projects..."
+              className="w-full text-xs bg-muted/50 border border-border rounded px-2 py-1.5 placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && others.length > 0) {
+                  onSwitch(others[0]);
+                  setOpen(false);
+                  setFilter("");
+                }
+                if (e.key === "Escape") { setOpen(false); setFilter(""); }
+              }}
+            />
+          </div>
+          <div className="max-h-48 overflow-y-auto py-1">
+            {others.length === 0 ? (
+              <div className="px-3 py-2 text-xs text-muted-foreground/60">No other projects</div>
+            ) : (
+              others.map((p) => {
+                const statusCfg = STATUS_LABELS[p.status] || { icon: "📁" };
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => { onSwitch(p); setOpen(false); setFilter(""); }}
+                    className="w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 hover:bg-muted transition-colors"
+                  >
+                    <span>{statusCfg.icon}</span>
+                    <span className="truncate flex-1">{p.name}</span>
+                    <span className="text-[10px] text-muted-foreground/50">{p.progress}%</span>
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Inline status selector — change project status without opening edit modal
 function InlineStatusSelect({
   projectId,
@@ -227,8 +328,10 @@ export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inlineAddProjectId, setInlineAddProjectId] = useState<string | null>(null);
   const [focusedTaskIndex, setFocusedTaskIndex] = useState<number>(-1);
+  const [projectSwitcherOpen, setProjectSwitcherOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const taskListRef = useRef<HTMLDivElement>(null);
+  const switcherRef = useRef<{ open: () => void }>(null);
   const { toast } = useToast();
 
   const loadProjects = useCallback(async () => {
@@ -344,9 +447,13 @@ export default function ProjectsPage() {
           e.preventDefault();
           setFocusedTaskIndex(-1);
           break;
+        case "Tab": // Open project switcher
+          e.preventDefault();
+          setProjectSwitcherOpen((prev) => !prev);
+          break;
         case "?": // Show keyboard shortcut help
           e.preventDefault();
-          toast("Keys: ↑↓/jk Navigate • c Cycle Status • e Edit • d Delete • y Duplicate • a Add Task • Esc Clear");
+          toast("Keys: ↑↓/jk Navigate • c Cycle Status • e Edit • d Delete • y Duplicate • a Add Task • Tab Switch Project • Esc Clear");
           break;
       }
     };
@@ -660,7 +767,16 @@ export default function ProjectsPage() {
           <div className="card mb-4">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h2 className="text-lg font-semibold">{selectedProject.name}</h2>
+                <div className="flex items-center">
+                  <h2 className="text-lg font-semibold">{selectedProject.name}</h2>
+                  <ProjectSwitcher
+                    projects={projects}
+                    currentId={selectedProject.id}
+                    onSwitch={loadProjectTasks}
+                    externalOpen={projectSwitcherOpen}
+                    onOpenChange={setProjectSwitcherOpen}
+                  />
+                </div>
                 {selectedProject.description && <p className="text-sm text-muted-foreground mt-1">{selectedProject.description}</p>}
                 {parseTags(selectedProject.tags).length > 0 && (
                   <div className="flex gap-1.5 mt-2">
@@ -777,13 +893,14 @@ export default function ProjectsPage() {
           </div>
 
           {/* Task keyboard shortcut hint */}
-          {selectedProject.tasks && selectedProject.tasks.length > 0 && (
-            <div className="mt-3 text-center">
-              <span className="text-[10px] text-muted-foreground/40">
-                Press <kbd className="px-1 py-0.5 rounded bg-muted text-muted-foreground/60 text-[9px]">?</kbd> for keyboard shortcuts
-              </span>
-            </div>
-          )}
+          <div className="mt-3 text-center">
+            <span className="text-[10px] text-muted-foreground/40">
+              <kbd className="px-1 py-0.5 rounded bg-muted text-muted-foreground/60 text-[9px]">Tab</kbd> switch project
+              {selectedProject.tasks && selectedProject.tasks.length > 0 && (
+                <> · <kbd className="px-1 py-0.5 rounded bg-muted text-muted-foreground/60 text-[9px]">?</kbd> all shortcuts</>
+              )}
+            </span>
+          </div>
         </div>
       )}
 
