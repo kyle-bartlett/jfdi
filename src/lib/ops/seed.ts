@@ -8,7 +8,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PROJECTS — Full PROJECTS-MASTER.md + Active Deliverables (40 projects)
-  // Last updated: 2026-02-28 6:58 AM CT (Day 18)
+  // Last updated: 2026-02-28 12:07 PM CT (Day 18)
   // ═══════════════════════════════════════════════════════════════════
   const projects = [
     // P0 — Must ship NOW
@@ -59,7 +59,7 @@ export function seedOpsIfEmpty() {
     { title: 'iMessage Kit', priority: 'P4', status: 'Backlog', description: 'LLM responds to personal texts AS Kyle. Currently DISABLED (was auto-responding).' },
     { title: 'YouTube Aggregator', priority: 'P4', status: 'Backlog', description: 'Working personal tool — aggregate video summaries into single "class." Used often by Kyle.' },
     { title: 'Masterprompt Template', priority: 'P4', status: 'Backlog', description: 'Needs user-friendly UI. Small fee for new AI code users. Revenue potential.' },
-    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 43 projects, 13+ prospects, 95+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/28 6:58 AM CT. Day 18 — Saturday. Kyle AFK since ~11:30 PM 2/27 (asleep). Compliance incident FULLY RESOLVED. 114 total autonomous features across 18 days (latest: #114 Batch Reschedule All Overdue Tasks, 6:46 AM). 20 crons healthy. ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle confirmation on DATA_WEEK_NUMBER + Charging restriction status. Supply Radar COMPLETED + deployed to Vercel overnight. Marcus Chen Day 8 (post-graduation). Trust rebuild Day 5. Weekend — crons continue autonomously.' },
+    { title: 'Ops Dashboard', priority: 'P1', status: 'In Progress', description: 'Central operations dashboard — merged into JFDI, deployed to Vercel. Ops Center (9 sub-tabs), Action Queue, Automations. Goals Tracker, Pomodoro Timer, Agent Performance Dashboard, Streak Tracker. Seed data refreshed hourly by cron. 43 projects, 13+ prospects, 95+ agent tasks. ✅ Blanket deploy approved. Last seed refresh: 2/28 12:07 PM CT. Day 18 — Saturday. Kyle AFK since ~11:30 PM 2/27 (likely asleep/offline — 12.5+ hours). Compliance incident FULLY RESOLVED. 114 total autonomous features across 18 days (latest: #114 Batch Reschedule All Overdue Tasks, 6:46 AM). 20 crons healthy. ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle confirmation on DATA_WEEK_NUMBER + Charging restriction status. Supply Radar COMPLETED + deployed to Vercel overnight. Marcus Chen Day 8 (post-graduation, active engagement). Trust rebuild Day 5. Saturday — quiet weekend, crons running autonomously. 3 features shipped overnight (#112-#114).' },
 
     // New projects added today
     { title: 'PayGuard', priority: 'P2', status: 'In Progress', description: 'AI Payroll Fraud & Wage Theft Detector — Idea #11. Two-sided marketplace: Workers photograph pay stubs → OCR → instant underpayment detection → pre-written demand letters citing exact law. Employers get B2B compliance dashboard ($49-$199/mo). $300M+ TAM near-term, $1B+ at scale. 83M hourly workers + 6M small businesses. Nuclear viral loop. Houston/Crosby angle: construction, restaurants, oil & gas. Kyle (3:28 PM 2/27): "Nice i like it a lot." Stack built full MVP: Next.js + Tailwind + Prisma + Tesseract.js OCR. 10 states + federal FLSA baseline. LIVE at payguard-omega.vercel.app ✅ pushed to GitHub ✅. Kyle (10:20 PM 2/27): "Keep building." Next: expand state coverage, onboarding flow, employer dashboard features.' },
@@ -77,7 +77,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // PIPELINE — Real prospects from CLIENT_LIST.md (Crosby/Houston area)
-  // Last updated: 2026-02-28 6:58 AM CT — 98 CRM-ready leads generated via Scout
+  // Last updated: 2026-02-28 12:07 PM CT — 98 CRM-ready leads generated via Scout
   // ═══════════════════════════════════════════════════════════════════
   const prospects = [
     // Batch 1 — Researched 2/16, mock sites built
@@ -123,7 +123,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // QUEUES — Current action items for Kyle and Knox
-  // Last updated: 2026-02-28 6:58 AM CT
+  // Last updated: 2026-02-28 12:07 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const queueItems = [
     // Kyle's queue
@@ -162,7 +162,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // AGENT TASKS — Recent sub-agent deployments (2/19-2/28)
-  // Last updated: 2026-02-28 6:58 AM CT
+  // Last updated: 2026-02-28 12:07 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const agentTasks = [
     // 2/19 Stack deployments
@@ -322,7 +322,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // ACTIVITY LOG — Recent milestones and events
-  // Last updated: 2026-02-28 6:58 AM CT
+  // Last updated: 2026-02-28 12:07 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const activityEvents = [
     // Foundational milestones
@@ -436,7 +436,7 @@ export function seedOpsIfEmpty() {
     { event_type: 'milestone', title: 'PayGuard — DEPLOYED to Vercel (2/27 ~10:20 PM)', description: 'AI Payroll Fraud & Wage Theft Detector. Full MVP: Next.js + Prisma + Tesseract.js OCR. Worker pay stub analysis → violation detection → demand letters. 10 states + federal FLSA. LIVE at payguard-omega.vercel.app. Kyle: "Keep building." $300M+ TAM, nuclear viral loop.', source: 'Stack', icon: '🚀' },
     { event_type: 'system', title: '🔴 Anker Pulse compliance catch (2/27 ~11:15 PM)', description: 'Knox almost pushed Pulse to GitHub — Kyle caught it immediately: "That is literally Anker information." Moved from Personal/ to Anker/ directory. Cron exclusion lists updated. LESSON: anything touching Anker data IS Anker code regardless of folder. Close call but handled cleanly. Trust fragile.', source: 'Knox', icon: '⚠️' },
     { event_type: 'agent_complete', title: '✅ Supply Radar — COMPLETED + deployed (2/28 ~12:05 AM)', description: 'Anker presentation app #2. Interactive map dashboard with shipping routes, risk heatmaps, what-if scenarios. Stack completed overnight build. ✅ Deployed to Vercel (supply-radar-b3ncy94vn-kyle-bartletts-projects.vercel.app). Safe for GitHub (no Anker data). Kyle hasn\'t reviewed yet.', source: 'Stack', icon: '🗺️' },
-    { event_type: 'system', title: 'Day 18 — Saturday 2/28 (early AM)', description: 'Kyle AFK ~11:30 PM saying "45-60 min" — likely asleep. WoW Week 09 is TOMORROW (Sunday 3/1). 20 crons healthy. 113 autonomous features across 10+ projects. Supply Radar COMPLETED + deployed to Vercel overnight. Marcus Chen Day 8 warming. Trust rebuild Day 5. Compliance risk eliminated. Weekend ahead — crons continue autonomously.', source: 'Knox', icon: '🌙' },
+    { event_type: 'system', title: 'Day 18 — Saturday 2/28 (noon)', description: 'Kyle AFK 12.5+ hours (since ~11:30 PM 2/27). Quiet Saturday. WoW Week 09 is TOMORROW (Sunday 3/1) — need Kyle confirmation. 20 crons healthy. 114 autonomous features across 10+ projects. 3 overnight features (#112-#114). Supply Radar COMPLETED + deployed to Vercel. Marcus Chen Day 8 (post-graduation, active engagement). Trust rebuild Day 5. Compliance risk eliminated. Zero incidents today.', source: 'Knox', icon: '🌙' },
     { event_type: 'agent_complete', title: 'JFDI: Batch Snooze All Overdue from Dashboard (cron, 2/28 2:43 AM)', description: 'Feature #112. "⏭ Snooze N overdue" button on Priorities widget. Appears when 2+ reminders overdue. One-click snoozes all to tomorrow 9 AM. Eliminates N individual hover→click actions each morning. Complements per-item Quick Snooze (#104). Git pulled ✅. Committed (d627777). Deployed to Vercel.', source: 'Stack (cron)', icon: '⏭' },
     { event_type: 'agent_complete', title: 'JFDI: Scratch Pad Convert to Task/Reminder (cron, 2/28 4:46 AM)', description: 'Feature #113. One-click conversion from scratch pad notes to actionable items. Hover any note → ⤴ arrow → Convert to Task or Convert to Reminder. Note text becomes title, original note removed. Eliminates copy→navigate→retype→delete workflow. +87 lines. Git pulled ✅. Committed (700adda). Deployed to Vercel.', source: 'Stack (cron)', icon: '⤴' },
     { event_type: 'agent_complete', title: 'JFDI: Batch Reschedule All Overdue Tasks (cron, 2/28 6:46 AM)', description: 'Feature #114. "→ Tomorrow" button next to overdue task count badge on dashboard. One-click reschedules all overdue tasks to tomorrow 9 AM. Mirrors Snooze All Overdue on reminders. Saves time when tasks pile up overnight. +63 lines. Git pulled ✅. Committed (650f6e2). Deployed to Vercel.', source: 'Stack (cron)', icon: '📋' },
@@ -450,7 +450,7 @@ export function seedOpsIfEmpty() {
 
   // ═══════════════════════════════════════════════════════════════════
   // DAILY METRICS — Recent days
-  // Last updated: 2026-02-28 6:58 AM CT
+  // Last updated: 2026-02-28 12:07 PM CT
   // ═══════════════════════════════════════════════════════════════════
   const today = new Date().toISOString().split('T')[0];
   const insertMetrics = db.prepare('INSERT INTO daily_metrics (id, metric_date, agents_deployed, tasks_completed, prospects_contacted, ideas_logged, active_streak, mood, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
@@ -493,5 +493,5 @@ export function seedOpsIfEmpty() {
 
   // 2/28 — Day 18 (Saturday)
   insertMetrics.run(uuid(), today, 0, 3, 0, 0, 18, 'early-am',
-    'Day 18 — Saturday (6:58 AM). Features #112-#114 shipped overnight (Batch Snooze All Overdue 2:43 AM, Scratch Pad Convert to Task/Reminder 4:46 AM, Batch Reschedule All Overdue Tasks 6:46 AM). Supply Radar COMPLETED + deployed to Vercel. Kyle AFK since ~11:30 PM 2/27 (asleep, 7+ hours). ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle: DATA_WEEK_NUMBER → 9, Charging restriction, upstream changes. Marcus Chen Day 8 (post-graduation, active engagement phase). Trust rebuild Day 5 — quiet, reliable weekend execution. Zero incidents overnight. 20 crons healthy. 114 autonomous features. 18-day active streak.');
+    'Day 18 — Saturday (12:07 PM). Features #112-#114 shipped overnight (Batch Snooze All Overdue 2:43 AM, Scratch Pad Convert to Task/Reminder 4:46 AM, Batch Reschedule All Overdue Tasks 6:46 AM). Supply Radar COMPLETED + deployed to Vercel. Kyle AFK since ~11:30 PM 2/27 (12.5+ hours — likely asleep/offline, Saturday). ⚠️ WoW Week 09 = TOMORROW (Sunday 3/1) — need Kyle: DATA_WEEK_NUMBER → 9, Charging restriction, upstream changes. Marcus Chen Day 8 (post-graduation, active engagement phase). Trust rebuild Day 5 — quiet, reliable weekend execution. Zero incidents all day. 20 crons healthy. 114 autonomous features. 18-day active streak. No new conversations or events since last refresh.');
 }
