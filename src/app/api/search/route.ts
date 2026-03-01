@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { reminders, projects, goals, relationships, meetings } from "@/lib/schema";
-import { like, and, ne } from "drizzle-orm";
+import { reminders, projects, tasks, goals, relationships, meetings } from "@/lib/schema";
+import { like, and, ne, eq } from "drizzle-orm";
 
 interface SearchResult {
   id: string;
-  type: "reminder" | "project" | "goal" | "relationship" | "meeting";
+  type: "reminder" | "project" | "task" | "goal" | "relationship" | "meeting";
   title: string;
   subtitle?: string;
   icon: string;
@@ -64,6 +64,41 @@ export async function GET(request: NextRequest) {
         icon: "📁",
         href: "/projects",
         priority: p.priority || undefined,
+      });
+    }
+
+    // Search tasks (non-done)
+    const taskResults = await db
+      .select()
+      .from(tasks)
+      .where(and(like(tasks.title, pattern), ne(tasks.status, "done")))
+      .limit(5)
+      .all();
+
+    // Build project name lookup for task subtitles
+    const taskProjectIds = [...new Set(taskResults.filter(t => t.project_id).map(t => t.project_id!))];
+    const projectLookup = new Map<string, string>();
+    for (const pid of taskProjectIds) {
+      const p = await db.select({ name: projects.name }).from(projects).where(eq(projects.id, pid)).get();
+      if (p) projectLookup.set(pid, p.name);
+    }
+
+    for (const t of taskResults) {
+      const projectName = t.project_id ? projectLookup.get(t.project_id) : null;
+      const statusLabel = t.status === "in-progress" ? "In Progress" : t.status === "blocked" ? "Blocked" : "To Do";
+      const parts: string[] = [];
+      if (projectName) parts.push(projectName);
+      parts.push(statusLabel);
+      if (t.due_date) parts.push(`Due: ${new Date(t.due_date).toLocaleDateString()}`);
+
+      results.push({
+        id: `task-${t.id}`,
+        type: "task",
+        title: t.title,
+        subtitle: parts.join(" · "),
+        icon: t.status === "in-progress" ? "🔨" : t.status === "blocked" ? "🚫" : "☑️",
+        href: "/projects",
+        priority: t.priority || undefined,
       });
     }
 
